@@ -323,7 +323,9 @@ p {
     justify-content:  center;
     background-color: var(--color-base);
     pointer-events:   none;
-    transition:       opacity 0.7s ease;
+    will-change:      transform;
+    /* slide-up reveal — strong expo ease so it feels intentional */
+    transition:       transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .page-loader__logo {
@@ -336,7 +338,7 @@ p {
     line-height:    1;
     white-space:    nowrap;
     will-change:    opacity;
-    transition:     opacity 0.2s ease;
+    transition:     opacity 0.3s ease;
 }
 
 /* Header logo starts invisible — JS FLIP animates it in */
