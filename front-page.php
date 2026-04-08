@@ -20,16 +20,20 @@ $uri = get_template_directory_uri();
         <div class="hp-hero__inner container">
 
             <div class="hp-hero__top">
-                <span class="hp-hero__label">(A Studio)</span>
+
+                <div class="hp-hero__left">
+                    <span class="hp-hero__label">(A Studio)</span>
+                    <div class="hp-hero__disciplines">
+                        <span class="hp-hero__discipline">Creative Direction,<br>Art Direction</span>
+                        <span class="hp-hero__discipline">Design</span>
+                        <span class="hp-hero__discipline">Development</span>
+                    </div>
+                </div>
+
                 <h1 class="hp-hero__heading">
                     For brands with quiet ambition. We design with precision, sensibility and cultural permanence.
                 </h1>
-            </div>
 
-            <div class="hp-hero__disciplines">
-                <span class="hp-hero__discipline">Creative Direction, Art Direction</span>
-                <span class="hp-hero__discipline">Design</span>
-                <span class="hp-hero__discipline">Development</span>
             </div>
 
         </div>
