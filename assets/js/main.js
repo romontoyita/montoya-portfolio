@@ -42,7 +42,7 @@
             document.body.classList.remove('is-loading');
 
             // Immediately fade out the loader logo — the header logo takes over
-            loaderLogo.style.opacity = '0';
+            //loaderLogo.style.opacity = '0';
 
             // Force reflow — locks in the inverted transform before transition starts
             headerLogo.getBoundingClientRect(); // eslint-disable-line no-unused-expressions
