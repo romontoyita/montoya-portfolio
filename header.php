@@ -13,29 +13,44 @@
 <header id="masthead" class="site-header" role="banner">
     <div class="site-header__inner container">
 
-        <a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?> &mdash; <?php esc_attr_e( 'Home', 'montoya-portfolio' ); ?>">
-            <?php if ( has_custom_logo() ) : ?>
-                <?php the_custom_logo(); ?>
-            <?php else : ?>
-                <img
-                    src="<?php echo esc_url( MONTOYA_URI . '/assets/images/logo.svg' ); ?>"
-                    alt="<?php bloginfo( 'name' ); ?>"
-                    width="120"
-                    height="32"
-                    loading="eager"
-                >
-            <?php endif; ?>
+        <a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+            <?php bloginfo( 'name' ); ?>
         </a>
 
-        <nav id="site-navigation" class="site-nav" aria-label="<?php esc_attr_e( 'Primary', 'montoya-portfolio' ); ?>">
-            <?php
-            wp_nav_menu( [
-                'theme_location' => 'primary',
-                'container'      => false,
-                'menu_class'     => 'site-nav__list',
-                'fallback_cb'    => false,
-            ] );
-            ?>
+        <nav id="site-navigation" class="main-navigation" aria-label="<?php esc_attr_e( 'Primary', 'montoya-portfolio' ); ?>">
+            <ul class="main-navigation__list">
+                <li class="main-navigation__item">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>"
+                       class="main-navigation__link is-active"
+                       aria-current="page">
+                        <?php esc_html_e( 'Home', 'montoya-portfolio' ); ?>
+                    </a>
+                </li>
+                <li class="main-navigation__item">
+                    <a href="<?php echo esc_url( home_url( '/work' ) ); ?>"
+                       class="main-navigation__link">
+                        <?php esc_html_e( 'Work', 'montoya-portfolio' ); ?>
+                    </a>
+                </li>
+                <li class="main-navigation__item">
+                    <a href="<?php echo esc_url( home_url( '/about' ) ); ?>"
+                       class="main-navigation__link">
+                        <?php esc_html_e( 'About', 'montoya-portfolio' ); ?>
+                    </a>
+                </li>
+                <li class="main-navigation__item">
+                    <a href="<?php echo esc_url( home_url( '/services' ) ); ?>"
+                       class="main-navigation__link">
+                        <?php esc_html_e( 'Services', 'montoya-portfolio' ); ?>
+                    </a>
+                </li>
+                <li class="main-navigation__item main-navigation__item--cta">
+                    <a href="<?php echo esc_url( home_url( '/inquiries' ) ); ?>"
+                       class="main-navigation__link main-navigation__link--cta">
+                        <?php esc_html_e( 'Inquiries', 'montoya-portfolio' ); ?>
+                    </a>
+                </li>
+            </ul>
         </nav>
 
         <button
