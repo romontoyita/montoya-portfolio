@@ -328,17 +328,15 @@ $uri = get_template_directory_uri();
          large landscape image, full width
     ============================================= -->
     <section class="hp-landscape" aria-label="<?php esc_attr_e( 'Studio imagery', 'montoya-portfolio' ); ?>">
-        <div class="hp-landscape__inner container">
-            <figure class="hp-landscape__image" data-js="values-image">
-                <img
-                    src="<?php echo esc_url( $uri . '/assets/images/values-landscape.jpg' ); ?>"
-                    alt=""
-                    width="1396"
-                    height="830"
-                    loading="lazy"
-                >
-            </figure>
-        </div>
+        <figure class="hp-landscape__image" data-js="values-image">
+            <img
+                src="<?php echo esc_url( $uri . '/assets/images/values-landscape.jpg' ); ?>"
+                alt=""
+                width="1396"
+                height="830"
+                loading="lazy"
+            >
+        </figure>
     </section><!-- .hp-landscape -->
 
 

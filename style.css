@@ -897,32 +897,41 @@ p {
 
 
 /* ==========================================================================
-   § 5  FULL-BLEED LANDSCAPE IMAGE
-   py 128px | 1396×830px | mirrored (rotate 180deg in Figma = scaleX(-1))
+   § 5  LANDSCAPE IMAGE
+   padding: 128px 24px | image 1396×830px | rotate(180deg) transform-origin top left
    ========================================================================== */
 
 .hp-landscape {
-    padding-block: clamp(4rem, 8.9vw, 128px);
+    padding: clamp(4rem, 8.9vw, 128px) 24px;
 }
 
+/* Figure fills the content area (1440 - 24 - 24 = 1392px ≈ 1396px in Figma) */
 .hp-landscape__image {
     width:    100%;
-    height:   clamp(300px, 57.6vw, 830px);
+    height:   clamp(300px, 57.6vw, 830px); /* 830px at 1440px */
     overflow: hidden;
 }
 
+/* rotate(180deg) + transform-origin: top left → image appears mirrored above origin.
+   Figma source: scaleY(-1) rotate(180deg) = scaleX(-1). Apply to the img. */
 .hp-landscape__image img {
     width:      100%;
     height:     100%;
     object-fit: cover;
     display:    block;
-    transform:  scaleX(-1); /* Figma: rotate(180deg) + scaleY flip = horizontal mirror */
+    transform:  rotate(180deg);
+    transform-origin: top left;
 }
 
 @media (max-width: 768px) {
     .hp-landscape__image {
-        height: 60vw;
-        min-height: 260px;
+        height:     55vw;
+        min-height: 240px;
+    }
+
+    .hp-landscape__image img {
+        transform:        none; /* avoid off-screen rendering on small viewports */
+        transform-origin: initial;
     }
 }
 
