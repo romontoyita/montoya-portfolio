@@ -10,7 +10,7 @@
 
 <?php if ( is_front_page() ) : ?>
 <div class="page-loader" aria-hidden="true">
-    <span class="page-loader__logo"><?php bloginfo( 'name' ); ?></span>
+    <span class="page-loader__logo"><?php bloginfo( 'name' ); ?> ®</span>
 </div>
 <?php endif; ?>
 
