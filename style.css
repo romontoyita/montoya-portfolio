@@ -36,6 +36,8 @@ Tags:        portfolio, custom-logo, custom-menu
     font-display: swap;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
 /* ==========================================================================
    DESIGN TOKENS — CSS Custom Properties
    ========================================================================== */
@@ -1127,4 +1129,22 @@ p {
         max-width:  100%;
         gap:        var(--space-xl);
     }
+}
+
+.reg-mark {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.45em;       /* Lo hace significativamente más pequeño */
+    font-weight: 700;        /* Un poco más grueso para que no desaparezca */
+    vertical-align: super;   /* Lo eleva automáticamente */
+    margin-left: 2px;        /* Lo pega más al texto */
+    line-height: 0;          /* Evita que afecte el alto de línea del logo */
+    position: relative;
+    top: -0.2em;             /* Ajuste fino manual para la altura */
+    text-decoration: none;   /* Por si el logo es un link */
+    display: inline-block;
+}
+
+/* Opcional: quitar el subrayado si el logo tiene hover */
+.site-header__logo:hover .reg-mark {
+    text-decoration: none;
 }

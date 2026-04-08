@@ -10,7 +10,7 @@
 
 <?php if ( is_front_page() ) : ?>
 <div class="page-loader" aria-hidden="true">
-    <span class="page-loader__logo"><?php bloginfo( 'name' ); ?> ®</span>
+    <span class="page-loader__logo"><?php bloginfo( 'name' ); ?> <span class="reg-mark">®</span></span>
 </div>
 <?php endif; ?>
 
@@ -20,7 +20,7 @@
     <div class="site-header__inner container">
 
         <a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-            <?php bloginfo( 'name' ); ?> ®
+            <?php bloginfo( 'name' ); ?> <span class="reg-mark">®</span>
         </a>
 
         <nav id="site-navigation" class="main-navigation" aria-label="<?php esc_attr_e( 'Primary', 'montoya-portfolio' ); ?>">
