@@ -75,6 +75,7 @@ Tags:        portfolio, custom-logo, custom-menu
     --space-3xl: clamp(6rem,     5.54rem + 2.14vw,  7.5rem);
 
     /* --- Layout --- */
+    --fluid-pad:         clamp(1.5rem, 5vw, 4rem);
     --container-max:     1440px;
     --container-padding: clamp(1.25rem, 5vw, 5rem);
 
@@ -113,6 +114,7 @@ body {
     font-size:        var(--text-base);
     line-height:      1.6;
     min-height:       100dvh;
+    padding-inline:   var(--fluid-pad);
     -webkit-font-smoothing:  antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -171,10 +173,12 @@ p {
    ========================================================================== */
 
 .container {
-    width:     100%;
-    max-width: var(--container-max);
-    margin:    0 auto;
-    padding-inline: var(--container-padding);
+    width: 100%;
+}
+
+/* Full-bleed breakout — negates the body padding-inline */
+.breakout {
+    margin-inline: calc(var(--fluid-pad) * -1);
 }
 
 .site-main {
@@ -215,7 +219,9 @@ p {
     top:              0;
     z-index:          var(--header-z);
     background-color: var(--color-base);
-    padding:          24px;
+    margin-inline:    calc(var(--fluid-pad) * -1);
+    padding-block:    24px;
+    padding-inline:   var(--fluid-pad);
 }
 
 .site-header__inner {
@@ -304,8 +310,10 @@ p {
    ========================================================================== */
 
 .site-footer {
-    border-top: 1px solid var(--color-primary-30);
-    padding-block: var(--space-xl);
+    border-top:     1px solid var(--color-primary-30);
+    padding-block:  var(--space-xl);
+    margin-inline:  calc(var(--fluid-pad) * -1);
+    padding-inline: var(--fluid-pad);
 }
 
 .site-footer__inner {
@@ -329,7 +337,7 @@ p {
 /* ≤ 768px — Mobile */
 @media (max-width: 768px) {
     .site-header {
-        padding: 16px 24px;
+        padding-block: 16px;
     }
 
     .site-header__menu-toggle {
@@ -344,7 +352,8 @@ p {
         right:            0;
         background-color: var(--color-base);
         border-bottom:    1px solid var(--color-primary-30);
-        padding:          var(--space-md) 24px;
+        padding-block:    var(--space-md);
+        padding-inline:   var(--fluid-pad);
     }
 
     .main-navigation.is-open {
@@ -428,11 +437,11 @@ p {
     color:          var(--color-primary);
 }
 
-/* Hero image — full width, fixed 830px height on desktop */
+/* Hero image — full-bleed, fixed 830px height on desktop */
 .hp-hero__media {
-    width:    100%;
-    height:   clamp(400px, 57.6vw, 830px); /* 830px at 1440px */
-    overflow: hidden;
+    margin-inline: calc(var(--fluid-pad) * -1);
+    height:        clamp(400px, 57.6vw, 830px); /* 830px at 1440px */
+    overflow:      hidden;
 }
 
 .hp-hero__image {
@@ -569,6 +578,8 @@ p {
 .hp-work {
     background-color: #EEEEEE;
     padding-block:    clamp(6rem, 17.8vw, 256px);
+    margin-inline:    calc(var(--fluid-pad) * -1);
+    padding-inline:   var(--fluid-pad);
 }
 
 /* "SELECTED WORK" | "ALL COMMISSIONS" — 16px Söhne, ls 0.32px */
@@ -902,7 +913,9 @@ p {
    ========================================================================== */
 
 .hp-landscape {
-    padding: clamp(4rem, 8.9vw, 128px) 24px;
+    padding-block:  clamp(4rem, 8.9vw, 128px);
+    margin-inline:  calc(var(--fluid-pad) * -1);
+    padding-inline: var(--fluid-pad);
 }
 
 /* Figure fills the content area (1440 - 24 - 24 = 1392px ≈ 1396px in Figma) */
