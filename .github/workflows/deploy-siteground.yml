@@ -1,0 +1,38 @@
+name: Deploy theme to SiteGround
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SG_SSH_KEY }}
+
+      - name: Add SiteGround host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Ensure theme folder exists
+        run: |
+          ssh -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}" \
+          "mkdir -p ~/www/tu-dominio.com/public_html/wp-content/themes/tu-theme"
+
+      - name: Deploy theme files with rsync
+        run: |
+          rsync -avz --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude "node_modules/" \
+            -e "ssh -p ${{ secrets.SG_PORT }}" \
+            ./ "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}:~/www/montoyastudio.com/public_html/wp-content/themes/montoya-portfolio/"
