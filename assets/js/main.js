@@ -32,31 +32,29 @@
             const ty = (first.top  + first.height / 2) - (last.top  + last.height / 2);
 
             // Apply inverted transform instantly — no transition yet
-            headerLogo.style.willChange      = 'transform';
+            headerLogo.style.willChange     = 'transform, opacity';
             headerLogo.style.transformOrigin = 'center center';
-            headerLogo.style.transition      = 'none';
-            headerLogo.style.transform       = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + sx + ', ' + sy + ')';
-            headerLogo.style.opacity         = '1';
+            headerLogo.style.transition     = 'none';
+            headerLogo.style.transform      = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + sx + ', ' + sy + ')';
+            headerLogo.style.opacity        = '1';
 
             // Remove .is-loading so CSS no longer forces opacity:0 on the logo
             document.body.classList.remove('is-loading');
 
-            // Immediately fade out the loader logo — the header logo takes over
-            //loaderLogo.style.opacity = '0';
+            // Fade out the loader logo so it doesn't overlap during PLAY
+            loaderLogo.style.opacity = '0';
 
             // Force reflow — locks in the inverted transform before transition starts
             headerLogo.getBoundingClientRect(); // eslint-disable-line no-unused-expressions
 
-            // FLIP — Play: smooth expo-out to natural header position
-            headerLogo.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+            // FLIP — Play: transition to natural position
+            headerLogo.style.transition = 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
             headerLogo.style.transform  = 'none';
 
-            // Slide the loader panel up after the logo has settled (~500ms in)
-            setTimeout(function () {
-                loader.style.transform = 'translateY(-100%)';
-            }, 500);
+            // Fade out the loader overlay slightly after the logo begins moving
+            loader.style.opacity = '0';
 
-            // Clean up after the slide-up completes
+            // Clean up after fade
             loader.addEventListener('transitionend', function onEnd(e) {
                 if (e.target !== loader) return;
                 loader.remove();
