@@ -398,7 +398,7 @@ p {
    ========================================================================== */
 
 .hp-hero {
-    padding-top: 64px;
+    padding-top: 128px;
     display:     flex;
     flex-direction: column;
     gap:         24px;
