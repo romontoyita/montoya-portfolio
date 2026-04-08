@@ -20,7 +20,7 @@
     <div class="site-header__inner container">
 
         <a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-            <?php bloginfo( 'name' ); ?>
+            <?php bloginfo( 'name' ); ?> ®
         </a>
 
         <nav id="site-navigation" class="main-navigation" aria-label="<?php esc_attr_e( 'Primary', 'montoya-portfolio' ); ?>">
