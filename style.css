@@ -436,7 +436,6 @@ p {
 .hp-hero__disciplines {
     display:        flex;
     flex-direction: column;
-    gap:            10px;
 }
 
 .hp-hero__discipline {
