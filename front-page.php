@@ -51,27 +51,31 @@ $uri = get_template_directory_uri();
     ============================================= -->
     <section class="hp-intro" aria-label="<?php esc_attr_e( 'Studio philosophy', 'montoya-portfolio' ); ?>">
 
-        <div class="hp-intro__image-col" data-js="intro-image">
-            <figure class="hp-intro__figure">
-                <img
-                    src="<?php echo esc_url( $uri . '/assets/images/intro-portrait.jpg' ); ?>"
-                    alt=""
-                    class="hp-intro__image"
-                    width="684"
-                    height="808"
-                    loading="lazy"
-                >
-            </figure>
-        </div>
+        <div class="hp-intro__inner container">
 
-        <div class="hp-intro__content-col">
-            <blockquote class="hp-intro__quote" data-js="intro-quote">
-                Design is not styling. Identity is structure, meaning, and time.
-            </blockquote>
-            <div class="hp-intro__body" data-js="intro-body">
-                <p>We think of brands as cultural systems — composed through image, language, material and sound. Built not for impact, but for permanence.</p>
-                <p>Our work sits at the intersection of direction, design and technology, shaping experiences that feel intelligent, sensorial and coherent.</p>
+            <div class="hp-intro__image-col" data-js="intro-image">
+                <figure class="hp-intro__figure">
+                    <img
+                        src="<?php echo esc_url( $uri . '/assets/images/intro-portrait.jpg' ); ?>"
+                        alt=""
+                        class="hp-intro__image"
+                        width="684"
+                        height="808"
+                        loading="lazy"
+                    >
+                </figure>
             </div>
+
+            <div class="hp-intro__content-col">
+                <blockquote class="hp-intro__quote" data-js="intro-quote">
+                    Design is not styling. Identity is structure, meaning, and time.
+                </blockquote>
+                <p class="hp-intro__body" data-js="intro-body">
+                    We think of brands as cultural systems — composed through image, language, material and sound. Built not for impact, but for permanence.<br><br>
+                    Our work sits at the intersection of direction, design and technology, shaping experiences that feel intelligent, sensorial and coherent.
+                </p>
+            </div>
+
         </div>
 
     </section><!-- .hp-intro -->
@@ -284,10 +288,14 @@ $uri = get_template_directory_uri();
 
         <div class="hp-profile__inner container">
 
-            <h2 class="hp-profile__heading" data-js="profile-heading">
-                Montoya Studio works at the intersection of identity, editorial culture, and digital craft.
-            </h2>
+            <!-- Left: heading -->
+            <div class="hp-profile__left">
+                <h2 class="hp-profile__heading" data-js="profile-heading">
+                    Montoya Studio works at the intersection of identity, editorial culture, and digital craft.
+                </h2>
+            </div>
 
+            <!-- Right: portrait + bio -->
             <div class="hp-profile__right">
                 <figure class="hp-profile__portrait" data-js="profile-portrait">
                     <img
@@ -296,15 +304,15 @@ $uri = get_template_directory_uri();
                         loading="lazy"
                     >
                 </figure>
-
                 <div class="hp-profile__bio" data-js="profile-bio">
                     <p>Founded and directed by Rocío Montoya, our practice treats design as a cultural artifact — meant to be precise, quiet, and enduring.</p>
                     <p>We collaborate with architects, perfumers, chefs, artists, and independent luxury brands to build identities and environments that are coherent across product and digital touchpoints.</p>
-                    <p>Our work prioritises clarity of thought, material restraint, and a contemporary sense of elegance.</p>
+                    <p>Our work prioritizes clarity of thought, material restraint, and a contemporary sense of elegance.</p>
                 </div>
             </div>
 
-            <figure class="hp-profile__detail" data-js="profile-offset">
+            <!-- Detail portrait: overlapping, rotated (abs positioned via CSS) -->
+            <figure class="hp-profile__detail" data-js="profile-detail">
                 <img
                     src="<?php echo esc_url( $uri . '/assets/images/profile-detail.jpg' ); ?>"
                     alt=""
@@ -352,6 +360,7 @@ $uri = get_template_directory_uri();
 
             <div class="hp-cta__cols">
 
+                <!-- Image: left column -->
                 <figure class="hp-cta__image" data-js="cta-image">
                     <img
                         src="<?php echo esc_url( $uri . '/assets/images/cta-portrait.jpg' ); ?>"
@@ -360,13 +369,12 @@ $uri = get_template_directory_uri();
                     >
                 </figure>
 
+                <!-- Text: right column, space-between -->
                 <div class="hp-cta__content" data-js="cta-body">
                     <p>Our work involves cultural research and ongoing commissions with ateliers, independent brands, and exploratory ventures.</p>
                     <div class="hp-cta__contact">
                         <p>For new projects, collaborations or private commissions:</p>
-                        <a href="mailto:hello@montoyastudio.com" class="hp-cta__email">
-                            hello@montoyastudio.com
-                        </a>
+                        <a href="mailto:hello@montoyastudio.com" class="hp-cta__email">hello@montoyastudio.com</a>
                     </div>
                 </div>
 

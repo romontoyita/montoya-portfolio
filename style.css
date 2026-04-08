@@ -523,7 +523,7 @@ p {
 }
 
 /* Body — 24px Söhne, lh 36px, ls 0.48px */
-.hp-intro__body p {
+.hp-intro__body {
     font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
     font-weight:    400;
     color:          var(--color-primary-70);
@@ -562,21 +562,26 @@ p {
    § 3  SELECTED WORK — section wrapper + project entries
    ========================================================================== */
 
+/* § 3  SELECTED WORK
+   bg #EEE | py 256px | header→projects gap 128px | between projects 256px
+   ========================================================================== */
+
 .hp-work {
     background-color: #EEEEEE;
-    padding-block:    var(--space-3xl);
+    padding-block:    clamp(6rem, 17.8vw, 256px);
 }
 
+/* "SELECTED WORK" | "ALL COMMISSIONS" — 16px Söhne, ls 0.32px */
 .hp-work__header {
     display:         flex;
     justify-content: space-between;
     align-items:     center;
-    margin-bottom:   var(--space-3xl);
+    margin-bottom:   clamp(4rem, 8.9vw, 128px);
 }
 
 .hp-work__label {
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
@@ -585,123 +590,127 @@ p {
 .hp-work__all-link {
     display:        inline-flex;
     align-items:    center;
-    gap:            var(--space-2xs);
+    gap:            7px;
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
 }
 
 .hp-work__all-link-arrow {
-    display:    flex;
+    display:     flex;
     align-items: center;
-    transform:  rotate(135deg) scaleY(-1);
-    opacity:    0.3;
+    transform:   rotate(135deg) scaleY(-1);
+    opacity:     0.3;
 }
 
-.hp-work__all-link:hover {
-    opacity: 0.6;
-}
+.hp-work__all-link:hover { opacity: 0.6; }
 
-/* --- Project entry --- */
+/* --- Project entry — 256px between each --- */
 .hp-project {
-    margin-bottom: var(--space-3xl);
+    margin-bottom: clamp(6rem, 17.8vw, 256px);
 }
 
 .hp-project:last-child {
     margin-bottom: 0;
 }
 
-/* Header: title col (41%) | meta col (59%) */
+/* Header row: title 566fr | meta 802fr | gap 24px | then 64px to images */
 .hp-project__header {
     display:               grid;
-    grid-template-columns: 41fr 59fr;
-    gap:                   var(--space-lg);
+    grid-template-columns: 566fr 802fr;
+    gap:                   24px;
     align-items:           start;
-    margin-bottom:         var(--space-2xl);
+    margin-bottom:         64px;
 }
 
+/* Title — 48px IvyPresto, lh 1.2, ls 0.96px */
 .hp-project__title {
     font-family:    var(--font-display);
-    font-size:      var(--text-4xl);
+    font-size:      clamp(2rem, 3.33vw, 3rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
     hyphens:        manual;
 }
 
-/* Meta: taxonomy col (fixed) + details col */
+/* Meta col: taxonomy (212px) + details (flex) */
 .hp-project__meta {
     display: flex;
-    gap:     var(--space-lg);
+    gap:     24px;
 }
 
+/* Taxonomy col — 212px, gap 64px between industry & scope */
 .hp-project__taxonomy {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-2xl);
-    flex:           0 0 auto;
-    min-width:      10rem;
+    gap:            64px;
+    flex:           0 0 212px;
 }
 
+/* Each tax group (Industry/Scope): label + items, gap 24px */
 .hp-project__tax-group {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-md);
+    gap:            24px;
 }
 
+/* INDUSTRY / SCOPE / DESCRIPTION labels — 14px, rgba(0,0,0,0.30), ls 0.28px */
 .hp-project__tax-label {
     display:        block;
     font-family:    var(--font-body);
-    font-size:      var(--text-xs);
+    font-size:      0.875rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary-30);
 }
 
+/* Items (ARCHITECTURE / INTERIOR etc) — 16px, black, ls 0.32px */
 .hp-project__tax-items {
     display:        flex;
     flex-direction: column;
-    gap:            0;
 }
 
 .hp-project__tax-items li {
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
-    line-height:    1.6;
+    line-height:    1.8;
 }
 
+/* Details col — gap 32px between desc-wrap and link */
 .hp-project__details {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-lg);
+    gap:            32px;
 }
 
 .hp-project__desc-wrap {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-md);
+    gap:            24px;
 }
 
+/* Description — 18px Söhne, lh 27px (1.5), ls 0.36px, rgba(0,0,0,0.70), w 448px */
 .hp-project__description {
-    font-family: var(--font-body);
-    font-size:   var(--text-base);
-    color:       var(--color-primary-70);
-    max-width:   34ch;
-    line-height: 1.5;
+    font-family:    var(--font-body);
+    font-size:      1.125rem;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
     letter-spacing: 0.02em;
+    max-width:      448px;
 }
 
+/* FULL COMMISSION link — 16px Söhne, ls 0.32px */
 .hp-project__link {
     display:        inline-flex;
     align-items:    center;
-    gap:            var(--space-2xs);
+    gap:            7px;
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
@@ -714,41 +723,28 @@ p {
     opacity:     0.3;
 }
 
-.hp-project__link:hover {
-    opacity: 0.6;
-}
+.hp-project__link:hover { opacity: 0.6; }
 
-/* --- Project images --- */
+/* --- Project images
+   Standard (Casa, Mesa): 566fr left + 802fr right, both square, align-start
+   Reversed (Vela):       802fr left + 566fr right, both square, align-start
+   ------------------------------------------------------------------ */
 .hp-project__images {
-    display:     flex;
-    align-items: flex-start;
-    gap:         var(--space-sm);
+    display:     grid;
+    gap:         24px;
+    align-items: start;
 }
 
-/* Standard layout (Casa, Mesa): small-square left + large-square right */
-.hp-project__images--standard .hp-project__image--a {
-    flex:         0 0 41.3%;
-    aspect-ratio: 1 / 1;
-    overflow:     hidden;
+.hp-project__images--standard {
+    grid-template-columns: 566fr 802fr;
 }
 
-.hp-project__images--standard .hp-project__image--b {
-    flex:         0 0 58.7%;
-    aspect-ratio: 1 / 1;
-    overflow:     hidden;
+.hp-project__images--reversed {
+    grid-template-columns: 802fr 566fr;
 }
 
-/* Reversed layout (Vela): large-square left + small-square right */
-.hp-project__images--reversed .hp-project__image--a {
-    flex:         0 0 58.7%;
+.hp-project__image {
     aspect-ratio: 1 / 1;
-    overflow:     hidden;
-}
-
-.hp-project__images--reversed .hp-project__image--b {
-    flex:         0 0 41.3%;
-    aspect-ratio: 1 / 1;
-    align-self:   flex-start;
     overflow:     hidden;
 }
 
@@ -762,75 +758,73 @@ p {
 @media (max-width: 768px) {
     .hp-project__header {
         grid-template-columns: 1fr;
-        gap:                   var(--space-lg);
     }
 
     .hp-project__meta {
         flex-direction: column;
     }
 
-    .hp-project__images {
-        flex-direction: column;
+    .hp-project__taxonomy {
+        flex: none;
     }
 
-    .hp-project__images--standard .hp-project__image--a,
-    .hp-project__images--standard .hp-project__image--b,
-    .hp-project__images--reversed .hp-project__image--a,
-    .hp-project__images--reversed .hp-project__image--b {
-        flex: 1 1 auto;
-        width: 100%;
+    .hp-project__images--standard,
+    .hp-project__images--reversed {
+        grid-template-columns: 1fr;
     }
 }
 
 
 /* ==========================================================================
    § 4  PROFILE
-   heading left | portrait right | bio below portrait | offset tall portrait
+   Heading 685px left | portrait 353×509 + bio 568px right | detail 482×695 abs
+   pt 256px | pb 128px
    ========================================================================== */
 
 .hp-profile {
-    padding-top:    var(--space-3xl);
-    padding-bottom: var(--space-2xl);
+    padding-top:    clamp(6rem, 17.8vw, 256px);
+    padding-bottom: clamp(3rem, 8.9vw, 128px);
+    overflow:       hidden;
 }
 
-/* Grid: heading left (~49%) | right col (~51%) */
+/* Relative container — heading left ~49%, right side starts at ~59.3% */
 .hp-profile__inner {
-    display:               grid;
-    grid-template-columns: 49fr 51fr;
-    grid-template-rows:    auto auto;
-    gap:                   var(--space-2xl);
-    position:              relative;
-    padding-inline:        var(--container-padding);
-    max-width:             var(--container-max);
-    margin-inline:         auto;
+    position: relative;
+    display:  flex;
+    align-items: flex-start;
 }
 
+/* Left — heading, 49.1% of container width */
+.hp-profile__left {
+    flex:     0 0 49.1%;
+    position: relative;
+    z-index:  1;
+}
+
+/* Heading — 48px IvyPresto, lh 57.6px, ls 0.96px, max-width 685px */
 .hp-profile__heading {
-    grid-column:    1;
-    grid-row:       1;
     font-family:    var(--font-display);
-    font-size:      var(--text-3xl);
+    font-size:      clamp(2rem, 3.33vw, 3rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
-    max-width:      20ch;
-    align-self:     start;
+    max-width:      685px;
 }
 
-/* Right column: portrait + bio stacked */
+/* Right — portrait + bio, starts 10.2% inside the right half (142px gap) */
 .hp-profile__right {
-    grid-column:    2;
-    grid-row:       1 / 3;
+    flex:           1;
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-2xl);
+    gap:            64px;
+    padding-left:   clamp(2rem, 9.9vw, 142px);
 }
 
+/* Portrait — 353×509px → aspect ratio 353/509 ≈ 0.693 */
 .hp-profile__portrait {
-    width:        70%;
-    aspect-ratio: 2 / 3;
+    width:        clamp(200px, 24.5%, 353px);
+    aspect-ratio: 353 / 509;
     overflow:     hidden;
-    align-self:   flex-start;
 }
 
 .hp-profile__portrait img {
@@ -839,30 +833,34 @@ p {
     object-fit: cover;
 }
 
+/* Bio — 24px Söhne, lh 36px, ls 0.48px, rgba(0,0,0,0.70), max 568px */
 .hp-profile__bio {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-md);
+    gap:            0;
+    max-width:      568px;
 }
 
 .hp-profile__bio p {
-    font-family:  var(--font-body);
-    font-size:    var(--text-lg);
-    color:        var(--color-primary-70);
-    line-height:  1.5;
+    font-family:    var(--font-body);
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
+    color:          var(--color-primary-70);
+    line-height:    1.5;
     letter-spacing: 0.02em;
-    max-width:    34ch;
 }
 
-/* Offset tall portrait — bottom-left, overlapping */
+/* Detail portrait — 482×695px, abs positioned at left 14.6%, top ~18vw,
+   rotated 180deg (shown inverted, matching Figma transform) */
 .hp-profile__detail {
-    grid-column:  1;
-    grid-row:     2;
-    width:        75%;
-    aspect-ratio: 2 / 3;
-    overflow:     hidden;
-    margin-top:   calc(var(--space-2xl) * -1);
-    align-self:   end;
+    position:         absolute;
+    left:             14.6%;
+    top:              clamp(120px, 17.7vw, 255px);
+    width:            clamp(200px, 33.5%, 482px);
+    aspect-ratio:     482 / 695;
+    overflow:         hidden;
+    transform:        rotate(180deg);
+    transform-origin: top left;
+    z-index:          0;
 }
 
 .hp-profile__detail img {
@@ -873,43 +871,47 @@ p {
 
 @media (max-width: 768px) {
     .hp-profile__inner {
-        grid-template-columns: 1fr;
-        grid-template-rows:    auto;
+        flex-direction: column;
+        gap:            var(--space-2xl);
     }
 
-    .hp-profile__right {
-        grid-column: 1;
-        grid-row:    2;
-    }
-
-    .hp-profile__portrait {
+    .hp-profile__left {
+        flex: none;
         width: 100%;
     }
 
+    .hp-profile__right {
+        padding-left: 0;
+        gap:          var(--space-xl);
+    }
+
+    .hp-profile__portrait {
+        width: 60%;
+    }
+
     .hp-profile__detail {
-        grid-row:   3;
-        margin-top: 0;
-        width:      60%;
+        position: static;
+        transform: none;
+        width:     50%;
+        margin-top: var(--space-xl);
+        margin-left: auto;
     }
 }
 
 
 /* ==========================================================================
    § 5  FULL-BLEED LANDSCAPE IMAGE
+   py 128px | 1396×830px | mirrored (rotate 180deg in Figma = scaleX(-1))
    ========================================================================== */
 
 .hp-landscape {
-    padding-block: var(--space-2xl);
-}
-
-.hp-landscape__inner {
-    /* let image be full container width */
+    padding-block: clamp(4rem, 8.9vw, 128px);
 }
 
 .hp-landscape__image {
-    width:        100%;
-    overflow:     hidden;
-    aspect-ratio: 16 / 9;
+    width:    100%;
+    height:   clamp(300px, 57.6vw, 830px);
+    overflow: hidden;
 }
 
 .hp-landscape__image img {
@@ -917,59 +919,67 @@ p {
     height:     100%;
     object-fit: cover;
     display:    block;
+    transform:  scaleX(-1); /* Figma: rotate(180deg) + scaleY flip = horizontal mirror */
 }
 
 @media (max-width: 768px) {
     .hp-landscape__image {
-        aspect-ratio: 4 / 3;
+        height: 60vw;
+        min-height: 260px;
     }
 }
 
 
 /* ==========================================================================
    § 6  CONTACT CTA
-   label → heading → two cols: image left | contact text right
+   pt 128px | pb 205px | label → heading → 2 cols (image left | text right)
+   gap 128px between all three rows
    ========================================================================== */
 
 .hp-cta {
-    padding-top:    var(--space-2xl);
-    padding-bottom: var(--space-3xl);
+    padding-top:    clamp(4rem, 8.9vw, 128px);
+    padding-bottom: clamp(4rem, 14.2vw, 205px);
 }
 
+/* Vertical stack: label | heading | two-col, gap 128px */
 .hp-cta__inner {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-3xl);
+    gap:            clamp(4rem, 8.9vw, 128px);
 }
 
+/* PRACTICE & COMMISSIONS — 16px Söhne, ls 0.32px */
 .hp-cta__label {
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
 }
 
+/* Heading — 48px IvyPresto, lh 1.2, ls 0.96px, max-width 687px */
 .hp-cta__heading {
     font-family:    var(--font-display);
-    font-size:      var(--text-4xl);
+    font-size:      clamp(2rem, 3.33vw, 3rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
-    max-width:      22ch;
+    max-width:      687px;
 }
 
-/* Two-column: image left (~25%) | content right */
+/* Two equal columns, gap 260px | image left | text right */
 .hp-cta__cols {
     display:               grid;
-    grid-template-columns: 25fr 75fr;
-    gap:                   var(--space-2xl);
+    grid-template-columns: 1fr 1fr;
+    gap:                   clamp(2rem, 18.1vw, 260px);
     align-items:           start;
 }
 
+/* Image — 353×361px ≈ aspect-ratio 353/361 */
 .hp-cta__image {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 353 / 361;
     overflow:     hidden;
+    max-width:    353px;
 }
 
 .hp-cta__image img {
@@ -979,57 +989,66 @@ p {
     display:    block;
 }
 
+/* Text col — height 361px, justify-content space-between */
 .hp-cta__content {
-    display:        flex;
-    flex-direction: column;
+    display:         flex;
+    flex-direction:  column;
     justify-content: space-between;
-    gap:            var(--space-2xl);
-    align-self:     stretch;
+    min-height:      clamp(200px, 25.1vw, 361px);
+    max-width:       333px;
 }
 
+/* Body text — 18px Söhne, lh 27px (1.5), ls 0.36px, rgba(0,0,0,0.70) */
 .hp-cta__content > p {
-    font-family:  var(--font-body);
-    font-size:    var(--text-lg);
-    color:        var(--color-primary-70);
-    line-height:  1.5;
+    font-family:    var(--font-body);
+    font-size:      1.125rem;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
     letter-spacing: 0.02em;
-    max-width:    34ch;
 }
 
 .hp-cta__contact {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-xs);
+    gap:            0;
 }
 
+/* "For new projects..." — 18px rgba(0,0,0,0.70) */
 .hp-cta__contact p {
-    font-family:  var(--font-body);
-    font-size:    var(--text-lg);
-    color:        var(--color-primary-70);
-    line-height:  1.5;
+    font-family:    var(--font-body);
+    font-size:      1.125rem;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
     letter-spacing: 0.02em;
 }
 
+/* hello@montoyastudio.com — 18px, weight 600, uppercase, rgba(0,0,0,0.70) */
 .hp-cta__email {
     display:        block;
     font-family:    var(--font-body);
-    font-size:      var(--text-lg);
+    font-size:      1.125rem;
     font-weight:    600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color:          var(--color-primary);
+    color:          var(--color-primary-70);
+    line-height:    1.5;
 }
 
-.hp-cta__email:hover {
-    opacity: 0.6;
-}
+.hp-cta__email:hover { opacity: 0.6; }
 
 @media (max-width: 768px) {
     .hp-cta__cols {
         grid-template-columns: 1fr;
+        gap:                   var(--space-2xl);
     }
 
     .hp-cta__image {
-        max-width: 50%;
+        max-width: 60%;
+    }
+
+    .hp-cta__content {
+        min-height: unset;
+        max-width:  100%;
+        gap:        var(--space-xl);
     }
 }
