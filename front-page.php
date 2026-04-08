@@ -24,7 +24,8 @@ $uri = get_template_directory_uri();
                 <div class="hp-hero__left">
                     <span class="hp-hero__label">(A Studio)</span>
                     <div class="hp-hero__disciplines">
-                        <span class="hp-hero__discipline">Creative Direction,<br>Art Direction</span>
+                        <span class="hp-hero__discipline">Creative Direction</span>
+                        <span class="hp-hero__discipline">Art Direction</span>
                         <span class="hp-hero__discipline">Design</span>
                         <span class="hp-hero__discipline">Development</span>
                     </div>
