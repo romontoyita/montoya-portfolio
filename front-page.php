@@ -19,8 +19,8 @@ $uri = get_template_directory_uri();
 
         <div class="hp-hero__inner container">
             <h1 class="hp-hero__heading">
-                A studio for brands with quiet ambition.<br>
-                We design with precision,<br>
+                A studio for brands with quiet ambition.
+                We design with precision,
                 sensibility and cultural permanence.
             </h1>
             <div class="hp-hero__disciplines">
