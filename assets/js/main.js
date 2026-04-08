@@ -4,67 +4,69 @@
 // PAGE LOADER — Hero Logo FLIP Transition
 // =============================================================================
 (function () {
-    const loader     = document.querySelector('.page-loader');
+    const loader = document.querySelector('.page-loader');
     const loaderLogo = loader && loader.querySelector('.page-loader__logo');
     const headerLogo = document.querySelector('.site-header__logo');
 
     if (!loader || !loaderLogo || !headerLogo) return;
 
-    const MIN_MS  = 1500; // minimum brand-presence duration
+    const MIN_MS = 1500;
     const startTs = Date.now();
 
-    // Hide header logo immediately so the FLIP starts clean
-    document.body.classList.add('is-loading');
+    // Aseguramos que el header logo esté oculto inicialmente pero ocupe espacio
+    headerLogo.style.opacity = '0';
 
     function runFlip() {
-        const elapsed   = Date.now() - startTs;
+        const elapsed = Date.now() - startTs;
         const remaining = Math.max(0, MIN_MS - elapsed);
 
         setTimeout(function () {
-            // FLIP — First: loader logo bounds
+            // 1. FIRST: Posición inicial (Loader)
             const first = loaderLogo.getBoundingClientRect();
-            // FLIP — Last: header logo bounds (invisible but still laid out)
-            const last  = headerLogo.getBoundingClientRect();
+            
+            // 2. LAST: Posición final (Header)
+            // Quitamos temporalmente cualquier restricción para medir bien
+            headerLogo.style.display = 'inline-block'; 
+            const last = headerLogo.getBoundingClientRect();
 
-            const sx = first.width  / last.width;
-            const sy = first.height / last.height;
-            const tx = (first.left + first.width  / 2) - (last.left + last.width  / 2);
-            const ty = (first.top  + first.height / 2) - (last.top  + last.height / 2);
+            // 3. INVERT: Calculamos la diferencia
+            const dx = first.left - last.left;
+            const dy = first.top - last.top;
+            const dw = first.width / last.width;
+            const dh = first.height / last.height;
 
-            // Apply inverted transform instantly — no transition yet
-            headerLogo.style.willChange      = 'transform';
-            headerLogo.style.transformOrigin = 'center center';
-            headerLogo.style.transition      = 'none';
-            headerLogo.style.transform       = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + sx + ', ' + sy + ')';
-            headerLogo.style.opacity         = '1';
+            // Aplicamos la transformación inversa al logo del HEADER
+            // para que se mueva exactamente sobre el logo del LOADER
+            headerLogo.style.transition = 'none';
+            headerLogo.style.transformOrigin = '0 0'; // Importante para que el scale coincida
+            headerLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${dw}, ${dh})`;
+            headerLogo.style.opacity = '1';
 
-            // Remove .is-loading so CSS no longer forces opacity:0 on the logo
-            document.body.classList.remove('is-loading');
-
-            // Immediately fade out the loader logo — the header logo takes over
+            // Ocultamos el logo del loader (el del header ya lo está cubriendo)
             loaderLogo.style.opacity = '0';
+            loaderLogo.style.transition = 'opacity 0.2s ease';
 
-            // Force reflow — locks in the inverted transform before transition starts
-            headerLogo.getBoundingClientRect(); // eslint-disable-line no-unused-expressions
-
-            // FLIP — Play: smooth expo-out to natural header position
-            headerLogo.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-            headerLogo.style.transform  = 'none';
-
-            // Slide the loader panel up after the logo has settled (~500ms in)
-            setTimeout(function () {
-                loader.style.transform = 'translateY(-100%)';
-            }, 500);
-
-            // Clean up after the slide-up completes
-            loader.addEventListener('transitionend', function onEnd(e) {
-                if (e.target !== loader) return;
-                loader.remove();
-                headerLogo.style.willChange      = '';
-                headerLogo.style.transformOrigin = '';
-                headerLogo.style.transition      = '';
-                loader.removeEventListener('transitionend', onEnd);
+            // 4. PLAY: Animamos hacia el estado natural (transform: none)
+            requestAnimationFrame(() => {
+                // Forzamos el reflow
+                headerLogo.getBoundingClientRect();
+                
+                headerLogo.style.transition = 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease';
+                headerLogo.style.transform = 'none';
+                
+                // Quitamos el loader de fondo poco después
+                setTimeout(() => {
+                    loader.classList.add('is-hidden');
+                }, 600);
             });
+
+            // Limpieza
+            setTimeout(() => {
+                if (loader.parentNode) loader.remove();
+                headerLogo.style.transition = '';
+                headerLogo.style.transformOrigin = '';
+                document.body.classList.remove('is-loading');
+            }, 2000);
 
         }, remaining);
     }
