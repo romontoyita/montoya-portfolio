@@ -411,14 +411,15 @@ p {
     gap:            128px;
 }
 
-/* Heading — 48px IvyPresto, ~66% width */
+/* Heading — editorial, full-width, imposing */
 .hp-hero__heading {
     font-family:    var(--font-display);
-    font-size:      clamp(2rem, 3.33vw, 3rem);   /* 48px at 1440px */
+    font-size:      clamp(3.5rem, 7.5vw, 7rem);
     font-weight:    300;
-    line-height:    1.2;
-    letter-spacing: 0.02em;
-    max-width:      20ch;
+    line-height:    1.05;
+    letter-spacing: -0.02em;
+    max-width:      22ch;
+    width:          100%;
 }
 
 /* Disciplines bar — 20px Söhne, capitalize, space-between */
