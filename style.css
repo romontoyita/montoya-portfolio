@@ -236,7 +236,7 @@ p {
     align-items:    center;
     flex-shrink:    0;
     font-family:    var(--font-display);
-    font-size:      1.25rem;
+    font-size:      3rem;
     font-weight:    300;
     letter-spacing: 0.02em;
     text-transform: uppercase;
