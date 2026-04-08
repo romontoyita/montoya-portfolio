@@ -32,7 +32,8 @@ $uri = get_template_directory_uri();
                 </div>
 
                 <h1 class="hp-hero__heading">
-                    For brands with quiet ambition. We design with precision, sensibility and cultural permanence.
+                    For brands with quiet ambition. <br>
+                    We design with precision, sensibility and cultural permanence.
                 </h1>
 
             </div>
