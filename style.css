@@ -469,19 +469,32 @@ p {
    asymmetric two-column: image 49% | content 51%
    ========================================================================== */
 
+/* § 2  INTRO
+   Image 684px left | gap 142px | text 472px right
+   py: 256px
+   ========================================================================== */
+
 .hp-intro {
-    display:               grid;
-    grid-template-columns: 49fr 51fr;
-    min-height:            70vh;
-    padding-block:         var(--space-3xl);
+    padding-block:   clamp(6rem, 17.8vw, 256px);
+    overflow:        hidden;
 }
 
+/* Relative container matching Figma's 1392px × 808px inner */
+.hp-intro__inner {
+    position: relative;
+    display:  flex;
+    align-items: flex-start;
+    gap:      clamp(2rem, 9.9vw, 142px); /* 142px at 1440px */
+}
+
+/* Image column — 684/1392 ≈ 49.1% */
 .hp-intro__image-col {
+    flex:     0 0 clamp(200px, 49.1%, 684px);
     overflow: hidden;
 }
 
 .hp-intro__figure {
-    height: 100%;
+    height: clamp(400px, 56.1vw, 808px); /* 808px at 1440px */
 }
 
 .hp-intro__image {
@@ -490,53 +503,57 @@ p {
     object-fit: cover;
 }
 
+/* Text column — 472px, starts at ~826px from left */
 .hp-intro__content-col {
-    display:         flex;
-    flex-direction:  column;
-    justify-content: space-between;
-    padding-left:    var(--space-2xl);
-    padding-top:     var(--space-sm);
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px); /* 64px gap at 1440px */
+    max-width:      472px;
 }
 
+/* Quote — 44px IvyPresto, lh 55px, ls 0.88px */
 .hp-intro__quote {
     font-family:    var(--font-display);
-    font-size:      var(--text-3xl);
+    font-size:      clamp(1.5rem, 3.06vw, 2.75rem); /* 44px at 1440px */
     font-weight:    300;
     font-style:     normal;
     line-height:    1.25;
     letter-spacing: 0.02em;
-    max-width:      18ch;
+    color:          var(--color-primary);
 }
 
-.hp-intro__body {
-    display:        flex;
-    flex-direction: column;
-    gap:            var(--space-lg);
-    max-width:      34ch;
-}
-
+/* Body — 24px Söhne, lh 36px, ls 0.48px */
 .hp-intro__body p {
-    font-size:   var(--text-lg);
-    color:       var(--color-primary-70);
-    line-height: 1.5;
+    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
+    font-weight:    400;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
     letter-spacing: 0.02em;
 }
 
 @media (max-width: 768px) {
     .hp-intro {
-        grid-template-columns: 1fr;
-        min-height:            unset;
-        padding-block:         var(--space-2xl);
+        padding-block: var(--space-2xl);
+    }
+
+    .hp-intro__inner {
+        flex-direction: column;
+        gap:            var(--space-xl);
     }
 
     .hp-intro__image-col {
-        aspect-ratio: 3 / 4;
+        flex:  none;
+        width: 100%;
+    }
+
+    .hp-intro__figure {
+        height: 70vw;
+        min-height: 280px;
     }
 
     .hp-intro__content-col {
-        padding-left: 0;
-        padding-top:  var(--space-xl);
-        gap:          var(--space-xl);
+        max-width: 100%;
+        gap:       var(--space-xl);
     }
 }
 
