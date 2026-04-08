@@ -311,6 +311,40 @@ p {
 }
 
 /* ==========================================================================
+   PAGE LOADER  (Hero Logo Transition)
+   ========================================================================== */
+
+.page-loader {
+    position:         fixed;
+    inset:            0;
+    z-index:          1000;
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    background-color: var(--color-base);
+    pointer-events:   none;
+    transition:       opacity 0.7s ease;
+}
+
+.page-loader__logo {
+    font-family:    var(--font-display);
+    font-size:      clamp(4rem, 10vw, 12rem);
+    font-weight:    300;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color:          var(--color-primary);
+    line-height:    1;
+    white-space:    nowrap;
+    will-change:    opacity;
+    transition:     opacity 0.2s ease;
+}
+
+/* Header logo starts invisible — JS FLIP animates it in */
+.is-loading .site-header__logo {
+    opacity: 0;
+}
+
+/* ==========================================================================
    SITE FOOTER  (BEM: .site-footer)
    ========================================================================== */
 

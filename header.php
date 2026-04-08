@@ -8,6 +8,12 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php if ( is_front_page() ) : ?>
+<div class="page-loader" aria-hidden="true">
+    <span class="page-loader__logo"><?php bloginfo( 'name' ); ?></span>
+</div>
+<?php endif; ?>
+
 <a class="skip-link" href="#main"><?php esc_html_e( 'Skip to content', 'montoya-portfolio' ); ?></a>
 
 <header id="masthead" class="site-header" role="banner">
