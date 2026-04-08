@@ -48,7 +48,7 @@
             headerLogo.getBoundingClientRect(); // eslint-disable-line no-unused-expressions
 
             // FLIP — Play: transition to natural position
-            headerLogo.style.transition = 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+            headerLogo.style.transition = 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
             headerLogo.style.transform  = 'none';
 
             // Fade out the loader overlay slightly after the logo begins moving
