@@ -404,22 +404,38 @@ p {
     gap:         24px;
 }
 
-/* Inner — heading above, disciplines below, 128px between */
+/* Inner — top row + disciplines, 128px between */
 .hp-hero__inner {
     display:        flex;
     flex-direction: column;
     gap:            128px;
 }
 
-/* Heading — editorial, full-width, imposing */
+/* Top row — label left, heading right */
+.hp-hero__top {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+}
+
+.hp-hero__label {
+    font-family:    var(--font-body);
+    font-size:      1rem;
+    font-weight:    400;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+    padding-top:    0.25em;
+    flex-shrink:    0;
+}
+
+/* Heading — right column, ~56% width, editorial */
 .hp-hero__heading {
     font-family:    var(--font-display);
-    font-size:      clamp(3.5rem, 7.5vw, 7rem);
+    font-size:      clamp(2.75rem, 5vw, 4.5rem);
     font-weight:    300;
-    line-height:    1.05;
-    letter-spacing: -0.02em;
-    max-width:      22ch;
-    width:          100%;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    width:          56%;
 }
 
 /* Disciplines bar — 20px Söhne, capitalize, space-between */
@@ -434,7 +450,7 @@ p {
     font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
     font-weight:    400;
     letter-spacing: 0.02em;
-    text-transform: capitalize;
+    text-transform: uppercase;
     color:          var(--color-primary);
 }
 
@@ -460,6 +476,15 @@ p {
 
     .hp-hero__inner {
         gap: 48px;
+    }
+
+    .hp-hero__top {
+        flex-direction: column;
+        gap:            24px;
+    }
+
+    .hp-hero__heading {
+        width: 100%;
     }
 
     .hp-hero__disciplines {

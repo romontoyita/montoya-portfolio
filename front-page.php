@@ -18,16 +18,20 @@ $uri = get_template_directory_uri();
     <section class="hp-hero" aria-label="<?php esc_attr_e( 'Studio introduction', 'montoya-portfolio' ); ?>">
 
         <div class="hp-hero__inner container">
-            <h1 class="hp-hero__heading">
-                A studio for brands with quiet ambition.
-                We design with precision,
-                sensibility and cultural permanence.
-            </h1>
+
+            <div class="hp-hero__top">
+                <span class="hp-hero__label">(A Studio)</span>
+                <h1 class="hp-hero__heading">
+                    For brands with quiet ambition. We design with precision, sensibility and cultural permanence.
+                </h1>
+            </div>
+
             <div class="hp-hero__disciplines">
                 <span class="hp-hero__discipline">Creative Direction, Art Direction</span>
                 <span class="hp-hero__discipline">Design</span>
                 <span class="hp-hero__discipline">Development</span>
             </div>
+
         </div>
 
         <div class="hp-hero__media" data-js="hero-image">
