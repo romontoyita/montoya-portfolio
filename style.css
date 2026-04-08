@@ -222,6 +222,11 @@ p {
     margin-inline:    calc(var(--fluid-pad) * -1);
     padding-block:    24px;
     padding-inline:   var(--fluid-pad);
+    transition:       padding-block 0.3s ease;
+}
+
+.site-header.is-scrolled {
+    padding-block: 40px;
 }
 
 .site-header__inner {
