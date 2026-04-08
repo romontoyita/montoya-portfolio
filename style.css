@@ -912,26 +912,20 @@ p {
     overflow: hidden;
 }
 
-/* rotate(180deg) + transform-origin: top left → image appears mirrored above origin.
-   Figma source: scaleY(-1) rotate(180deg) = scaleX(-1). Apply to the img. */
+/* Figma applies scaleY(-1) rotate(180deg) to the wrapper = scaleX(-1) (horizontal mirror).
+   We apply it to the img directly — does not move it outside the container. */
 .hp-landscape__image img {
     width:      100%;
     height:     100%;
     object-fit: cover;
     display:    block;
-    transform:  rotate(180deg);
-    transform-origin: top left;
+    transform:  scaleX(-1);
 }
 
 @media (max-width: 768px) {
     .hp-landscape__image {
         height:     55vw;
         min-height: 240px;
-    }
-
-    .hp-landscape__image img {
-        transform:        none; /* avoid off-screen rendering on small viewports */
-        transform-origin: initial;
     }
 }
 
