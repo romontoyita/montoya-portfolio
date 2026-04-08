@@ -389,69 +389,77 @@ p {
    ========================================================================== */
 
 .hp-hero {
-    padding-top: var(--space-2xl);
+    padding-top: 64px;
+    display:     flex;
+    flex-direction: column;
+    gap:         24px;
 }
 
+/* Inner — heading above, disciplines below, 128px between */
 .hp-hero__inner {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-3xl);
-    margin-bottom:  var(--space-2xl);
+    gap:            128px;
 }
 
-/* Disciplines bar — three labels spanning full width */
+/* Heading — 48px IvyPresto, ~66% width */
+.hp-hero__heading {
+    font-family:    var(--font-display);
+    font-size:      clamp(2rem, 3.33vw, 3rem);   /* 48px at 1440px */
+    font-weight:    300;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    max-width:      20ch;
+}
+
+/* Disciplines bar — 20px Söhne, capitalize, space-between */
 .hp-hero__disciplines {
     display:         flex;
     justify-content: space-between;
-    align-items:     center;
+    align-items:     flex-start;
 }
 
 .hp-hero__discipline {
     font-family:    var(--font-body);
-    font-size:      var(--text-base);
+    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
+    font-weight:    400;
     letter-spacing: 0.02em;
     text-transform: capitalize;
     color:          var(--color-primary);
 }
 
-/* Main heading — left-aligned, spans ~66% at desktop */
-.hp-hero__heading {
-    font-family:    var(--font-display);
-    font-size:      var(--text-4xl);
-    font-weight:    300;
-    line-height:    1.2;
-    letter-spacing: 0.02em;
-    max-width:      20ch;
-    white-space:    pre-line;
-}
-
-/* Full-bleed hero image — tall, parallax-ready */
+/* Hero image — full width, fixed 830px height on desktop */
 .hp-hero__media {
-    width:        100%;
-    overflow:     hidden;
-    aspect-ratio: 16 / 9;
+    width:    100%;
+    height:   clamp(400px, 57.6vw, 830px); /* 830px at 1440px */
+    overflow: hidden;
 }
 
 .hp-hero__image {
     width:      100%;
     height:     100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center center;
 }
 
 @media (max-width: 768px) {
+    .hp-hero {
+        padding-top: 40px;
+        gap:         24px;
+    }
+
+    .hp-hero__inner {
+        gap: 48px;
+    }
+
     .hp-hero__disciplines {
         flex-direction: column;
-        align-items:    flex-start;
         gap:            var(--space-xs);
     }
 
-    .hp-hero__heading {
-        white-space: normal;
-    }
-
     .hp-hero__media {
-        aspect-ratio: 4 / 5;
+        height: 60vw;
+        min-height: 280px;
     }
 }
 
