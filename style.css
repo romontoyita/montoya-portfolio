@@ -777,52 +777,54 @@ p {
 
 /* ==========================================================================
    § 4  PROFILE
-   Heading 685px left | portrait 353×509 + bio 568px right | detail 482×695 abs
+   All items in a 2-col grid | detail portrait absolutely positioned
    pt 256px | pb 128px
+
+   Figma positions at 1392px content:
+     heading:  left=0,     top=0,      w=685px  (49.1%)
+     portrait: left=827.5, top=0,      w=353px, h=509px
+     bio:      left=827.5, top=573px,  w=568px
+     detail:   left=203.5, top=255px,  w=482px, h=695px, scaleX(-1)
    ========================================================================== */
 
 .hp-profile {
     padding-top:    clamp(6rem, 17.8vw, 256px);
     padding-bottom: clamp(3rem, 8.9vw, 128px);
-    overflow:       hidden;
 }
 
-/* Relative container — heading left ~49%, right side starts at ~59.3% */
+/* 2-col grid: 49.1fr | 40.6fr with 10.3% column-gap
+   Left col ≈ 685px | gap ≈ 143px | right col ≈ 565px at 1392px */
 .hp-profile__inner {
-    position: relative;
-    display:  flex;
-    align-items: flex-start;
+    display:               grid;
+    grid-template-columns: 49.1fr 40.6fr;
+    column-gap:            10.3%;
+    align-items:           start;
+    position:              relative;
 }
 
-/* Left — heading, 49.1% of container width */
-.hp-profile__left {
-    flex:     0 0 49.1%;
-    position: relative;
-    z-index:  1;
-}
-
-/* Heading — 48px IvyPresto, lh 57.6px, ls 0.96px, max-width 685px */
+/* Heading — 48px IvyPresto, lh 1.2, ls 0.96px | col 1 */
 .hp-profile__heading {
+    grid-column:    1;
     font-family:    var(--font-display);
     font-size:      clamp(2rem, 3.33vw, 3rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
     max-width:      685px;
+    align-self:     start;
 }
 
-/* Right — portrait + bio, starts 10.2% inside the right half (142px gap) */
+/* Right col: portrait + bio stacked, 64px gap | col 2 */
 .hp-profile__right {
-    flex:           1;
+    grid-column:    2;
     display:        flex;
     flex-direction: column;
     gap:            64px;
-    padding-left:   clamp(2rem, 9.9vw, 142px);
 }
 
-/* Portrait — 353×509px → aspect ratio 353/509 ≈ 0.693 */
+/* Portrait — 353×509px aspect ratio */
 .hp-profile__portrait {
-    width:        clamp(200px, 24.5%, 353px);
+    width:        min(353px, 100%);
     aspect-ratio: 353 / 509;
     overflow:     hidden;
 }
@@ -833,11 +835,11 @@ p {
     object-fit: cover;
 }
 
-/* Bio — 24px Söhne, lh 36px, ls 0.48px, rgba(0,0,0,0.70), max 568px */
+/* Bio — 24px Söhne, lh 1.5, ls 0.48px, rgba(0,0,0,0.70), w 568px */
 .hp-profile__bio {
     display:        flex;
     flex-direction: column;
-    gap:            0;
+    gap:            1.5em; /* paragraph spacing */
     max-width:      568px;
 }
 
@@ -849,18 +851,16 @@ p {
     letter-spacing: 0.02em;
 }
 
-/* Detail portrait — 482×695px, abs positioned at left 14.6%, top ~18vw,
-   rotated 180deg (shown inverted, matching Figma transform) */
+/* Detail portrait — 482×695px, abs at left=14.6%, top=255px, mirrored
+   Figma uses scaleY(-1) rotate(180deg) = scaleX(-1) (horizontal flip) */
 .hp-profile__detail {
-    position:         absolute;
-    left:             14.6%;
-    top:              clamp(120px, 17.7vw, 255px);
-    width:            clamp(200px, 33.5%, 482px);
-    aspect-ratio:     482 / 695;
-    overflow:         hidden;
-    transform:        rotate(180deg);
-    transform-origin: top left;
-    z-index:          0;
+    position:     absolute;
+    left:         14.6%;          /* 203.5/1392 */
+    top:          clamp(100px, 17.7vw, 255px); /* 255/1440 = 17.7vw */
+    width:        34.6%;          /* 482/1392 */
+    aspect-ratio: 482 / 695;
+    overflow:     hidden;
+    transform:    scaleX(-1);
 }
 
 .hp-profile__detail img {
@@ -871,30 +871,27 @@ p {
 
 @media (max-width: 768px) {
     .hp-profile__inner {
-        flex-direction: column;
-        gap:            var(--space-2xl);
-    }
-
-    .hp-profile__left {
-        flex: none;
-        width: 100%;
+        grid-template-columns: 1fr;
+        column-gap:            0;
+        row-gap:               var(--space-2xl);
     }
 
     .hp-profile__right {
-        padding-left: 0;
-        gap:          var(--space-xl);
+        grid-column: 1;
+        gap:         var(--space-xl);
     }
 
     .hp-profile__portrait {
-        width: 60%;
+        width: 65%;
     }
 
+    /* On mobile, pull detail out of abs flow */
     .hp-profile__detail {
-        position: static;
-        transform: none;
-        width:     50%;
-        margin-top: var(--space-xl);
-        margin-left: auto;
+        position:     static;
+        transform:    none;
+        width:        55%;
+        margin-left:  auto;
+        margin-top:   var(--space-xl);
     }
 }
 
