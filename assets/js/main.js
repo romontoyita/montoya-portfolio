@@ -324,27 +324,26 @@
             scrub:      true,
 
             onEnter() {
-                captureAbs2(); // Recapturar por si el layout se movió
+                // Forzamos el estado inicial antes de mostrar
                 placeProxy2(0);
                 
+                // IMPORTANTE: Asegúrate de que el src sea el correcto (la del detail)
+                pImg.src = detailImg.src; 
+                
                 proxy.style.opacity = '1';
-                // Usamos visibility además de opacity para evitar saltos de renderizado
-                gsap.set([detailImg, landscapeImg], { opacity: 0, visibility: 'hidden' });
-            },
-
-            onLeave() {
-                placeProxy2(1);
-                
-                // El swap debe ser instantáneo
-                gsap.set(proxy, { opacity: 0, visibility: 'hidden' });
-                gsap.set(landscapeImg, { opacity: 1, visibility: 'visible' });
-                
-                // Forzamos a ScrollTrigger a refrescar el parallax de la imagen de destino
-                ScrollTrigger.refresh();
+                detailImg.style.opacity = '0';
+                landscapeImg.style.opacity = '0';
             },
 
             onUpdate(self) {
                 placeProxy2(self.progress);
+            },
+
+            onLeave() {
+                gsap.killTweensOf([proxy, landscapeImg]);
+                placeProxy2(1);             // garantiza posición exacta antes del swap
+                proxy.style.opacity        = '0';
+                landscapeImg.style.opacity = '1';
             },
 
             onEnterBack() {

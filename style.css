@@ -1296,13 +1296,3 @@ p {
     backface-visibility: hidden; /* Evita pequeños parpadeos en Chrome al escalar */
     transform-style: preserve-3d;
 }
-
-/* Ambos deben tener el mismo punto de anclaje */
-.hp-profile__detail img,
-.hp-landscape__image img,
-.hero-intro-proxy img {
-    object-fit: cover !important;
-    object-position: 50% 50% !important; /* Fuerza el centro */
-    height: 100% !important;
-    width: 100% !important;
-}
