@@ -287,30 +287,28 @@
     function placeProxy2(p) {
         const sy = window.scrollY;
         
-        // 1. Posición y tamaño del contenedor (Lógica original)
+        // 1. Posicionamiento del contenedor
         proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
         proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
         proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
         proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
 
-        // 2. Sincronización de la imagen interna
-        // La imagen de destino tiene: scale(1.18) y yPercent de -8 a 8.
-        const targetScale = 1.18; 
-        const currentScale = lerp(1, targetScale, p);
-        
-        // El parallax de la imagen landscape en 'top 50%' suele estar cerca del -3% o -4%
-        const currentYPercent = lerp(0, -4, p); 
-
+        // 2. Sincronización milimétrica de la imagen
         const pImg = proxy.querySelector('img');
         if (pImg) {
-            /**
-             * CRÍTICO: El orden de los transforms importa.
-             * 1. Mantenemos el scaleX(-1) que traen por CSS.
-             * 2. Aplicamos el scale(1.18) del parallax.
-             * 3. Aplicamos el translateY del parallax.
-             */
+            // La imagen de destino (Landscape) tiene: scale(1.18) y scaleX(-1)
+            // El yPercent de la imagen de destino al llegar al final (top 50%) 
+            // depende de la distancia recorrida. 
+            
+            const currentScale = lerp(1, 1.18, p);
+            
+            // IMPORTANTE: Si el salto es hacia ARRIBA, baja este número (ej: -2)
+            // Si el salto es hacia ABAJO, aumenta este número (ej: -6)
+            const currentYPercent = lerp(0, -4, p); 
+
+            // Forzamos el transform exacto que GSAP escribe en la imagen real
+            // Nota: scaleX(-1) debe ir separado o multiplicado si usas scale()
             pImg.style.transform = `scaleX(-1) scale(${currentScale}) translateY(${currentYPercent}%)`;
-            pImg.style.transformOrigin = 'center center';
         }
     }
 
@@ -326,26 +324,27 @@
             scrub:      true,
 
             onEnter() {
-                // Forzamos el estado inicial antes de mostrar
+                captureAbs2(); // Recapturar por si el layout se movió
                 placeProxy2(0);
                 
-                // IMPORTANTE: Asegúrate de que el src sea el correcto (la del detail)
-                pImg.src = detailImg.src; 
-                
                 proxy.style.opacity = '1';
-                detailImg.style.opacity = '0';
-                landscapeImg.style.opacity = '0';
+                // Usamos visibility además de opacity para evitar saltos de renderizado
+                gsap.set([detailImg, landscapeImg], { opacity: 0, visibility: 'hidden' });
+            },
+
+            onLeave() {
+                placeProxy2(1);
+                
+                // El swap debe ser instantáneo
+                gsap.set(proxy, { opacity: 0, visibility: 'hidden' });
+                gsap.set(landscapeImg, { opacity: 1, visibility: 'visible' });
+                
+                // Forzamos a ScrollTrigger a refrescar el parallax de la imagen de destino
+                ScrollTrigger.refresh();
             },
 
             onUpdate(self) {
                 placeProxy2(self.progress);
-            },
-
-            onLeave() {
-                gsap.killTweensOf([proxy, landscapeImg]);
-                placeProxy2(1);             // garantiza posición exacta antes del swap
-                proxy.style.opacity        = '0';
-                landscapeImg.style.opacity = '1';
             },
 
             onEnterBack() {
