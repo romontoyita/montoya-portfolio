@@ -1181,14 +1181,14 @@ p {
 
 .site-footer__copy {
     font-family: var(--font-body);
-    font-size:   var(--text-sm);
+    font-size:   var(--text-lg);
     color:       var(--color-base-70);
     line-height: 1;
 }
 
 .site-footer__back-top {
     font-family:    var(--font-body);
-    font-size:      var(--text-sm);
+    font-size:      var(--text-lg);
     color:          var(--color-base-70);
     text-transform: uppercase;
     letter-spacing: 0.08em;
