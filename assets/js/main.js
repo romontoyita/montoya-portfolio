@@ -393,45 +393,77 @@
 
 
 // =============================================================================
-// SECTION PARALLAX — Text / content columns move at ~half image speed
-// Only targets text containers. Never touches section roots or any element
-// that is an ancestor of an image-transition element (hero-image, intro-image,
-// profile-detail, values-image), so captured absolute positions are unaffected.
+// SECTION PARALLAX — section containers move at a different speed than scroll
+//
+// Sections with a distinct background (.hp-work #EEE) or isolated content
+// (.hp-cta, .hp-hero__inner) are safe to transform: they contain no element
+// whose getBoundingClientRect() is cached by the image-transition animations.
+//
+// .hp-intro / .hp-profile / .hp-landscape are excluded — their [data-js]
+// image-transition elements are direct descendants, so any translateY on those
+// section roots would shift the cached absolute positions and break the proxy
+// placement.
 // =============================================================================
 (function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Safe selectors: text containers that are siblings — not parents — of
-    // any element involved in the hero→intro or profile→landscape transitions.
-    const SELECTORS = [
-        '.hp-intro__content-col',   // intro text col (sibling of image col)
-        '.hp-work__header',         // "selected work" label + link row
-        '.hp-project__header',      // each project's title + meta block
-        '.hp-profile__heading',     // profile h2 (sibling of .hp-profile__detail)
-        '.hp-profile__bio',         // bio paragraphs (inside .hp-profile__right)
-        '.hp-cta__heading',         // CTA h2
-        '.hp-cta__content',         // CTA body text + email
-    ];
+    // ── .hp-hero__inner ───────────────────────────────────────────────────────
+    // Sibling of .hp-hero__media ([data-js="hero-image"]) — safe to transform.
+    // Hero text scrolls ~40 % slower than the page, pulling apart from the image.
+    const heroInner = document.querySelector('.hp-hero__inner');
+    if (heroInner) {
+        gsap.to(heroInner, {
+            y: -60,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroInner,
+                start:   'top top',
+                end:     'bottom top',
+                scrub:   true,
+            },
+        });
+    }
 
-    document.querySelectorAll(SELECTORS.join(', ')).forEach(function (el) {
-        // Images travel -8% → +8% (16 % total).
-        // Text travels -3% → +3% (6 % total) → moves ~38 % slower → visible depth.
-        gsap.fromTo(el,
-            { yPercent: -3 },
+    // ── .hp-work ──────────────────────────────────────────────────────────────
+    // No image-transition anchors inside. Gray #EEE background makes the
+    // depth shift clearly visible: the section rises from below at ~60 % speed.
+    const work = document.querySelector('.hp-work');
+    if (work) {
+        gsap.fromTo(work,
+            { y: 80 },
             {
-                yPercent: 3,
+                y: 0,
                 ease: 'none',
                 scrollTrigger: {
-                    trigger: el,
+                    trigger: work,
                     start:   'top bottom',
-                    end:     'bottom top',
+                    end:     'top 40%',
                     scrub:   true,
                 },
             }
         );
-    });
+    }
+
+    // ── .hp-cta ───────────────────────────────────────────────────────────────
+    // No image-transition anchors inside.
+    const cta = document.querySelector('.hp-cta');
+    if (cta) {
+        gsap.fromTo(cta,
+            { y: 80 },
+            {
+                y: 0,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: cta,
+                    start:   'top bottom',
+                    end:     'top 40%',
+                    scrub:   true,
+                },
+            }
+        );
+    }
 }());
 
 
