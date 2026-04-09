@@ -657,7 +657,7 @@ p {
 
 .hp-work__label {
     font-family:    var(--font-body);
-    font-size:      1rem;
+    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
@@ -1029,7 +1029,7 @@ p {
 /* PRACTICE & COMMISSIONS — 16px Söhne, ls 0.32px */
 .hp-cta__label {
     font-family:    var(--font-body);
-    font-size:      1rem;
+    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
