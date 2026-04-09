@@ -263,8 +263,6 @@
     const pImg = document.createElement('img');
     pImg.src = detailImg.src;
     pImg.alt = '';
-    // Ambas imágenes tienen scaleX(-1): el proxy debe verse igual al inicio y al final
-    pImg.style.transform = 'scaleX(-1)';
     proxy.appendChild(pImg);
     document.body.appendChild(proxy);
 
