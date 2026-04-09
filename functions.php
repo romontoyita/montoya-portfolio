@@ -8,6 +8,7 @@ define( 'MONTOYA_URI',     get_template_directory_uri() );
 $includes = [
     'inc/theme-setup.php',
     'inc/enqueue.php',
+    'inc/cpt.php',
 ];
 
 foreach ( $includes as $file ) {
