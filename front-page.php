@@ -299,10 +299,19 @@ $uri = get_template_directory_uri();
 
         <div class="hp-profile__inner container">
 
-            <!-- col 1: heading (left ~49%) -->
-            <h2 class="hp-profile__heading" data-js="profile-heading">
-                Montoya Studio works at the intersection of identity, editorial culture, and digital craft.
-            </h2>
+            <!-- col 1: heading + detail portrait stacked -->
+            <div class="hp-profile__left">
+                <h2 class="hp-profile__heading" data-js="profile-heading">
+                    Montoya Studio works at the intersection of identity, editorial culture, and digital craft.
+                </h2>
+                <figure class="hp-profile__detail" data-js="profile-detail">
+                    <img
+                        src="<?php echo esc_url( $uri . '/assets/images/profile-detail.jpg' ); ?>"
+                        alt=""
+                        loading="lazy"
+                    >
+                </figure>
+            </div>
 
             <!-- col 2: portrait then bio (right ~41%, offset by 10% gap) -->
             <div class="hp-profile__right">
@@ -319,15 +328,6 @@ $uri = get_template_directory_uri();
                     <p>Our work prioritizes clarity of thought, material restraint, and a contemporary sense of elegance.</p>
                 </div>
             </div>
-
-            <!-- detail portrait: absolutely positioned at left 14.6%, top ~255px, mirrored -->
-            <figure class="hp-profile__detail" data-js="profile-detail">
-                <img
-                    src="<?php echo esc_url( $uri . '/assets/images/profile-detail.jpg' ); ?>"
-                    alt=""
-                    loading="lazy"
-                >
-            </figure>
 
         </div>
 

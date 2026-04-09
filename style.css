@@ -904,19 +904,24 @@ p {
     grid-template-columns: 49.1fr 40.6fr;
     column-gap:            10.3%;
     align-items:           start;
-    position:              relative;
 }
 
-/* Heading — 48px IvyPresto, lh 1.2, ls 0.96px | col 1 */
-.hp-profile__heading {
+/* Left col: heading + detail portrait stacked */
+.hp-profile__left {
     grid-column:    1;
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(3rem, 8vw, 6.5rem);
+}
+
+/* Heading — 48px IvyPresto, lh 1.2, ls 0.96px */
+.hp-profile__heading {
     font-family:    var(--font-display);
     font-size:      clamp(2.5rem, 5vw, 4.5rem); /* 4.5rem = 72px at 1440px */
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
     max-width:      685px;
-    align-self:     start;
 }
 
 /* Right col: portrait + bio stacked, 64px gap | col 2 */
@@ -956,16 +961,13 @@ p {
     letter-spacing: 0.02em;
 }
 
-/* Detail portrait — 482×695px, abs at left=14.6%, top=255px, mirrored
-   Figma uses scaleY(-1) rotate(180deg) = scaleX(-1) (horizontal flip) */
+/* Detail portrait — 482×695px, mirrored, in flow within left col */
 .hp-profile__detail {
-    position:     absolute;
-    left:         14.6%;          /* 203.5/1392 */
-    top:          clamp(100px, 17.7vw, 255px); /* 255/1440 = 17.7vw */
-    width:        34.6%;          /* 482/1392 */
+    width:        min(482px, 100%);
     aspect-ratio: 482 / 695;
     overflow:     hidden;
     transform:    scaleX(-1);
+    margin-left:  clamp(1rem, 5%, 3rem);
 }
 
 .hp-profile__detail img {
@@ -981,6 +983,10 @@ p {
         row-gap:               var(--space-2xl);
     }
 
+    .hp-profile__left {
+        gap: var(--space-xl);
+    }
+
     .hp-profile__right {
         grid-column: 1;
         gap:         var(--space-xl);
@@ -990,13 +996,10 @@ p {
         width: 65%;
     }
 
-    /* On mobile, pull detail out of abs flow */
     .hp-profile__detail {
-        position:     static;
-        transform:    none;
-        width:        55%;
-        margin-left:  auto;
-        margin-top:   var(--space-xl);
+        transform:   none;
+        width:       55%;
+        margin-left: auto;
     }
 }
 
