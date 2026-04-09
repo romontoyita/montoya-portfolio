@@ -351,53 +351,6 @@ $uri = get_template_directory_uri();
     </section><!-- .hp-landscape -->
 
 
-    <!-- =============================================
-         § 6  CONTACT CTA
-         label → heading → two columns: image left | description + contact right
-    ============================================= -->
-    <section class="hp-cta" aria-label="<?php esc_attr_e( 'Commission inquiry', 'montoya-portfolio' ); ?>">
-
-        <div class="hp-cta__inner container">
-
-            <p class="hp-cta__label"><?php esc_html_e( 'Practice & Commissions', 'montoya-portfolio' ); ?></p>
-
-            <h2 class="hp-cta__heading" data-js="cta-heading">
-                Our practice spans creative direction, identity, editorial design, and digital environments.
-            </h2>
-
-            <div class="hp-cta__cols">
-
-                <!-- Image: left column -->
-                <figure class="hp-cta__image" data-js="cta-image">
-                    <img
-                        src="<?php echo esc_url( $uri . '/assets/images/cta-portrait.jpg' ); ?>"
-                        alt=""
-                        loading="lazy"
-                    >
-                </figure>
-
-                <!-- Text: right column, space-between -->
-                <div class="hp-cta__content" data-js="cta-body">
-                    <p>Our work involves cultural research and ongoing commissions with ateliers, independent brands, and exploratory ventures.</p>
-                    <div class="hp-cta__contact">
-                        <p>For new projects, collaborations or private commissions:</p>
-                        <a href="mailto:hello@montoyastudio.com" class="hp-cta__email">hello@montoyastudio.com</a>
-                    </div>
-                </div>
-
-            </div>
-
-        </div><!-- .hp-cta__inner -->
-
-        <div class="hp-cta__bar container">
-            <p class="hp-cta__copy">&copy; 2026 Montoya Studio. All rights reserved.</p>
-            <a href="#" class="hp-cta__back-top" aria-label="<?php esc_attr_e( 'Back to top', 'montoya-portfolio' ); ?>">
-                Back to top &uarr;
-            </a>
-        </div>
-
-    </section><!-- .hp-cta -->
-
 </article><!-- .home-page -->
 
 <?php get_footer(); ?>
