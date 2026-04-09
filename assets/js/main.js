@@ -451,7 +451,7 @@
     const cta = document.querySelector('.hp-cta');
     if (cta) {
         gsap.fromTo(cta,
-            { y: 80 },
+            { y: 180 },
             {
                 y: 0,
                 ease: 'none',
