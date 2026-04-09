@@ -1,5 +1,6 @@
 </main><!-- #main -->
 
+<?php if ( ! is_front_page() ) : ?>
 <footer id="colophon" class="site-footer" role="contentinfo">
     <div class="site-footer__inner container">
 
@@ -11,6 +12,7 @@
 
     </div><!-- .site-footer__inner -->
 </footer><!-- #colophon -->
+<?php endif; ?>
 
 <?php wp_footer(); ?>
 </body>

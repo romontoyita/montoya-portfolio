@@ -389,6 +389,13 @@ $uri = get_template_directory_uri();
 
         </div><!-- .hp-cta__inner -->
 
+        <div class="hp-cta__bar container">
+            <p class="hp-cta__copy">&copy; 2026 Montoya Studio. All rights reserved.</p>
+            <a href="#" class="hp-cta__back-top" aria-label="<?php esc_attr_e( 'Back to top', 'montoya-portfolio' ); ?>">
+                Back to top &uarr;
+            </a>
+        </div>
+
     </section><!-- .hp-cta -->
 
 </article><!-- .home-page -->
