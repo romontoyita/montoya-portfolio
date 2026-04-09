@@ -900,6 +900,18 @@ p {
 
 
 /* ==========================================================================
+   WORK PAGE  (page-work.php)
+   Full-bleed white canvas — same project grid, no header label.
+   ========================================================================== */
+
+.work-page {
+    background-color: var(--color-white);
+    margin-inline:    calc(var(--fluid-pad) * -1);
+    padding-inline:   var(--fluid-pad);
+    padding-block:    clamp(6rem, 17.8vw, 256px);
+}
+
+/* ==========================================================================
    § 4  PROFILE
    All items in a 2-col grid | detail portrait absolutely positioned
    pt 256px | pb 128px

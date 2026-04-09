@@ -27,14 +27,15 @@
             <ul class="main-navigation__list">
                 <li class="main-navigation__item">
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>"
-                       class="main-navigation__link is-active"
-                       aria-current="page">
+                       class="main-navigation__link<?php echo is_front_page() ? ' is-active' : ''; ?>"
+                       <?php echo is_front_page() ? 'aria-current="page"' : ''; ?>>
                         <?php esc_html_e( 'Home', 'montoya-portfolio' ); ?>
                     </a>
                 </li>
                 <li class="main-navigation__item">
                     <a href="<?php echo esc_url( home_url( '/work' ) ); ?>"
-                       class="main-navigation__link">
+                       class="main-navigation__link<?php echo is_page( 'work' ) ? ' is-active' : ''; ?>"
+                       <?php echo is_page( 'work' ) ? 'aria-current="page"' : ''; ?>>
                         <?php esc_html_e( 'Work', 'montoya-portfolio' ); ?>
                     </a>
                 </li>
