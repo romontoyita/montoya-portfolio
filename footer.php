@@ -5,9 +5,6 @@
 <footer id="colophon" class="site-footer" role="contentinfo">
 
     <div class="site-footer__inner container">
-
-        <p class="site-footer__label"><?php esc_html_e( 'Practice & Commissions', 'montoya-portfolio' ); ?></p>
-
         <h2 class="site-footer__heading">
             Our practice spans creative direction, identity, editorial design, and digital environments.
         </h2>
