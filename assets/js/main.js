@@ -51,10 +51,10 @@
             headerLogo.style.transition = 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
             headerLogo.style.transform  = 'none';
 
-            // Slide up the loader overlay slightly after the logo begins moving
-            loader.style.transform = 'translateY(-100%)';
+            // Fade out the loader overlay slightly after the logo begins moving
+            loader.style.opacity = '0';
 
-            // Clean up after slide
+            // Clean up after fade
             loader.addEventListener('transitionend', function onEnd(e) {
                 if (e.target !== loader) return;
                 loader.remove();
@@ -99,95 +99,15 @@
 
 
 // =============================================================================
-// Utilidad compartida para ambas transiciones
+// HERO → INTRO IMAGE TRANSITION
+// La imagen del hero escala y se traslada hasta la posición de la imagen intro
+// al hacer scroll, reemplazándola con la misma imagen recortada en portrait.
 // =============================================================================
-function makeImageTransition(sourceEl, targetEl, sourceImg, targetImg, proxyTransform) {
+(function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // ── Proxy ──────────────────────────────────────────────────────────────
-    const proxy = document.createElement('div');
-    proxy.className = 'hero-intro-proxy';
-    proxy.setAttribute('aria-hidden', 'true');
-
-    const pImg = document.createElement('img');
-    pImg.src = sourceImg.src;
-    pImg.alt = '';
-    if (proxyTransform) pImg.style.transform = proxyTransform;
-    proxy.appendChild(pImg);
-    document.body.appendChild(proxy);
-
-    function lerp(a, b, t) { return a + (b - a) * t; }
-
-    // Lee posiciones en vivo en cada frame — nunca pre-capturadas.
-    // Esto evita el desfase que ocurre cuando el header sticky cambia de tamaño
-    // (al añadirse .is-scrolled) y desplaza todos los elementos del DOM.
-    function setProxy(p) {
-        const sR = sourceEl.getBoundingClientRect();
-        const tR = targetEl.getBoundingClientRect();
-        proxy.style.left   = lerp(sR.left,   tR.left,   p) + 'px';
-        proxy.style.top    = lerp(sR.top,    tR.top,    p) + 'px';
-        proxy.style.width  = lerp(sR.width,  tR.width,  p) + 'px';
-        proxy.style.height = lerp(sR.height, tR.height, p) + 'px';
-    }
-
-    function snapTo(el) {
-        const r = el.getBoundingClientRect();
-        proxy.style.left   = r.left   + 'px';
-        proxy.style.top    = r.top    + 'px';
-        proxy.style.width  = r.width  + 'px';
-        proxy.style.height = r.height + 'px';
-    }
-
-    window.addEventListener('load', function () {
-        ScrollTrigger.create({
-            trigger:    sourceEl,
-            start:      'bottom bottom',
-            endTrigger: targetEl,
-            end:        'top 50%',
-            scrub:      true,
-
-            onEnter() {
-                targetImg.src = sourceImg.src;
-                setProxy(0);
-                proxy.style.opacity     = '1';
-                sourceImg.style.opacity = '0';
-                targetImg.style.opacity = '0';
-            },
-
-            onUpdate(self) {
-                setProxy(self.progress);
-            },
-
-            onLeave() {
-                gsap.killTweensOf([proxy, targetImg]);
-                snapTo(targetEl);               // snap exacto al destino final
-                proxy.style.opacity     = '0';
-                targetImg.style.opacity = '1';
-            },
-
-            onEnterBack() {
-                gsap.killTweensOf([proxy, targetImg]);
-                snapTo(targetEl);               // proxy parte desde el destino
-                proxy.style.opacity     = '1';
-                targetImg.style.opacity = '0';
-            },
-
-            onLeaveBack() {
-                gsap.killTweensOf([proxy, sourceImg]);
-                snapTo(sourceEl);               // snap exacto al origen
-                proxy.style.opacity     = '0';
-                sourceImg.style.opacity = '1';
-            },
-        });
-    });
-}
-
-// =============================================================================
-// HERO → INTRO IMAGE TRANSITION
-// =============================================================================
-(function () {
     const heroMedia = document.querySelector('[data-js="hero-image"]');
     const introCol  = document.querySelector('[data-js="intro-image"]');
     if (!heroMedia || !introCol) return;
@@ -197,14 +117,115 @@ function makeImageTransition(sourceEl, targetEl, sourceImg, targetImg, proxyTran
     const introImg = introCol.querySelector('.hp-intro__image');
     if (!heroImg || !introFig || !introImg) return;
 
-    makeImageTransition(heroMedia, introFig, heroImg, introImg, null);
+    // ── 1. Proxy element (position: fixed, viaja entre las dos posiciones) ────
+    const proxy = document.createElement('div');
+    proxy.className = 'hero-intro-proxy';
+    proxy.setAttribute('aria-hidden', 'true');
+
+    const pImg = document.createElement('img');
+    pImg.src = heroImg.src;
+    pImg.alt = '';
+    proxy.appendChild(pImg);
+    document.body.appendChild(proxy);
+
+    // ── 2. Posiciones absolutas de página (se capturan una vez por layout) ───
+    // Se usan coordenadas de página para calcular posición en viewport sin
+    // llamar a getBoundingClientRect en cada frame (evita forced layout).
+    let abs = { hero: null, intro: null };
+
+    function captureAbsPositions() {
+        const sy = window.scrollY;
+        const hR = heroMedia.getBoundingClientRect();
+        const iR = introFig.getBoundingClientRect();   // usamos la figure, más precisa
+        abs = {
+            hero:  { left: hR.left, top: hR.top  + sy, width: hR.width,  height: hR.height  },
+            intro: { left: iR.left, top: iR.top  + sy, width: iR.width,  height: iR.height  },
+        };
+    }
+
+    // ── 3. Helpers ────────────────────────────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    // Posiciona el proxy interpolando entre hero y intro según el progreso p ∈ [0,1]
+    function placeProxy(p) {
+        const sy = window.scrollY;
+        proxy.style.left   = lerp(abs.hero.left,   abs.intro.left,   p) + 'px';
+        proxy.style.top    = (lerp(abs.hero.top,   abs.intro.top,    p) - sy) + 'px';
+        proxy.style.width  = lerp(abs.hero.width,  abs.intro.width,  p) + 'px';
+        proxy.style.height = lerp(abs.hero.height, abs.intro.height, p) + 'px';
+    }
+
+    // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+        captureAbsPositions();
+
+        ScrollTrigger.create({
+            trigger:    heroMedia,
+            start:      'bottom bottom',   // hero image bottom toca fondo del viewport
+            endTrigger: introFig,
+            end:        'top 50%',         // intro figure top llega al 50% del viewport
+            scrub:      true,              // sin lag extra: Lenis ya suaviza el scroll
+
+            onEnter() {
+                // Pre-swap src mientras dura la animación → ya estará en caché al llegar al final
+                introImg.src = heroImg.src;
+                // Snap proxy exactamente sobre el hero y revela
+                placeProxy(0);
+                proxy.style.opacity    = '1';
+                heroImg.style.opacity  = '0';
+                introImg.style.opacity = '0';
+            },
+
+            onUpdate(self) {
+                placeProxy(self.progress);
+            },
+
+            onLeave() {
+                gsap.killTweensOf([proxy, introImg]);
+                placeProxy(1);              // garantiza posición exacta antes del swap
+                proxy.style.opacity    = '0';
+                introImg.style.opacity = '1';
+            },
+
+            onEnterBack() {
+                gsap.killTweensOf([proxy, introImg]);
+                placeProxy(1);              // proxy parte exactamente desde progress=1
+                proxy.style.opacity    = '1';
+                introImg.style.opacity = '0';
+            },
+
+            onLeaveBack() {
+                gsap.killTweensOf([proxy, heroImg]);
+                placeProxy(0);              // garantiza posición exacta antes del swap
+                proxy.style.opacity   = '0';
+                heroImg.style.opacity = '1';
+            },
+        });
+    });
+
+    // ── 5. Resize ─────────────────────────────────────────────────────────────
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            captureAbsPositions();
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
 }());
 
 
 // =============================================================================
 // PROFILE-DETAIL → LANDSCAPE IMAGE TRANSITION  (inversa: pequeño → grande)
+// La imagen profile-detail escala y se traslada hasta la posición de la imagen
+// landscape al hacer scroll, reemplazándola con la imagen real al llegar.
 // =============================================================================
 (function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
     const detailFig    = document.querySelector('[data-js="profile-detail"]');
     const landscapeFig = document.querySelector('[data-js="values-image"]');
     if (!detailFig || !landscapeFig) return;
@@ -213,8 +234,98 @@ function makeImageTransition(sourceEl, targetEl, sourceImg, targetImg, proxyTran
     const landscapeImg = landscapeFig.querySelector('img');
     if (!detailImg || !landscapeImg) return;
 
-    // Ambas imágenes tienen scaleX(-1) en CSS; el proxy img debe igualarlo
-    makeImageTransition(detailFig, landscapeFig, detailImg, landscapeImg, 'scaleX(-1)');
+    // ── 1. Proxy ──────────────────────────────────────────────────────────────
+    const proxy = document.createElement('div');
+    proxy.className = 'hero-intro-proxy';   // reutiliza los mismos estilos base
+    proxy.setAttribute('aria-hidden', 'true');
+
+    const pImg = document.createElement('img');
+    pImg.src = detailImg.src;
+    pImg.alt = '';
+    // Ambas imágenes tienen scaleX(-1): el proxy debe verse igual al inicio y al final
+    pImg.style.transform = 'scaleX(-1)';
+    proxy.appendChild(pImg);
+    document.body.appendChild(proxy);
+
+    // ── 2. Posiciones absolutas de página ─────────────────────────────────────
+    let abs2 = { source: null, target: null };
+
+    function captureAbs2() {
+        const sy = window.scrollY;
+        const dR = detailFig.getBoundingClientRect();
+        const lR = landscapeFig.getBoundingClientRect();
+        abs2 = {
+            source: { left: dR.left, top: dR.top + sy, width: dR.width,  height: dR.height  },
+            target: { left: lR.left, top: lR.top + sy, width: lR.width,  height: lR.height  },
+        };
+    }
+
+    // ── 3. Helpers ────────────────────────────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function placeProxy2(p) {
+        const sy = window.scrollY;
+        proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
+        proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
+        proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
+        proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
+    }
+
+    // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+        captureAbs2();
+
+        ScrollTrigger.create({
+            trigger:    detailFig,
+            start:      'bottom bottom',
+            endTrigger: landscapeFig,
+            end:        'top 50%',
+            scrub:      true,
+
+            onEnter() {
+                placeProxy2(0);
+                proxy.style.opacity       = '1';
+                detailImg.style.opacity   = '0';
+                landscapeImg.style.opacity = '0';
+            },
+
+            onUpdate(self) {
+                placeProxy2(self.progress);
+            },
+
+            onLeave() {
+                gsap.killTweensOf([proxy, landscapeImg]);
+                placeProxy2(1);             // garantiza posición exacta antes del swap
+                proxy.style.opacity        = '0';
+                landscapeImg.style.opacity = '1';
+            },
+
+            onEnterBack() {
+                gsap.killTweensOf([proxy, landscapeImg]);
+                placeProxy2(1);             // proxy parte exactamente desde progress=1
+                proxy.style.opacity        = '1';
+                landscapeImg.style.opacity = '0';
+            },
+
+            onLeaveBack() {
+                gsap.killTweensOf([proxy, detailImg]);
+                placeProxy2(0);             // garantiza posición exacta antes del swap
+                proxy.style.opacity     = '0';
+                detailImg.style.opacity = '1';
+            },
+        });
+    });
+
+    // ── 5. Resize ─────────────────────────────────────────────────────────────
+    let resizeTimer2;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer2);
+        resizeTimer2 = setTimeout(function () {
+            captureAbs2();
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
 }());
 
 
@@ -254,68 +365,6 @@ function makeImageTransition(sourceEl, targetEl, sourceImg, targetImg, proxyTran
                 scrub:          true,
             },
         });
-    });
-}());
-
-
-// =============================================================================
-// SELECTED WORK — Slide-up entrance (header + each project)
-// =============================================================================
-(function () {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Header row: label + "all commissions" link
-    const workHeader = document.querySelector('.hp-work__header');
-    if (workHeader) {
-        gsap.from(workHeader, {
-            y:          48,
-            opacity:    0,
-            duration:   0.9,
-            ease:       'power3.out',
-            scrollTrigger: {
-                trigger: workHeader,
-                start:   'top 88%',
-                once:    true,
-            },
-        });
-    }
-
-    // Each project entry
-    document.querySelectorAll('.hp-project').forEach(function (project) {
-        // Header (title + meta)
-        const header = project.querySelector('.hp-project__header');
-        if (header) {
-            gsap.from(header, {
-                y:       56,
-                opacity: 0,
-                duration: 0.9,
-                ease:    'power3.out',
-                scrollTrigger: {
-                    trigger: header,
-                    start:   'top 88%',
-                    once:    true,
-                },
-            });
-        }
-
-        // Images row — staggered so they arrive one after the other
-        const images = project.querySelectorAll('.hp-project__image');
-        if (images.length) {
-            gsap.from(images, {
-                y:       72,
-                opacity: 0,
-                duration: 1.1,
-                ease:    'power3.out',
-                stagger: 0.12,
-                scrollTrigger: {
-                    trigger: images[0].closest('.hp-project__images') || images[0],
-                    start:   'top 90%',
-                    once:    true,
-                },
-            });
-        }
     });
 }());
 
