@@ -365,6 +365,15 @@ p {
     opacity: 0;
 }
 
+@media (max-width: 768px) {
+    .page-loader__logo {
+        font-size:      clamp(2rem, 8vw, 4rem);
+        white-space:    normal;
+        text-align:     center;
+        padding-inline: var(--fluid-pad);
+    }
+}
+
 /* ==========================================================================
    SITE FOOTER  (BEM: .site-footer)
    ========================================================================== */
