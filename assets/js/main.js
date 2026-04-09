@@ -230,6 +230,127 @@
 
 
 // =============================================================================
+// PROFILE-DETAIL → LANDSCAPE IMAGE TRANSITION  (inversa: pequeño → grande)
+// La imagen profile-detail escala y se traslada hasta la posición de la imagen
+// landscape al hacer scroll, reemplazándola con la imagen real al llegar.
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const detailFig    = document.querySelector('[data-js="profile-detail"]');
+    const landscapeFig = document.querySelector('[data-js="values-image"]');
+    if (!detailFig || !landscapeFig) return;
+
+    const detailImg    = detailFig.querySelector('img');
+    const landscapeImg = landscapeFig.querySelector('img');
+    if (!detailImg || !landscapeImg) return;
+
+    // ── 1. Proxy ──────────────────────────────────────────────────────────────
+    const proxy = document.createElement('div');
+    proxy.className = 'hero-intro-proxy';   // reutiliza los mismos estilos base
+    proxy.setAttribute('aria-hidden', 'true');
+
+    const pImg = document.createElement('img');
+    pImg.src = detailImg.src;
+    pImg.alt = '';
+    // Ambas imágenes tienen scaleX(-1): el proxy debe verse igual al inicio y al final
+    pImg.style.transform = 'scaleX(-1)';
+    proxy.appendChild(pImg);
+    document.body.appendChild(proxy);
+
+    // ── 2. Posiciones absolutas de página ─────────────────────────────────────
+    let abs2 = { source: null, target: null };
+
+    function captureAbs2() {
+        const sy = window.scrollY;
+        const dR = detailFig.getBoundingClientRect();
+        const lR = landscapeFig.getBoundingClientRect();
+        abs2 = {
+            source: { left: dR.left, top: dR.top + sy, width: dR.width,  height: dR.height  },
+            target: { left: lR.left, top: lR.top + sy, width: lR.width,  height: lR.height  },
+        };
+    }
+
+    // ── 3. Helpers ────────────────────────────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function placeProxy2(p) {
+        const sy = window.scrollY;
+        proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
+        proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
+        proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
+        proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
+    }
+
+    // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+        captureAbs2();
+
+        ScrollTrigger.create({
+            trigger:    detailFig,
+            start:      'bottom bottom',
+            endTrigger: landscapeFig,
+            end:        'top 50%',
+            scrub:      true,
+
+            onEnter() {
+                placeProxy2(0);
+                proxy.style.opacity       = '1';
+                detailImg.style.opacity   = '0';
+                landscapeImg.style.opacity = '0';
+            },
+
+            onUpdate(self) {
+                placeProxy2(self.progress);
+            },
+
+            onLeave() {
+                // Swap instantáneo: proxy y landscapeImg en misma posición/tamaño
+                gsap.killTweensOf([proxy, landscapeImg]);
+                proxy.style.opacity        = '0';
+                landscapeImg.style.opacity = '1';
+            },
+
+            onEnterBack() {
+                gsap.killTweensOf([proxy, landscapeImg]);
+                const lR = landscapeFig.getBoundingClientRect();
+                proxy.style.left   = lR.left   + 'px';
+                proxy.style.top    = lR.top    + 'px';
+                proxy.style.width  = lR.width  + 'px';
+                proxy.style.height = lR.height + 'px';
+                proxy.style.opacity        = '1';
+                landscapeImg.style.opacity = '0';
+            },
+
+            onLeaveBack() {
+                gsap.killTweensOf([proxy, detailImg]);
+                const dR = detailFig.getBoundingClientRect();
+                proxy.style.left   = dR.left   + 'px';
+                proxy.style.top    = dR.top    + 'px';
+                proxy.style.width  = dR.width  + 'px';
+                proxy.style.height = dR.height + 'px';
+                proxy.style.opacity     = '0';
+                detailImg.style.opacity = '1';
+            },
+        });
+    });
+
+    // ── 5. Resize ─────────────────────────────────────────────────────────────
+    let resizeTimer2;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer2);
+        resizeTimer2 = setTimeout(function () {
+            captureAbs2();
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
+}());
+
+
+// =============================================================================
 // PARALLAX — Vertical image shift on scroll via GSAP ScrollTrigger
 // Applies to all content images (excludes hero which has its own transition).
 // Each image overflows its clipped container and shifts at ~30 % scroll speed.
