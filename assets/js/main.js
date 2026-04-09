@@ -74,6 +74,147 @@
     }
 }());
 
+// =============================================================================
+// LENIS — Smooth Scroll  (integrado con GSAP ticker)
+// =============================================================================
+(function () {
+    if (typeof window.Lenis === 'undefined' || typeof gsap === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new window.Lenis({ smoothWheel: true });
+
+    // Lenis notifica a ScrollTrigger en cada frame de scroll
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // GSAP ticker conduce el RAF de Lenis (time viene en segundos → raf espera ms)
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // Evitar conflicto con scroll-behavior: smooth nativo
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    window.__lenis = lenis;
+}());
+
+
+// =============================================================================
+// HERO → INTRO IMAGE TRANSITION
+// La imagen del hero escala y se traslada hasta la posición de la imagen intro
+// al hacer scroll, reemplazándola con la misma imagen recortada en portrait.
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const heroMedia = document.querySelector('[data-js="hero-image"]');
+    const introCol  = document.querySelector('[data-js="intro-image"]');
+    if (!heroMedia || !introCol) return;
+
+    const heroImg  = heroMedia.querySelector('.hp-hero__image');
+    const introFig = introCol.querySelector('.hp-intro__figure');
+    const introImg = introCol.querySelector('.hp-intro__image');
+    if (!heroImg || !introFig || !introImg) return;
+
+    // ── 1. Proxy element (position: fixed, viaja entre las dos posiciones) ────
+    const proxy = document.createElement('div');
+    proxy.className = 'hero-intro-proxy';
+    proxy.setAttribute('aria-hidden', 'true');
+
+    const pImg = document.createElement('img');
+    pImg.src = heroImg.src;
+    pImg.alt = '';
+    proxy.appendChild(pImg);
+    document.body.appendChild(proxy);
+
+    // ── 2. Posiciones absolutas de página (se capturan una vez por layout) ───
+    // Se usan coordenadas de página para calcular posición en viewport sin
+    // llamar a getBoundingClientRect en cada frame (evita forced layout).
+    let abs = { hero: null, intro: null };
+
+    function captureAbsPositions() {
+        const sy = window.scrollY;
+        const hR = heroMedia.getBoundingClientRect();
+        const iR = introFig.getBoundingClientRect();   // usamos la figure, más precisa
+        abs = {
+            hero:  { left: hR.left, top: hR.top  + sy, width: hR.width,  height: hR.height  },
+            intro: { left: iR.left, top: iR.top  + sy, width: iR.width,  height: iR.height  },
+        };
+    }
+
+    // ── 3. Helpers ────────────────────────────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    // Posiciona el proxy interpolando entre hero y intro según el progreso p ∈ [0,1]
+    function placeProxy(p) {
+        const sy = window.scrollY;
+        proxy.style.left   = lerp(abs.hero.left,   abs.intro.left,   p) + 'px';
+        proxy.style.top    = (lerp(abs.hero.top,   abs.intro.top,    p) - sy) + 'px';
+        proxy.style.width  = lerp(abs.hero.width,  abs.intro.width,  p) + 'px';
+        proxy.style.height = lerp(abs.hero.height, abs.intro.height, p) + 'px';
+    }
+
+    // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+        captureAbsPositions();
+
+        ScrollTrigger.create({
+            trigger:    heroMedia,
+            start:      'bottom bottom',   // hero image bottom toca fondo del viewport
+            endTrigger: introFig,
+            end:        'top 50%',         // intro figure top llega al 50% del viewport
+            scrub:      true,              // sin lag extra: Lenis ya suaviza el scroll
+
+            onEnter() {
+                // Proxy aparece exactamente donde está la imagen hero
+                placeProxy(0);
+                proxy.style.opacity    = '1';
+                heroImg.style.opacity  = '0';
+                introImg.style.opacity = '0';
+            },
+
+            onUpdate(self) {
+                placeProxy(self.progress);
+            },
+
+            onLeave() {
+                // Animación completa: el proxy está en posición intro.
+                // Swap del src para que la imagen real use hero.jpg (mismo crop portrait).
+                introImg.src = heroImg.src;
+                gsap.to(proxy,    { opacity: 0, duration: 0.5, ease: 'power2.out' });
+                gsap.to(introImg, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: 0.1 });
+            },
+
+            onEnterBack() {
+                // Usuario vuelve a entrar en la zona de animación desde abajo
+                gsap.killTweensOf([proxy, introImg]);
+                gsap.set(introImg, { opacity: 0 });
+                gsap.set(proxy,    { opacity: 1 });
+            },
+
+            onLeaveBack() {
+                // Usuario scrollea de vuelta por encima del inicio
+                gsap.killTweensOf([proxy, heroImg]);
+                gsap.to(proxy,   { opacity: 0, duration: 0.3 });
+                heroImg.style.opacity = '1';
+            },
+        });
+    });
+
+    // ── 5. Resize ─────────────────────────────────────────────────────────────
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            captureAbsPositions();
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
+}());
+
+
 // Header — add .is-scrolled once the user scrolls past the initial position
 (function () {
     const header = document.querySelector('.site-header');

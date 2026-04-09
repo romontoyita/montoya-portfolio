@@ -99,7 +99,7 @@ $uri = get_template_directory_uri();
     <section class="hp-work" aria-label="<?php esc_attr_e( 'Selected work', 'montoya-portfolio' ); ?>">
 
         <div class="hp-work__header container">
-            <span class="hp-work__label"><?php esc_html_e( 'Selected Work', 'montoya-portfolio' ); ?></span>
+            <span class="hp-work__label"><?php esc_html_e( '(SELECTED WORK)', 'montoya-portfolio' ); ?></span>
             <a href="<?php echo esc_url( home_url( '/work' ) ); ?>" class="hp-work__all-link">
                 <span class="hp-work__all-link-arrow" aria-hidden="true">
                     <img src="<?php echo esc_url( $uri . '/assets/images/arrow.svg' ); ?>" alt="" width="15" height="16">
