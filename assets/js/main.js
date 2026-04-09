@@ -258,6 +258,68 @@ function makeImageTransition(sourceEl, targetEl, sourceImg, targetImg, proxyTran
 }());
 
 
+// =============================================================================
+// SELECTED WORK — Slide-up entrance (header + each project)
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Header row: label + "all commissions" link
+    const workHeader = document.querySelector('.hp-work__header');
+    if (workHeader) {
+        gsap.from(workHeader, {
+            y:          48,
+            opacity:    0,
+            duration:   0.9,
+            ease:       'power3.out',
+            scrollTrigger: {
+                trigger: workHeader,
+                start:   'top 88%',
+                once:    true,
+            },
+        });
+    }
+
+    // Each project entry
+    document.querySelectorAll('.hp-project').forEach(function (project) {
+        // Header (title + meta)
+        const header = project.querySelector('.hp-project__header');
+        if (header) {
+            gsap.from(header, {
+                y:       56,
+                opacity: 0,
+                duration: 0.9,
+                ease:    'power3.out',
+                scrollTrigger: {
+                    trigger: header,
+                    start:   'top 88%',
+                    once:    true,
+                },
+            });
+        }
+
+        // Images row — staggered so they arrive one after the other
+        const images = project.querySelectorAll('.hp-project__image');
+        if (images.length) {
+            gsap.from(images, {
+                y:       72,
+                opacity: 0,
+                duration: 1.1,
+                ease:    'power3.out',
+                stagger: 0.12,
+                scrollTrigger: {
+                    trigger: images[0].closest('.hp-project__images') || images[0],
+                    start:   'top 90%',
+                    once:    true,
+                },
+            });
+        }
+    });
+}());
+
+
 // Header — add .is-scrolled once the user scrolls past the initial position
 (function () {
     const header = document.querySelector('.site-header');
