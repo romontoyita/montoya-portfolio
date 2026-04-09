@@ -203,7 +203,8 @@ p {
 }
 
 .site-main {
-    min-height: calc(100dvh - var(--header-height));
+    min-height:  calc(100dvh - var(--header-height));
+    padding-top: calc(3rem + 80px); /* header: padding-top 40px + logo line 3rem + padding-bottom 40px */
 }
 
 /* ==========================================================================
@@ -236,11 +237,12 @@ p {
    ========================================================================== */
 
 .site-header {
-    position:         sticky;
+    position:         fixed;
     top:              0;
+    left:             0;
+    right:            0;
     z-index:          var(--header-z);
     background-color: var(--color-base);
-    margin-inline:    calc(var(--fluid-pad) * -1);
     padding-block:    40px;
     padding-inline:   var(--fluid-pad);
     transition:       padding-block 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -411,6 +413,10 @@ p {
 
     .site-header {
         padding-block: 16px;
+    }
+
+    .site-main {
+        padding-top: calc(2rem + 32px); /* header: padding-top 16px + logo 2rem + padding-bottom 16px */
     }
 
     .site-header__menu-toggle {
