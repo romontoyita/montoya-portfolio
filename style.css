@@ -996,7 +996,6 @@ p {
     width:        min(482px, 100%);
     aspect-ratio: 482 / 695;
     overflow:     hidden;
-    transform:    scaleX(-1);
     margin-left:  clamp(1rem, 5%, 3rem);
 }
 
@@ -1036,7 +1035,7 @@ p {
 
 /* ==========================================================================
    § 5  LANDSCAPE IMAGE
-   padding: 128px 24px | image 1396×830px | rotate(180deg) transform-origin top left
+   padding: 128px 24px | image 1396×830px
    ========================================================================== */
 
 .hp-landscape {
