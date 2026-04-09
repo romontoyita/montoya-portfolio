@@ -588,7 +588,8 @@ p {
 }
 
 .hp-intro__figure {
-    height: clamp(400px, 56.1vw, 808px); /* 808px at 1440px */
+    height:   clamp(400px, 56.1vw, 808px); /* 808px at 1440px */
+    overflow: hidden;
 }
 
 .hp-intro__image {

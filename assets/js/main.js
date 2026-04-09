@@ -229,6 +229,46 @@
 }());
 
 
+// =============================================================================
+// PARALLAX — Vertical image shift on scroll via GSAP ScrollTrigger
+// Applies to all content images (excludes hero which has its own transition).
+// Each image overflows its clipped container and shifts at ~30 % scroll speed.
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const SELECTORS = [
+        '.hp-intro__image',
+        '.hp-project__image img',
+        '.hp-profile__detail img',
+        '.hp-profile__portrait img',
+        '.hp-landscape__image img',
+        '.hp-cta__image img',
+    ];
+
+    const images = document.querySelectorAll(SELECTORS.join(', '));
+
+    images.forEach(function (img) {
+        // The parent (figure or wrapper) must clip the overflowing image.
+        // We expand the image slightly so the shift never reveals a gap.
+        gsap.set(img, { yPercent: -8, scale: 1.18, transformOrigin: 'center center' });
+
+        gsap.to(img, {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+                trigger:        img.closest('figure') || img.parentElement,
+                start:          'top bottom',
+                end:            'bottom top',
+                scrub:          true,
+            },
+        });
+    });
+}());
+
+
 // Header — add .is-scrolled once the user scrolls past the initial position
 (function () {
     const header = document.querySelector('.site-header');
