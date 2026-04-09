@@ -790,7 +790,7 @@ p {
 .hp-project__tax-label {
     display:        block;
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 14px at 1440px */
+    font-size:      0.875rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary-30);
@@ -804,7 +804,7 @@ p {
 
 .hp-project__tax-items li {
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 16px at 1440px */
+    font-size:      1rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-primary);
@@ -827,7 +827,7 @@ p {
 /* Description — 18px Söhne, lh 27px (1.5), ls 0.36px, rgba(0,0,0,0.70), w 448px */
 .hp-project__description {
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 18px at 1440px */
+    font-size:      1.125rem;
     color:          var(--color-primary-70);
     line-height:    1.5;
     letter-spacing: 0.02em;
