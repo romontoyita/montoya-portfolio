@@ -237,17 +237,19 @@ p {
    ========================================================================== */
 
 .site-header {
-    position:         fixed;
-    top:              0;
-    left:             0;
-    right:            0;
-    z-index:          var(--header-z);
-    background-color: var(--color-base);
-    padding-top:      40px;
-    padding-bottom:   40px;
-    padding-inline:   var(--fluid-pad);
-    transition:       padding-top    0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-                      padding-bottom 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    position:          fixed;
+    top:               0;
+    left:              0;
+    right:             0;
+    z-index:           var(--header-z);
+    background-color:  var(--color-base);
+    padding-top:       40px;
+    padding-bottom:    40px;
+    padding-inline:    var(--fluid-pad);
+    transform:         translateZ(0);
+    backface-visibility: hidden;
+    transition:        padding-top    0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                       padding-bottom 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .site-header.is-scrolled {
