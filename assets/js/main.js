@@ -117,6 +117,10 @@
     const introImg = introCol.querySelector('.hp-intro__image');
     if (!heroImg || !introFig || !introImg) return;
 
+    // En mobile el proxy cambia width/height cada frame → layout reflow → traba el scroll.
+    // En touch devices se omite: ambas imágenes son visibles de forma natural.
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
     // ── 1. Proxy element (position: fixed, viaja entre las dos posiciones) ────
     const proxy = document.createElement('div');
     proxy.className = 'hero-intro-proxy';
@@ -247,6 +251,9 @@
     const detailImg    = detailFig.querySelector('img');
     const landscapeImg = landscapeFig.querySelector('img');
     if (!detailImg || !landscapeImg) return;
+
+    // Mismo motivo que la transición hero→intro: omitir en touch devices.
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
     // ── 1. Proxy ──────────────────────────────────────────────────────────────
     const proxy = document.createElement('div');
