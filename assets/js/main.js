@@ -432,7 +432,7 @@
     const work = document.querySelector('.hp-work');
     if (work) {
         gsap.fromTo(work,
-            { y: 80 },
+            { y: 180 },
             {
                 y: 0,
                 ease: 'none',
