@@ -108,99 +108,107 @@
     gsap.registerPlugin(ScrollTrigger);
 
     const heroMedia = document.querySelector('[data-js="hero-image"]');
-    const introCol  = document.querySelector('[data-js="intro-image"]');
-    if (!heroMedia || !introCol) return;
+    const introFig  = document.querySelector('.hp-intro__figure');
+    const heroImg   = heroMedia?.querySelector('img');
+    const introImg  = introFig?.querySelector('img');
 
-    const heroImg  = heroMedia.querySelector('.hp-hero__image');
-    const introFig = introCol.querySelector('.hp-intro__figure');
-    const introImg = introCol.querySelector('.hp-intro__image');
+    if (!heroImg || !introFig) return;
 
-    // ── 1. Crear Proxy ────────────────────────────────────────────────────────
+    // 1. Crear el Proxy
     const proxy = document.createElement('div');
     proxy.className = 'hero-intro-proxy';
     const pImg = document.createElement('img');
-    pImg.src = heroImg.src; 
+    pImg.src = heroImg.src;
     proxy.appendChild(pImg);
     document.body.appendChild(proxy);
 
-    let rects = { hero: {}, intro: {} };
+    let heroRect, introRect;
 
-    function updateRects() {
-        const hR = heroMedia.getBoundingClientRect();
-        const iR = introFig.getBoundingClientRect();
-        const vW = window.innerWidth;
-        const vH = window.innerHeight;
+    function calculateRects() {
+        const scrollY = window.scrollY;
+        const h = heroMedia.getBoundingClientRect();
+        const i = introFig.getBoundingClientRect();
 
-        // Calculamos los insets (distancia desde cada borde de la pantalla)
-        rects.hero = {
-            t: hR.top,
-            r: vW - hR.right,
-            b: vH - hR.bottom,
-            l: hR.left
+        // Guardamos posiciones ABSOLUTAS (relativas al documento)
+        heroRect = {
+            top: h.top + scrollY,
+            left: h.left,
+            width: h.width,
+            height: h.height
         };
-        rects.intro = {
-            t: iR.top,
-            r: vW - iR.right,
-            b: vH - iR.bottom,
-            l: iR.left
+        introRect = {
+            top: i.top + scrollY,
+            left: i.left,
+            width: i.width,
+            height: i.height
         };
     }
 
-    function lerp(a, b, t) { return a + (b - a) * t; }
+    function updateAnimation(progress) {
+        const scrollY = window.scrollY;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
 
-    function applyTransition(p) {
-        // Interpolamos los 4 lados del clip-path
-        const t = lerp(rects.hero.t, rects.intro.t, p);
-        const r = lerp(rects.hero.r, rects.intro.r, p);
-        const b = lerp(rects.hero.b, rects.intro.b, p);
-        const l = lerp(rects.hero.l, rects.intro.l, p);
+        // Interpolamos la posición "página"
+        const curTop    = gsap.utils.interpolate(heroRect.top, introRect.top, progress);
+        const curLeft   = gsap.utils.interpolate(heroRect.left, introRect.left, progress);
+        const curWidth  = gsap.utils.interpolate(heroRect.width, introRect.width, progress);
+        const curHeight = gsap.utils.interpolate(heroRect.height, introRect.height, progress);
 
-        // Opcional: Si la intro tiene un ligero scale (como el 1.18 que mencionaste), 
-        // podemos aplicarlo aquí al pImg para que el swap sea invisible
-        const scale = lerp(1, 1.18, p); 
+        // Convertimos a posición "viewport" (donde está el ojo ahora mismo)
+        const vTop = curTop - scrollY;
         
-        proxy.style.clipPath = `inset(${t}px ${r}px ${b}px ${l}px)`;
-        pImg.style.transform = `scale(${scale})`;
+        // Calculamos insets para el clip-path
+        const insetT = vTop;
+        const insetL = curLeft;
+        const insetB = vh - (vTop + curHeight);
+        const insetR = vw - (curLeft + curWidth);
+
+        // Aplicamos al proxy
+        // Nota: Aplicamos el clip-path al contenedor o a la imagen. 
+        // Para ver "translate" en el inspector, movemos la imagen también si quieres.
+        gsap.set(pImg, {
+            clipPath: `inset(${insetT}px ${insetR}px ${insetB}px ${insetL}px)`,
+            // Aquí puedes añadir un scale si quieres el efecto de zoom
+            scale: gsap.utils.interpolate(1, 1.18, progress),
+            force3D: true
+        });
     }
 
-    // ── 2. ScrollTrigger ──────────────────────────────────────────────────────
     window.addEventListener('load', () => {
-        updateRects();
+        calculateRects();
 
         ScrollTrigger.create({
             trigger: heroMedia,
-            start: "bottom bottom",
+            start: "bottom bottom", 
             endTrigger: introFig,
             end: "top 50%",
             scrub: true,
             onEnter: () => {
-                updateRects(); // Recalcular por seguridad
-                introImg.src = heroImg.src;
-                gsap.set(proxy, { opacity: 1 });
+                calculateRects();
+                gsap.set(proxy, { visibility: 'visible' });
                 gsap.set([heroImg, introImg], { opacity: 0 });
             },
             onUpdate: (self) => {
-                // Actualizamos rects solo si es necesario (ej: si hay parallax previo)
-                // pero por rendimiento lo ideal es usar los capturados
-                applyTransition(self.progress);
+                updateAnimation(self.progress);
             },
             onLeave: () => {
-                gsap.set(proxy, { opacity: 0 });
+                gsap.set(proxy, { visibility: 'hidden' });
                 gsap.set(introImg, { opacity: 1 });
             },
             onEnterBack: () => {
-                gsap.set(proxy, { opacity: 1 });
+                gsap.set(proxy, { visibility: 'visible' });
                 gsap.set(introImg, { opacity: 0 });
             },
             onLeaveBack: () => {
-                gsap.set(proxy, { opacity: 0 });
+                gsap.set(proxy, { visibility: 'hidden' });
                 gsap.set(heroImg, { opacity: 1 });
             }
         });
     });
 
     window.addEventListener('resize', () => {
-        updateRects();
+        calculateRects();
         ScrollTrigger.refresh();
     });
 })();

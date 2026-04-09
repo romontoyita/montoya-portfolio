@@ -1217,7 +1217,7 @@ p {
     text-decoration: none;
 }
 
-// Proxy para el hero intro — imagen fija en el mismo lugar que la del layout, para animar sin afectar el layout
+/* Proxy para el hero intro — imagen fija en el mismo lugar que la del layout, para animar sin afectar el layout */
 .hero-intro-proxy {
     position: fixed;
     top: 0;
