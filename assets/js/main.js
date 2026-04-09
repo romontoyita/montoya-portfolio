@@ -114,102 +114,87 @@
 
     if (!heroImg || !introFig) return;
 
-    // 1. Crear el Proxy
+    // 1. Crear Proxy
     const proxy = document.createElement('div');
     proxy.className = 'hero-intro-proxy';
     const pImg = document.createElement('img');
-    pImg.src = heroImg.src;
+    pImg.src = heroImg.src; // Empezamos con la del hero
     proxy.appendChild(pImg);
     document.body.appendChild(proxy);
 
-    let heroRect, introRect;
+    function createTransition() {
+        const vW = window.innerWidth;
+        const vH = window.innerHeight;
 
-    function calculateRects() {
-        const scrollY = window.scrollY;
-        const h = heroMedia.getBoundingClientRect();
-        const i = introFig.getBoundingClientRect();
+        // Capturamos las posiciones actuales respecto al viewport
+        // Importante: No debe haber scroll activo al calcular esto (o compensarlo)
+        const hR = heroMedia.getBoundingClientRect();
+        const iR = introFig.getBoundingClientRect();
 
-        // Guardamos posiciones ABSOLUTAS (relativas al documento)
-        heroRect = {
-            top: h.top + scrollY,
-            left: h.left,
-            width: h.width,
-            height: h.height
+        // Estado inicial (Hero)
+        const startState = {
+            t: hR.top,
+            r: vW - hR.right,
+            b: vH - hR.bottom,
+            l: hR.left
         };
-        introRect = {
-            top: i.top + scrollY,
-            left: i.left,
-            width: i.width,
-            height: i.height
+
+        // Estado final (Intro)
+        const endState = {
+            t: iR.top,
+            r: vW - iR.right,
+            b: vH - iR.bottom,
+            l: iR.left
         };
-    }
 
-    function updateAnimation(progress) {
-        const scrollY = window.scrollY;
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-
-        // Interpolamos la posición "página"
-        const curTop    = gsap.utils.interpolate(heroRect.top, introRect.top, progress);
-        const curLeft   = gsap.utils.interpolate(heroRect.left, introRect.left, progress);
-        const curWidth  = gsap.utils.interpolate(heroRect.width, introRect.width, progress);
-        const curHeight = gsap.utils.interpolate(heroRect.height, introRect.height, progress);
-
-        // Convertimos a posición "viewport" (donde está el ojo ahora mismo)
-        const vTop = curTop - scrollY;
-        
-        // Calculamos insets para el clip-path
-        const insetT = vTop;
-        const insetL = curLeft;
-        const insetB = vh - (vTop + curHeight);
-        const insetR = vw - (curLeft + curWidth);
-
-        // Aplicamos al proxy
-        // Nota: Aplicamos el clip-path al contenedor o a la imagen. 
-        // Para ver "translate" en el inspector, movemos la imagen también si quieres.
-        gsap.set(pImg, {
-            clipPath: `inset(${insetT}px ${insetR}px ${insetB}px ${insetL}px)`,
-            // Aquí puedes añadir un scale si quieres el efecto de zoom
-            scale: gsap.utils.interpolate(1, 1.18, progress),
-            force3D: true
-        });
-    }
-
-    window.addEventListener('load', () => {
-        calculateRects();
-
-        ScrollTrigger.create({
-            trigger: heroMedia,
-            start: "bottom bottom", 
-            endTrigger: introFig,
-            end: "top 50%",
-            scrub: true,
-            onEnter: () => {
-                calculateRects();
-                gsap.set(proxy, { visibility: 'visible' });
-                gsap.set([heroImg, introImg], { opacity: 0 });
-            },
-            onUpdate: (self) => {
-                updateAnimation(self.progress);
-            },
-            onLeave: () => {
-                gsap.set(proxy, { visibility: 'hidden' });
-                gsap.set(introImg, { opacity: 1 });
-            },
-            onEnterBack: () => {
-                gsap.set(proxy, { visibility: 'visible' });
-                gsap.set(introImg, { opacity: 0 });
-            },
-            onLeaveBack: () => {
-                gsap.set(proxy, { visibility: 'hidden' });
-                gsap.set(heroImg, { opacity: 1 });
+        // Creamos la línea de tiempo
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: heroMedia,
+                start: "bottom bottom",
+                endTrigger: introFig,
+                end: "top 50%",
+                scrub: true,
+                onEnter: () => {
+                    gsap.set(proxy, { visibility: 'visible' });
+                    gsap.set([heroImg, introImg], { opacity: 0 });
+                },
+                onLeave: () => {
+                    gsap.set(proxy, { visibility: 'hidden' });
+                    gsap.set(introImg, { opacity: 1 });
+                },
+                onEnterBack: () => {
+                    gsap.set(proxy, { visibility: 'visible' });
+                    gsap.set(introImg, { opacity: 0 });
+                },
+                onLeaveBack: () => {
+                    gsap.set(proxy, { visibility: 'hidden' });
+                    gsap.set(heroImg, { opacity: 1 });
+                }
             }
         });
-    });
 
+        // La animación mágica
+        tl.fromTo(pImg, 
+            {
+                clipPath: `inset(${startState.t}px ${startState.r}px ${startState.b}px ${startState.l}px)`,
+                scale: 1
+            },
+            {
+                clipPath: `inset(${endState.t}px ${endState.r}px ${endState.b}px ${endState.l}px)`,
+                scale: 1.18, // El scale que tiene tu imagen de destino
+                ease: "none"
+            }
+        );
+    }
+
+    // Ejecutar cuando todo esté listo
+    window.addEventListener('load', createTransition);
+
+    // Reiniciar en resize para recalcular posiciones
     window.addEventListener('resize', () => {
-        calculateRects();
-        ScrollTrigger.refresh();
+        ScrollTrigger.getAll().forEach(st => st.kill());
+        createTransition();
     });
 })();
 
