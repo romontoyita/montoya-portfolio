@@ -181,35 +181,22 @@
             },
 
             onLeave() {
-                // Proxy está encima de introImg (misma posición, misma imagen).
-                // Swap instantáneo: sin fade, sin salto de brillo.
                 gsap.killTweensOf([proxy, introImg]);
+                placeProxy(1);              // garantiza posición exacta antes del swap
                 proxy.style.opacity    = '0';
                 introImg.style.opacity = '1';
             },
 
             onEnterBack() {
-                // Scrolleando de vuelta desde abajo: snap proxy a la posición
-                // ACTUAL de introFig (getBCR exacto) antes de revelar.
                 gsap.killTweensOf([proxy, introImg]);
-                const iR = introFig.getBoundingClientRect();
-                proxy.style.left   = iR.left   + 'px';
-                proxy.style.top    = iR.top    + 'px';
-                proxy.style.width  = iR.width  + 'px';
-                proxy.style.height = iR.height + 'px';
+                placeProxy(1);              // proxy parte exactamente desde progress=1
                 proxy.style.opacity    = '1';
                 introImg.style.opacity = '0';
             },
 
             onLeaveBack() {
-                // Scrolleando de vuelta por encima del inicio: snap proxy a la
-                // posición ACTUAL del heroMedia (getBCR exacto) antes de revelar.
                 gsap.killTweensOf([proxy, heroImg]);
-                const hR = heroMedia.getBoundingClientRect();
-                proxy.style.left   = hR.left   + 'px';
-                proxy.style.top    = hR.top    + 'px';
-                proxy.style.width  = hR.width  + 'px';
-                proxy.style.height = hR.height + 'px';
+                placeProxy(0);              // garantiza posición exacta antes del swap
                 proxy.style.opacity   = '0';
                 heroImg.style.opacity = '1';
             },
@@ -307,30 +294,22 @@
             },
 
             onLeave() {
-                // Swap instantáneo: proxy y landscapeImg en misma posición/tamaño
                 gsap.killTweensOf([proxy, landscapeImg]);
+                placeProxy2(1);             // garantiza posición exacta antes del swap
                 proxy.style.opacity        = '0';
                 landscapeImg.style.opacity = '1';
             },
 
             onEnterBack() {
                 gsap.killTweensOf([proxy, landscapeImg]);
-                const lR = landscapeFig.getBoundingClientRect();
-                proxy.style.left   = lR.left   + 'px';
-                proxy.style.top    = lR.top    + 'px';
-                proxy.style.width  = lR.width  + 'px';
-                proxy.style.height = lR.height + 'px';
+                placeProxy2(1);             // proxy parte exactamente desde progress=1
                 proxy.style.opacity        = '1';
                 landscapeImg.style.opacity = '0';
             },
 
             onLeaveBack() {
                 gsap.killTweensOf([proxy, detailImg]);
-                const dR = detailFig.getBoundingClientRect();
-                proxy.style.left   = dR.left   + 'px';
-                proxy.style.top    = dR.top    + 'px';
-                proxy.style.width  = dR.width  + 'px';
-                proxy.style.height = dR.height + 'px';
+                placeProxy2(0);             // garantiza posición exacta antes del swap
                 proxy.style.opacity     = '0';
                 detailImg.style.opacity = '1';
             },
