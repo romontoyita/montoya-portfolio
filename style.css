@@ -1142,7 +1142,7 @@ p {
 /* Body text — 18px Söhne, lh 27px (1.5), ls 0.36px, rgba(0,0,0,0.70) */
 .hp-cta__content > p {
     font-family:    var(--font-body);
-    font-size:      1.125rem;
+    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
     color:          var(--color-primary-70);
     line-height:    1.5;
     letter-spacing: 0.02em;
@@ -1157,7 +1157,7 @@ p {
 /* "For new projects..." — 18px rgba(0,0,0,0.70) */
 .hp-cta__contact p {
     font-family:    var(--font-body);
-    font-size:      1.125rem;
+    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
     color:          var(--color-primary-70);
     line-height:    1.5;
     letter-spacing: 0.02em;
@@ -1167,7 +1167,7 @@ p {
 .hp-cta__email {
     display:        block;
     font-family:    var(--font-body);
-    font-size:      1.125rem;
+    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
     font-weight:    600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
