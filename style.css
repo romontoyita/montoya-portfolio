@@ -1108,7 +1108,8 @@ p {
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
-    max-width:      687px;
+    width: 57.5%;
+    max-width: 800px;
 }
 
 /* Two equal columns, gap 260px | image left | text right */
