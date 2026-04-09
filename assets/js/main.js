@@ -286,10 +286,33 @@
 
     function placeProxy2(p) {
         const sy = window.scrollY;
+        
+        // 1. Dimensiones del contenedor (Tu lógica actual)
         proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
         proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
         proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
         proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
+
+        // 2. Sincronización con Parallax + scaleX(-1)
+        // La imagen de destino tiene: scale(1.18) y yPercent de -8 a 8.
+        // Además, ambas tienen scaleX(-1).
+        
+        const targetScale = 1.18; 
+        const currentScale = lerp(1, targetScale, p);
+        
+        // Calculamos el yPercent del parallax. 
+        // Como termina en 'top 50%', el yPercent real de la imagen será negativo (aprox -3%)
+        const currentYPercent = lerp(0, -3, p); 
+
+        const pImg = proxy.querySelector('img');
+        if (pImg) {
+            // Combinamos todas las transformaciones:
+            // scaleX(-1) mantiene el reflejo
+            // scale(currentScale) maneja el zoom del parallax
+            // translateY(currentYPercent) maneja el desplazamiento del parallax
+            pImg.style.transform = `scaleX(-1) scale(${currentScale}) translateY(${currentYPercent}%)`;
+            pImg.style.transformOrigin = 'center center';
+        }
     }
 
     // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
