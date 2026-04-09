@@ -905,7 +905,7 @@ p {
    ========================================================================== */
 
 .work-page {
-    background-color: var(--color-white);
+    background-color: var(--color-base);
     margin-inline:    calc(var(--fluid-pad) * -1);
     padding-inline:   var(--fluid-pad);
     padding-block:    clamp(6rem, 17.8vw, 256px);
