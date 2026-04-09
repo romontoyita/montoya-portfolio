@@ -385,30 +385,7 @@ p {
     }
 }
 
-/* ==========================================================================
-   SITE FOOTER  (BEM: .site-footer)
-   ========================================================================== */
-
-.site-footer {
-    border-top:     1px solid var(--color-primary-30);
-    padding-block:  var(--space-xl);
-    margin-inline:  calc(var(--fluid-pad) * -1);
-    padding-inline: var(--fluid-pad);
-}
-
-.site-footer__inner {
-    display:         flex;
-    align-items:     center;
-    justify-content: space-between;
-    flex-wrap:       wrap;
-    gap:             var(--space-sm);
-}
-
-.site-footer__copy {
-    font-size:   var(--text-sm);
-    color:       var(--color-primary-70);
-    line-height: 1;
-}
+/* .site-footer styles → see § SITE FOOTER — CTA + colophon bar (bottom of file) */
 
 /* ==========================================================================
    RESPONSIVE
@@ -1085,12 +1062,10 @@ p {
 
 
 /* ==========================================================================
-   § 6  CONTACT CTA
-   pt 128px | pb 205px | label → heading → 2 cols (image left | text right)
-   gap 128px between all three rows
+   SITE FOOTER — CTA + colophon bar
    ========================================================================== */
 
-.hp-cta {
+.site-footer {
     background-color: var(--color-primary);
     padding-top:      clamp(4rem, 8.9vw, 128px);
     padding-bottom:   0;
@@ -1099,57 +1074,57 @@ p {
 }
 
 /* Vertical stack: label | heading | two-col, gap 128px */
-.hp-cta__inner {
+.site-footer__inner {
     display:        flex;
     flex-direction: column;
     gap:            clamp(4rem, 8.9vw, 128px);
 }
 
-/* PRACTICE & COMMISSIONS — 16px Söhne, ls 0.32px */
-.hp-cta__label {
+/* PRACTICE & COMMISSIONS */
+.site-footer__label {
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
+    font-size:      clamp(1rem, 1.39vw, 1.25rem);
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color:          var(--color-base);
 }
 
-/* Heading — 48px IvyPresto, lh 1.2, ls 0.96px, max-width 687px */
-.hp-cta__heading {
+/* Heading */
+.site-footer__heading {
     font-family:    var(--font-display);
-    font-size:      clamp(2.5rem, 5vw, 4.5rem); /* 4.5rem = 72px at 1440px */
+    font-size:      clamp(2.5rem, 5vw, 4.5rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
     color:          var(--color-base);
-    width: 57.5%;
-    max-width: 800px;
+    width:          57.5%;
+    max-width:      800px;
 }
 
-/* Two equal columns, gap 260px | image left | text right */
-.hp-cta__cols {
+/* Two equal columns | image left | text right */
+.site-footer__cols {
     display:               grid;
     grid-template-columns: 1fr 1fr;
     gap:                   clamp(2rem, 18.1vw, 260px);
     align-items:           start;
 }
 
-/* Image — 353×361px ≈ aspect-ratio 353/361 */
-.hp-cta__image {
+/* Image */
+.site-footer__image {
     aspect-ratio: 353 / 361;
     overflow:     hidden;
     max-width:    353px;
 }
 
-.hp-cta__image img {
+.site-footer__image img {
     width:      100%;
     height:     100%;
     object-fit: cover;
     display:    block;
 }
 
-/* Text col — height 361px, justify-content space-between */
-.hp-cta__content {
+/* Text column */
+.site-footer__content {
     display:         flex;
     flex-direction:  column;
     justify-content: space-between;
@@ -1157,35 +1132,32 @@ p {
     max-width:       333px;
 }
 
-/* Body text — 18px Söhne, lh 27px (1.5), ls 0.36px */
-.hp-cta__content > p {
+.site-footer__content > p {
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
     color:          var(--color-base-70);
     line-height:    1.5;
     letter-spacing: 0.02em;
 }
 
-.hp-cta__contact {
+.site-footer__contact {
     display:        flex;
     flex-direction: column;
     gap:            0;
 }
 
-/* "For new projects..." — 18px */
-.hp-cta__contact p {
+.site-footer__contact p {
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
     color:          var(--color-base-70);
     line-height:    1.5;
     letter-spacing: 0.02em;
 }
 
-/* hello@montoyastudio.com — 18px, weight 600, uppercase */
-.hp-cta__email {
+.site-footer__email {
     display:        block;
     font-family:    var(--font-body);
-    font-size:      clamp(1rem, 1.67vw, 1.5rem); /* 24px at 1440px */
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
     font-weight:    600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -1193,10 +1165,10 @@ p {
     line-height:    1.5;
 }
 
-.hp-cta__email:hover { opacity: 0.6; }
+.site-footer__email:hover { opacity: 0.6; }
 
-/* Footer bar: copyright + back-to-top */
-.hp-cta__bar {
+/* Colophon bar: copyright + back-to-top */
+.site-footer__bar {
     border-top:      1px solid var(--color-base-30);
     margin-top:      clamp(4rem, 8.9vw, 128px);
     padding-block:   var(--space-xl);
@@ -1207,14 +1179,14 @@ p {
     gap:             var(--space-sm);
 }
 
-.hp-cta__copy {
+.site-footer__copy {
     font-family: var(--font-body);
     font-size:   var(--text-sm);
     color:       var(--color-base-70);
     line-height: 1;
 }
 
-.hp-cta__back-top {
+.site-footer__back-top {
     font-family:    var(--font-body);
     font-size:      var(--text-sm);
     color:          var(--color-base-70);
@@ -1224,23 +1196,23 @@ p {
     transition:     opacity var(--duration-fast) var(--easing-standard);
 }
 
-.hp-cta__back-top:hover { opacity: 0.5; }
+.site-footer__back-top:hover { opacity: 0.5; }
 
 @media (max-width: 768px) {
-    .hp-cta__heading {
+    .site-footer__heading {
         width: 100%;
     }
 
-    .hp-cta__cols {
+    .site-footer__cols {
         grid-template-columns: 1fr;
         gap:                   var(--space-2xl);
     }
 
-    .hp-cta__image {
+    .site-footer__image {
         max-width: 60%;
     }
 
-    .hp-cta__content {
+    .site-footer__content {
         min-height: unset;
         max-width:  100%;
         gap:        var(--space-xl);
