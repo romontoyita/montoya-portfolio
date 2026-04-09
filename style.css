@@ -553,15 +553,13 @@ p {
     overflow:        hidden;
 }
 
-/* Relative container — capped for editorial readability */
+/* Relative container */
 .hp-intro__inner {
     position:        relative;
     display:         flex;
     justify-content: space-between;
     align-items:     flex-start;
     gap:             clamp(2rem, 9.9vw, 142px); /* 142px at 1440px */
-    max-width:       1100px;
-    margin-inline:   auto;
 }
 
 /* Image column — mirrors hero left col (flex: 1) */
