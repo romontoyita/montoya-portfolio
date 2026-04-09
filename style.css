@@ -283,7 +283,7 @@ p {
 /* All nav links — Söhne 16px, 0.48px tracking */
 .main-navigation__link {
     font-family:    var(--font-body);
-    font-size:      1rem;
+    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
     font-weight:    400;
     letter-spacing: 0.03em;
     text-transform: uppercase;
