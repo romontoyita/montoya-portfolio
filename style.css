@@ -589,11 +589,6 @@ p {
    asymmetric two-column: image 49% | content 51%
    ========================================================================== */
 
-/* § 2  INTRO
-   Image 684px left | gap 142px | text 472px right
-   py: 256px
-   ========================================================================== */
-
 .hp-intro {
     padding-block:   clamp(6rem, 17.8vw, 256px);
     overflow:        hidden;
@@ -1233,12 +1228,14 @@ p {
     pointer-events: none;
     z-index:        50;    /* Por debajo del header (z: 100) */
     opacity:        0;
+    overflow: hidden;
 }
 
-.hero-intro-proxy img {
-    display:         block;
-    width:           100%;
-    height:          100%;
-    object-fit:      cover;
-    object-position: center center;
-}
+    .hero-intro-proxy img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        /* Eliminamos transiciones de CSS que puedan causar lag en el proxy */
+        transition: none !important; 
+    }

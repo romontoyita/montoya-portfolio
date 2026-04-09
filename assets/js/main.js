@@ -149,10 +149,31 @@
     // Posiciona el proxy interpolando entre hero y intro según el progreso p ∈ [0,1]
     function placeProxy(p) {
         const sy = window.scrollY;
+        
+        // 1. Posición y tamaño del contenedor (Tu lógica original)
         proxy.style.left   = lerp(abs.hero.left,   abs.intro.left,   p) + 'px';
         proxy.style.top    = (lerp(abs.hero.top,   abs.intro.top,    p) - sy) + 'px';
         proxy.style.width  = lerp(abs.hero.width,  abs.intro.width,  p) + 'px';
         proxy.style.height = lerp(abs.hero.height, abs.intro.height, p) + 'px';
+
+        // 2. Sincronizar con el PARALLAX de la imagen de destino
+        // El parallax va de yPercent: -8 a 8. 
+        // Como la transición termina cuando la imagen está al "top 50%", 
+        // el parallax ya habrá avanzado un poco. 
+        
+        const targetScale = 1.18; // Coincide con tu parallax
+        const currentScale = lerp(1, targetScale, p);
+        
+        // Interpolamos el yPercent:
+        // Empieza en 0 (hero) y termina en el valor que tendría el parallax 
+        // en ese punto del scroll (aprox -2% o -3% dependiendo del scroll)
+        const currentYPercent = lerp(0, -2, p); 
+
+        const pImg = proxy.querySelector('img');
+        if (pImg) {
+            pImg.style.transform = `scale(${currentScale}) translateY(${currentYPercent}%)`;
+            pImg.style.transformOrigin = 'center center';
+        }
     }
 
     // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
@@ -182,8 +203,8 @@
 
             onLeave() {
                 gsap.killTweensOf([proxy, introImg]);
-                placeProxy(1);              // garantiza posición exacta antes del swap
-                proxy.style.opacity    = '0';
+                placeProxy(1);
+                proxy.style.opacity = '0';
                 introImg.style.opacity = '1';
             },
 
