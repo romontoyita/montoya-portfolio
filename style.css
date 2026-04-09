@@ -559,6 +559,7 @@ p {
     display:         flex;
     justify-content: space-between;
     align-items:     flex-start;
+    gap:             clamp(2rem, 9.9vw, 142px); /* 142px at 1440px */
 }
 
 /* Image column — mirrors hero left col (flex: 1) */
