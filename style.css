@@ -243,13 +243,16 @@ p {
     right:            0;
     z-index:          var(--header-z);
     background-color: var(--color-base);
-    padding-block:    40px;
+    padding-top:      40px;
+    padding-bottom:   40px;
     padding-inline:   var(--fluid-pad);
-    transition:       padding-block 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition:       padding-top    0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                      padding-bottom 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .site-header.is-scrolled {
-    padding-block: 16px;
+    padding-top:    16px;
+    padding-bottom: 16px;
 }
 
 .site-header__inner {
@@ -412,7 +415,8 @@ p {
     }
 
     .site-header {
-        padding-block: 16px;
+        padding-top:    16px;
+        padding-bottom: 16px;
     }
 
     .site-main {
