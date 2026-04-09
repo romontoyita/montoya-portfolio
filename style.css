@@ -1216,3 +1216,24 @@ p {
 .site-header__logo:hover .reg-mark {
     text-decoration: none;
 }
+
+// Proxy para el hero intro — imagen fija en el mismo lugar que la del layout, para animar sin afectar el layout
+.hero-intro-proxy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    pointer-events: none;
+    visibility: hidden; /* Usamos visibility en lugar de solo opacity */
+    overflow: hidden;
+}
+
+.hero-intro-proxy img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    will-change: transform, clip-path;
+}
