@@ -1186,6 +1186,10 @@ p {
 .hp-cta__email:hover { opacity: 0.6; }
 
 @media (max-width: 768px) {
+    .hp-cta__heading {
+        width: 100%;
+    }
+
     .hp-cta__cols {
         grid-template-columns: 1fr;
         gap:                   var(--space-2xl);
