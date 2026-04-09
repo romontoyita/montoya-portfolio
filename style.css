@@ -685,6 +685,12 @@ p {
     }
 }
 
+@media (hover: none) and (pointer: coarse) {
+    .hp-intro__image-col {
+        display: none;
+    }
+}
+
 
 /* ==========================================================================
    § 3  SELECTED WORK — section wrapper + project entries
@@ -1062,6 +1068,12 @@ p {
     .hp-landscape__image {
         height:     55vw;
         min-height: 240px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .hp-landscape__image {
+        display: none;
     }
 }
 
