@@ -1094,6 +1094,8 @@ p {
     background-color: var(--color-primary);
     padding-top:      clamp(4rem, 8.9vw, 128px);
     padding-bottom:   0;
+    margin-inline:    calc(var(--fluid-pad) * -1);
+    padding-inline:   var(--fluid-pad);
 }
 
 /* Vertical stack: label | heading | two-col, gap 128px */
