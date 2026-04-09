@@ -10,6 +10,10 @@ $uri = get_template_directory_uri();
 
 <article class="work-page">
 
+    <div class="hp-work__header container">
+        <span class="hp-work__label"><?php esc_html_e( '(ALL COMMISSIONS)', 'montoya-portfolio' ); ?></span>
+    </div>
+
     <!-- Project 01: Casa La Merced -->
     <div class="hp-project" data-js="project">
         <div class="hp-project__header container">
