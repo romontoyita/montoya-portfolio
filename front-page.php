@@ -22,7 +22,7 @@ $uri = get_template_directory_uri();
             <div class="hp-hero__top">
 
                 <div class="hp-hero__left">
-                    <span class="hp-hero__label">(A Studio)</span>
+                    <span class="hp-hero__label">(A STUDIO)</span>
                     <div class="hp-hero__disciplines">
                         <span class="hp-hero__discipline">Creative Direction</span>
                         <span class="hp-hero__discipline">Art Direction</span>
