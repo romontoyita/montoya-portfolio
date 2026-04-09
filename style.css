@@ -1242,5 +1242,290 @@ p {
     object-fit: cover;
     display: block;
     /* Eliminamos transiciones de CSS que puedan causar lag en el proxy */
-    transition: none !important; 
+    transition: none !important;
+}
+
+
+/* ==========================================================================
+   CASE STUDY  (single-work.php)
+   Sections: § 1 Hero · § 2 Overview · § 3 Problem · § 4 Approach · § 5 Outcome
+   Reuses: .hp-project__tax-label, .breakout, --space-* tokens, fluid type scale
+   ========================================================================== */
+
+/* Shared parenthetical label — "(Scope)", "(The Problem)", etc.
+   16px Söhne, black, not uppercase                                          */
+.cs-label {
+    font-family:    var(--font-body);
+    font-size:      1rem;
+    font-weight:    400;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+}
+
+/* Dev placeholder block — grey fill when no image is uploaded               */
+.cs-placeholder {
+    width:            100%;
+    height:           100%;
+    background-color: #C4C4C4;
+}
+
+
+/* ── § 1  HERO ─────────────────────────────────────────────────────────── */
+
+.cs-hero {
+    padding-top:    clamp(4rem, 8.9vw, 128px);
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+}
+
+/* Title | metas row */
+.cs-hero__top {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+}
+
+/* Large project title — same weight/size as .hp-project__title             */
+.cs-hero__title {
+    font-family:    var(--font-display);
+    font-size:      clamp(2.5rem, 5vw, 4.5rem);
+    font-weight:    300;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    flex:           0 1 40%;          /* ~566px on 1392px canvas */
+}
+
+/* Two meta groups (Client + Industry) — floated right                       */
+.cs-hero__metas {
+    display: flex;
+    gap:     clamp(2rem, 5.5vw, 80px);
+}
+
+/* Each meta group: label above, value(s) below */
+.cs-hero__meta-group {
+    display:        flex;
+    flex-direction: column;
+    gap:            24px;
+}
+
+/* hp-project__tax-label already styles the label span at 14px / 30% opacity */
+
+/* Single-line meta value                                                     */
+.cs-hero__meta-value {
+    font-family:    var(--font-body);
+    font-size:      1rem;
+    font-weight:    400;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+}
+
+/* Multi-line meta list (Industry tags)                                       */
+.cs-hero__meta-list {
+    display:        flex;
+    flex-direction: column;
+}
+
+.cs-hero__meta-list li {
+    font-family:    var(--font-body);
+    font-size:      1rem;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+    line-height:    1.8;
+}
+
+/* Full-bleed hero image — 802/1392 ≈ 57.6% aspect                          */
+.cs-hero__image {
+    margin-inline: calc(var(--fluid-pad) * -1); /* reuses .breakout logic */
+    height:        clamp(300px, 55.7vw, 802px);
+    overflow:      hidden;
+}
+
+.cs-hero__image img {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+    display:    block;
+}
+
+
+/* ── § 2  OVERVIEW — scope + statement ─────────────────────────────────── */
+
+.cs-overview {
+    padding-top:    clamp(6rem, 17.8vw, 256px);
+    padding-bottom: clamp(4rem, 8.9vw, 128px);
+}
+
+/* Left: scope | Right: statement */
+.cs-overview__inner {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+    gap:             clamp(2rem, 5.5vw, 80px);
+}
+
+/* Scope column — label + list stacked */
+.cs-overview__scope {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+    flex:           1;
+}
+
+.cs-overview__scope-list {
+    display:        flex;
+    flex-direction: column;
+    gap:            10px;
+}
+
+/* Scope items — 20px Söhne uppercase, same as .hp-hero__discipline         */
+.cs-overview__scope-item {
+    font-family:    var(--font-body);
+    font-size:      clamp(1rem, 1.39vw, 1.25rem);
+    font-weight:    400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color:          var(--color-primary);
+}
+
+/* Statement — 72px IvyPresto, same weight/size as .hp-profile__heading     */
+.cs-overview__statement {
+    font-family:    var(--font-display);
+    font-size:      clamp(2.5rem, 5vw, 4.5rem);
+    font-weight:    300;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+    max-width:      800px;
+}
+
+
+/* ── § 3 & 4  CONTENT SECTIONS — problem / approach ────────────────────── */
+
+.cs-section {
+    overflow: hidden;
+}
+
+/* Problem: top 256px — matches gap after overview */
+.cs-section--problem {
+    padding-top:    clamp(6rem, 17.8vw, 256px);
+    padding-bottom: clamp(4rem, 8.9vw, 128px);
+}
+
+/* Approach: bottom 256px — lands at the outcome section */
+.cs-section--approach {
+    padding-top:    clamp(4rem, 8.9vw, 128px);
+    padding-bottom: clamp(6rem, 17.8vw, 256px);
+}
+
+/* Two-col flex: content ~34% (472px) | gap ~17% (236px) | image ~49% (684px) */
+.cs-section__inner {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+    gap:             clamp(2rem, 16.9vw, 236px);
+}
+
+/* Content column */
+.cs-section__content {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+    flex:           0 0 clamp(280px, 33.9%, 472px);
+}
+
+/* Section heading — 44px IvyPresto (between project title and body)        */
+.cs-section__title {
+    font-family:    var(--font-display);
+    font-size:      clamp(1.75rem, 3.06vw, 2.75rem);
+    font-weight:    300;
+    line-height:    1.25;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+}
+
+/* Body text — same values as .hp-intro__body (24px / 70% / lh 1.5)        */
+.cs-section__body {
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
+    font-weight:    400;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
+    letter-spacing: 0.02em;
+}
+
+/* Square image column — 684px max                                           */
+.cs-section__image {
+    flex:         0 0 clamp(280px, 49.1%, 684px);
+    aspect-ratio: 1 / 1;
+    overflow:     hidden;
+}
+
+.cs-section__image img {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+    display:    block;
+}
+
+
+/* ── § 5  OUTCOME ──────────────────────────────────────────────────────── */
+
+.cs-outcome {
+    padding-bottom: clamp(4rem, 8.9vw, 128px);
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+}
+
+/* Large outcome text — same as .cs-overview__statement, capped at 800px   */
+.cs-outcome__text {
+    font-family:    var(--font-display);
+    font-size:      clamp(2.5rem, 5vw, 4.5rem);
+    font-weight:    300;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+    max-width:      800px;
+}
+
+
+/* ── Case Study responsive ─────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+
+    /* Hero */
+    .cs-hero__top {
+        flex-direction: column;
+        gap:            var(--space-xl);
+    }
+
+    .cs-hero__title { flex: none; max-width: 100%; }
+
+    .cs-hero__image {
+        height:     60vw;
+        min-height: 220px;
+    }
+
+    /* Overview */
+    .cs-overview__inner {
+        flex-direction: column;
+        gap:            var(--space-xl);
+    }
+
+    /* Problem / Approach — stack vertically */
+    .cs-section__inner {
+        flex-direction: column;
+        gap:            var(--space-xl);
+    }
+
+    /* Approach image was first in DOM (left on desktop) → stays on top on mobile */
+    .cs-section__content,
+    .cs-section__image {
+        flex:   none;
+        width:  100%;
+    }
+
+    .cs-section__image {
+        aspect-ratio: 4 / 3;
+    }
 }
