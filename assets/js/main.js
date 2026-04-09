@@ -385,6 +385,49 @@
 }());
 
 
+// =============================================================================
+// SECTION PARALLAX — Text / content columns move at ~half image speed
+// Only targets text containers. Never touches section roots or any element
+// that is an ancestor of an image-transition element (hero-image, intro-image,
+// profile-detail, values-image), so captured absolute positions are unaffected.
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Safe selectors: text containers that are siblings — not parents — of
+    // any element involved in the hero→intro or profile→landscape transitions.
+    const SELECTORS = [
+        '.hp-intro__content-col',   // intro text col (sibling of image col)
+        '.hp-work__header',         // "selected work" label + link row
+        '.hp-project__header',      // each project's title + meta block
+        '.hp-profile__heading',     // profile h2 (sibling of .hp-profile__detail)
+        '.hp-profile__bio',         // bio paragraphs (inside .hp-profile__right)
+        '.hp-cta__heading',         // CTA h2
+        '.hp-cta__content',         // CTA body text + email
+    ];
+
+    document.querySelectorAll(SELECTORS.join(', ')).forEach(function (el) {
+        // Images travel -8% → +8% (16 % total).
+        // Text travels -3% → +3% (6 % total) → moves ~38 % slower → visible depth.
+        gsap.fromTo(el,
+            { yPercent: -3 },
+            {
+                yPercent: 3,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: el,
+                    start:   'top bottom',
+                    end:     'bottom top',
+                    scrub:   true,
+                },
+            }
+        );
+    });
+}());
+
+
 // Header — add .is-scrolled once the user scrolls past the initial position
 (function () {
     const header = document.querySelector('.site-header');
