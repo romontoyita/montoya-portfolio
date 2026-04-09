@@ -570,13 +570,11 @@ p {
     }
 
     .hp-hero__left {
-        flex-direction: row;
-        align-items:    flex-start;
-        gap:            24px;
+        gap: 0;
     }
 
-    .hp-hero__label {
-        flex-shrink: 0;
+    .hp-hero__disciplines {
+        display: none;
     }
 
     .hp-hero__heading {
