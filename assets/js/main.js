@@ -51,10 +51,10 @@
             headerLogo.style.transition = 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
             headerLogo.style.transform  = 'none';
 
-            // Fade out the loader overlay slightly after the logo begins moving
-            loader.style.opacity = '0';
+            // Slide up the loader overlay slightly after the logo begins moving
+            loader.style.transform = 'translateY(-100%)';
 
-            // Clean up after fade
+            // Clean up after slide
             loader.addEventListener('transitionend', function onEnd(e) {
                 if (e.target !== loader) return;
                 loader.remove();
