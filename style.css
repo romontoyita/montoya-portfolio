@@ -908,7 +908,8 @@ p {
     background-color: var(--color-base);
     margin-inline:    calc(var(--fluid-pad) * -1);
     padding-inline:   var(--fluid-pad);
-    padding-block:    clamp(6rem, 17.8vw, 256px);
+    padding-top:      clamp(3rem, 8.9vw, 128px);
+    padding-bottom:   clamp(6rem, 17.8vw, 256px);
 }
 
 /* ==========================================================================
