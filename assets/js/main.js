@@ -147,33 +147,26 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     // Posiciona el proxy interpolando entre hero y intro según el progreso p ∈ [0,1]
+    // Usa transform para la posición (GPU-composited, sin layout reflow) y
+    // width/height para el tamaño (inevitables al cambiar forma).
     function placeProxy(p) {
         const sy = window.scrollY;
-        
-        // 1. Posición y tamaño del contenedor (Tu lógica original)
-        proxy.style.left   = lerp(abs.hero.left,   abs.intro.left,   p) + 'px';
-        proxy.style.top    = (lerp(abs.hero.top,   abs.intro.top,    p) - sy) + 'px';
-        proxy.style.width  = lerp(abs.hero.width,  abs.intro.width,  p) + 'px';
-        proxy.style.height = lerp(abs.hero.height, abs.intro.height, p) + 'px';
 
-        // 2. Sincronizar con el PARALLAX de la imagen de destino
-        // El parallax va de yPercent: -8 a 8. 
-        // Como la transición termina cuando la imagen está al "top 50%", 
-        // el parallax ya habrá avanzado un poco. 
-        
-        const targetScale = 1.18; // Coincide con tu parallax
-        const currentScale = lerp(1, targetScale, p);
-        
-        // Interpolamos el yPercent:
-        // Empieza en 0 (hero) y termina en el valor que tendría el parallax 
-        // en ese punto del scroll (aprox -2% o -3% dependiendo del scroll)
-        const currentYPercent = lerp(0, -2, p); 
+        const x = lerp(abs.hero.left,   abs.intro.left,   p);
+        const y = lerp(abs.hero.top,    abs.intro.top,    p) - sy;
+        const w = lerp(abs.hero.width,  abs.intro.width,  p);
+        const h = lerp(abs.hero.height, abs.intro.height, p);
 
-        const pImg = proxy.querySelector('img');
-        if (pImg) {
-            pImg.style.transform = `scale(${currentScale}) translateY(${currentYPercent}%)`;
-            pImg.style.transformOrigin = 'center center';
-        }
+        proxy.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        proxy.style.width     = w + 'px';
+        proxy.style.height    = h + 'px';
+
+        const currentScale   = lerp(1, 1.18, p);
+        const currentYPercent = lerp(0, -2, p);
+
+        // pImg está cacheada en el scope externo — evitamos querySelector cada frame
+        pImg.style.transform      = 'scale(' + currentScale + ') translateY(' + currentYPercent + '%)';
+        pImg.style.transformOrigin = 'center center';
     }
 
     // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
@@ -284,10 +277,14 @@
 
     function placeProxy2(p) {
         const sy = window.scrollY;
-        proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
-        proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
-        proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
-        proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
+        const x  = lerp(abs2.source.left,   abs2.target.left,   p);
+        const y  = lerp(abs2.source.top,    abs2.target.top,    p) - sy;
+        const w  = lerp(abs2.source.width,  abs2.target.width,  p);
+        const h  = lerp(abs2.source.height, abs2.target.height, p);
+
+        proxy.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        proxy.style.width     = w + 'px';
+        proxy.style.height    = h + 'px';
     }
 
     // ── 4. ScrollTrigger ──────────────────────────────────────────────────────

@@ -1224,7 +1224,7 @@ p {
     pointer-events: none;
     z-index:        50;    /* Por debajo del header (z: 100) */
     opacity:        0;
-    overflow: hidden;
+    will-change:    transform;
 }
 
 .hero-intro-proxy img {
