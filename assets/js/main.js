@@ -105,98 +105,115 @@
 // =============================================================================
 (function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const heroMedia = document.querySelector('[data-js="hero-image"]');
-    const introFig  = document.querySelector('.hp-intro__figure');
-    const heroImg   = heroMedia?.querySelector('img');
-    const introImg  = introFig?.querySelector('img');
+    const introCol  = document.querySelector('[data-js="intro-image"]');
+    if (!heroMedia || !introCol) return;
 
-    if (!heroImg || !introFig) return;
+    const heroImg  = heroMedia.querySelector('.hp-hero__image');
+    const introFig = introCol.querySelector('.hp-intro__figure');
+    const introImg = introCol.querySelector('.hp-intro__image');
+    if (!heroImg || !introFig || !introImg) return;
 
-    // 1. Crear Proxy
+    // ── 1. Proxy element (position: fixed, viaja entre las dos posiciones) ────
     const proxy = document.createElement('div');
     proxy.className = 'hero-intro-proxy';
+    proxy.setAttribute('aria-hidden', 'true');
+
     const pImg = document.createElement('img');
-    pImg.src = heroImg.src; // Empezamos con la del hero
+    pImg.src = heroImg.src;
+    pImg.alt = '';
     proxy.appendChild(pImg);
     document.body.appendChild(proxy);
 
-    function createTransition() {
-        const vW = window.innerWidth;
-        const vH = window.innerHeight;
+    // ── 2. Posiciones absolutas de página (se capturan una vez por layout) ───
+    // Se usan coordenadas de página para calcular posición en viewport sin
+    // llamar a getBoundingClientRect en cada frame (evita forced layout).
+    let abs = { hero: null, intro: null };
 
-        // Capturamos las posiciones actuales respecto al viewport
-        // Importante: No debe haber scroll activo al calcular esto (o compensarlo)
+    function captureAbsPositions() {
+        const sy = window.scrollY;
         const hR = heroMedia.getBoundingClientRect();
-        const iR = introFig.getBoundingClientRect();
-
-        // Estado inicial (Hero)
-        const startState = {
-            t: hR.top,
-            r: vW - hR.right,
-            b: vH - hR.bottom,
-            l: hR.left
+        const iR = introFig.getBoundingClientRect();   // usamos la figure, más precisa
+        abs = {
+            hero:  { left: hR.left, top: hR.top  + sy, width: hR.width,  height: hR.height  },
+            intro: { left: iR.left, top: iR.top  + sy, width: iR.width,  height: iR.height  },
         };
-
-        // Estado final (Intro)
-        const endState = {
-            t: iR.top,
-            r: vW - iR.right,
-            b: vH - iR.bottom,
-            l: iR.left
-        };
-
-        // Creamos la línea de tiempo
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: heroMedia,
-                start: "bottom bottom",
-                endTrigger: introFig,
-                end: "top 50%",
-                scrub: true,
-                onEnter: () => {
-                    gsap.set(proxy, { visibility: 'visible' });
-                    gsap.set([heroImg, introImg], { opacity: 0 });
-                },
-                onLeave: () => {
-                    gsap.set(proxy, { visibility: 'hidden' });
-                    gsap.set(introImg, { opacity: 1 });
-                },
-                onEnterBack: () => {
-                    gsap.set(proxy, { visibility: 'visible' });
-                    gsap.set(introImg, { opacity: 0 });
-                },
-                onLeaveBack: () => {
-                    gsap.set(proxy, { visibility: 'hidden' });
-                    gsap.set(heroImg, { opacity: 1 });
-                }
-            }
-        });
-
-        // La animación mágica
-        tl.fromTo(pImg, 
-            {
-                clipPath: `inset(${startState.t}px ${startState.r}px ${startState.b}px ${startState.l}px)`,
-                scale: 1
-            },
-            {
-                clipPath: `inset(${endState.t}px ${endState.r}px ${endState.b}px ${endState.l}px)`,
-                scale: 1.18, // El scale que tiene tu imagen de destino
-                ease: "none"
-            }
-        );
     }
 
-    // Ejecutar cuando todo esté listo
-    window.addEventListener('load', createTransition);
+    // ── 3. Helpers ────────────────────────────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
 
-    // Reiniciar en resize para recalcular posiciones
-    window.addEventListener('resize', () => {
-        ScrollTrigger.getAll().forEach(st => st.kill());
-        createTransition();
+    // Posiciona el proxy interpolando entre hero y intro según el progreso p ∈ [0,1]
+    function placeProxy(p) {
+        const sy = window.scrollY;
+        proxy.style.left   = lerp(abs.hero.left,   abs.intro.left,   p) + 'px';
+        proxy.style.top    = (lerp(abs.hero.top,   abs.intro.top,    p) - sy) + 'px';
+        proxy.style.width  = lerp(abs.hero.width,  abs.intro.width,  p) + 'px';
+        proxy.style.height = lerp(abs.hero.height, abs.intro.height, p) + 'px';
+    }
+
+    // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+        captureAbsPositions();
+
+        ScrollTrigger.create({
+            trigger:    heroMedia,
+            start:      'bottom bottom',   // hero image bottom toca fondo del viewport
+            endTrigger: introFig,
+            end:        'top 50%',         // intro figure top llega al 50% del viewport
+            scrub:      true,              // sin lag extra: Lenis ya suaviza el scroll
+
+            onEnter() {
+                // Pre-swap src mientras dura la animación → ya estará en caché al llegar al final
+                introImg.src = heroImg.src;
+                // Snap proxy exactamente sobre el hero y revela
+                placeProxy(0);
+                proxy.style.opacity    = '1';
+                heroImg.style.opacity  = '0';
+                introImg.style.opacity = '0';
+            },
+
+            onUpdate(self) {
+                placeProxy(self.progress);
+            },
+
+            onLeave() {
+                gsap.killTweensOf([proxy, introImg]);
+                placeProxy(1);              // garantiza posición exacta antes del swap
+                proxy.style.opacity    = '0';
+                introImg.style.opacity = '1';
+            },
+
+            onEnterBack() {
+                gsap.killTweensOf([proxy, introImg]);
+                placeProxy(1);              // proxy parte exactamente desde progress=1
+                proxy.style.opacity    = '1';
+                introImg.style.opacity = '0';
+            },
+
+            onLeaveBack() {
+                gsap.killTweensOf([proxy, heroImg]);
+                placeProxy(0);              // garantiza posición exacta antes del swap
+                proxy.style.opacity   = '0';
+                heroImg.style.opacity = '1';
+            },
+        });
     });
-})();
+
+    // ── 5. Resize ─────────────────────────────────────────────────────────────
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            captureAbsPositions();
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
+}());
 
 
 // =============================================================================
