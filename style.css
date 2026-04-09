@@ -1296,3 +1296,15 @@ p {
     backface-visibility: hidden; /* Evita pequeños parpadeos en Chrome al escalar */
     transform-style: preserve-3d;
 }
+
+
+.hp-landscape__image img,
+.hp-profile__detail img {
+    transition: opacity 0.3s ease; /* Solo opacidad, NADA de transform */
+}
+
+.hp-profile__detail img,
+.hp-landscape__image img {
+    object-fit: cover;
+    object-position: center center; /* O el punto que prefieras, pero igual en ambas */
+}
