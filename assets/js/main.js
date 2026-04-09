@@ -51,8 +51,8 @@
             headerLogo.style.transition = 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
             headerLogo.style.transform  = 'none';
 
-            // Slide up the loader overlay slightly after the logo begins moving
-            loader.style.transform = 'translateY(-100%)';
+            // Wipe up the loader overlay: clip from top so content is revealed top-first
+            loader.style.clipPath = 'inset(100% 0 0 0)';
 
             // Clean up after slide
             loader.addEventListener('transitionend', function onEnd(e) {

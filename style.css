@@ -352,7 +352,7 @@ p {
     justify-content:  center;
     background-color: var(--color-base);
     pointer-events:   none;
-    transition:       transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+    transition:       clip-path 0.7s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .page-loader__logo {
