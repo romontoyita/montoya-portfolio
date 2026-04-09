@@ -555,15 +555,15 @@ p {
 
 /* Relative container matching Figma's 1392px × 808px inner */
 .hp-intro__inner {
-    position: relative;
-    display:  flex;
-    align-items: flex-start;
-    gap:      clamp(2rem, 9.9vw, 142px); /* 142px at 1440px */
+    position:        relative;
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
 }
 
-/* Image column — 684/1392 ≈ 49.1% */
+/* Image column — mirrors hero left col (flex: 1) */
 .hp-intro__image-col {
-    flex:     0 0 clamp(200px, 49.1%, 684px);
+    flex:     1;
     overflow: hidden;
 }
 
@@ -577,12 +577,12 @@ p {
     object-fit: cover;
 }
 
-/* Text column — 472px, starts at ~826px from left */
+/* Text column — mirrors hero right col (57.5%) */
 .hp-intro__content-col {
     display:        flex;
     flex-direction: column;
     gap:            clamp(2rem, 4.4vw, 64px); /* 64px gap at 1440px */
-    max-width:      472px;
+    width:          57.5%;
 }
 
 /* Quote — 44px IvyPresto, lh 55px, ls 0.88px */
