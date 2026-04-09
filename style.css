@@ -252,6 +252,17 @@ p {
                        padding-bottom 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+.site-header::after {
+    content:          '';
+    position:         absolute;
+    bottom:           -4px;
+    left:             0;
+    right:            0;
+    height:           4px;
+    background-color: var(--color-base);
+    pointer-events:   none;
+}
+
 .site-header.is-scrolled {
     padding-top:    16px;
     padding-bottom: 16px;
