@@ -578,13 +578,13 @@ p {
     object-fit: cover;
 }
 
-/* Text column — 57.5% up to 480px max */
+/* Text column — 57.5% up to 600px for readability on large screens */
 .hp-intro__content-col {
     display:        flex;
     flex-direction: column;
     gap:            clamp(2rem, 4.4vw, 64px); /* 64px gap at 1440px */
     width:          57.5%;
-    max-width:      480px;
+    max-width:      600px;
 }
 
 /* Quote — 44px IvyPresto, lh 55px, ls 0.88px */
