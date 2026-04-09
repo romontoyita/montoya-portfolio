@@ -167,7 +167,9 @@
             scrub:      true,              // sin lag extra: Lenis ya suaviza el scroll
 
             onEnter() {
-                // Proxy aparece exactamente donde está la imagen hero
+                // Pre-swap src mientras dura la animación → ya estará en caché al llegar al final
+                introImg.src = heroImg.src;
+                // Snap proxy exactamente sobre el hero y revela
                 placeProxy(0);
                 proxy.style.opacity    = '1';
                 heroImg.style.opacity  = '0';
@@ -179,24 +181,36 @@
             },
 
             onLeave() {
-                // Animación completa: el proxy está en posición intro.
-                // Swap del src para que la imagen real use hero.jpg (mismo crop portrait).
-                introImg.src = heroImg.src;
-                gsap.to(proxy,    { opacity: 0, duration: 0.5, ease: 'power2.out' });
-                gsap.to(introImg, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: 0.1 });
+                // Proxy está encima de introImg (misma posición, misma imagen).
+                // Swap instantáneo: sin fade, sin salto de brillo.
+                gsap.killTweensOf([proxy, introImg]);
+                proxy.style.opacity    = '0';
+                introImg.style.opacity = '1';
             },
 
             onEnterBack() {
-                // Usuario vuelve a entrar en la zona de animación desde abajo
+                // Scrolleando de vuelta desde abajo: snap proxy a la posición
+                // ACTUAL de introFig (getBCR exacto) antes de revelar.
                 gsap.killTweensOf([proxy, introImg]);
-                gsap.set(introImg, { opacity: 0 });
-                gsap.set(proxy,    { opacity: 1 });
+                const iR = introFig.getBoundingClientRect();
+                proxy.style.left   = iR.left   + 'px';
+                proxy.style.top    = iR.top    + 'px';
+                proxy.style.width  = iR.width  + 'px';
+                proxy.style.height = iR.height + 'px';
+                proxy.style.opacity    = '1';
+                introImg.style.opacity = '0';
             },
 
             onLeaveBack() {
-                // Usuario scrollea de vuelta por encima del inicio
+                // Scrolleando de vuelta por encima del inicio: snap proxy a la
+                // posición ACTUAL del heroMedia (getBCR exacto) antes de revelar.
                 gsap.killTweensOf([proxy, heroImg]);
-                gsap.to(proxy,   { opacity: 0, duration: 0.3 });
+                const hR = heroMedia.getBoundingClientRect();
+                proxy.style.left   = hR.left   + 'px';
+                proxy.style.top    = hR.top    + 'px';
+                proxy.style.width  = hR.width  + 'px';
+                proxy.style.height = hR.height + 'px';
+                proxy.style.opacity   = '0';
                 heroImg.style.opacity = '1';
             },
         });
