@@ -334,22 +334,6 @@ $uri = get_template_directory_uri();
     </section><!-- .hp-profile -->
 
 
-    <!-- =============================================
-         § 5  FULL-BLEED IMAGE
-         large landscape image, full width
-    ============================================= -->
-    <section class="hp-landscape" aria-label="<?php esc_attr_e( 'Studio imagery', 'montoya-portfolio' ); ?>">
-        <figure class="hp-landscape__image" data-js="values-image">
-            <img
-                src="<?php echo esc_url( $uri . '/assets/images/values-landscape.jpg' ); ?>"
-                alt=""
-                width="1396"
-                height="830"
-                loading="lazy"
-            >
-        </figure>
-    </section><!-- .hp-landscape -->
-
 
 </article><!-- .home-page -->
 

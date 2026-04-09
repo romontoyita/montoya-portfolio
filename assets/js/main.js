@@ -367,7 +367,6 @@
         '.hp-project__image img',
         '.hp-profile__detail img',
         '.hp-profile__portrait img',
-        '.hp-landscape__image img',
         '.hp-cta__image img',
     ];
 
@@ -399,7 +398,7 @@
 // (.hp-cta, .hp-hero__inner) are safe to transform: they contain no element
 // whose getBoundingClientRect() is cached by the image-transition animations.
 //
-// .hp-intro / .hp-profile / .hp-landscape are excluded — their [data-js]
+// .hp-intro / .hp-profile are excluded — their [data-js]
 // image-transition elements are direct descendants, so any translateY on those
 // section roots would shift the cached absolute positions and break the proxy
 // placement.
