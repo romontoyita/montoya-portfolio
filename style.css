@@ -383,6 +383,10 @@ p {
     opacity: 0;
 }
 
+.is-loading .site-header::after {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .page-loader__logo {
         font-size:      clamp(2rem, 8vw, 4rem);
