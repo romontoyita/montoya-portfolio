@@ -1144,6 +1144,7 @@ p {
 .site-footer__copy {
     font-family: var(--font-body);
     font-size:   var(--text-lg);
+    line-height:    1.5;
     color:       var(--color-base-70);
     line-height: 1;
 }
@@ -1178,6 +1179,10 @@ p {
         min-height: unset;
         max-width:  100%;
         gap:        var(--space-xl);
+    }
+
+    .site-footer__back-top {
+        margin-top: 32px;
     }
 }
 
