@@ -286,30 +286,10 @@
 
     function placeProxy2(p) {
         const sy = window.scrollY;
-        
-        // 1. Posicionamiento del contenedor
         proxy.style.left   = lerp(abs2.source.left,   abs2.target.left,   p) + 'px';
         proxy.style.top    = (lerp(abs2.source.top,   abs2.target.top,    p) - sy) + 'px';
         proxy.style.width  = lerp(abs2.source.width,  abs2.target.width,  p) + 'px';
         proxy.style.height = lerp(abs2.source.height, abs2.target.height, p) + 'px';
-
-        // 2. Sincronización milimétrica de la imagen
-        const pImg = proxy.querySelector('img');
-        if (pImg) {
-            // La imagen de destino (Landscape) tiene: scale(1.18) y scaleX(-1)
-            // El yPercent de la imagen de destino al llegar al final (top 50%) 
-            // depende de la distancia recorrida. 
-            
-            const currentScale = lerp(1, 1.18, p);
-            
-            // IMPORTANTE: Si el salto es hacia ARRIBA, baja este número (ej: -2)
-            // Si el salto es hacia ABAJO, aumenta este número (ej: -6)
-            const currentYPercent = lerp(0, -4, p); 
-
-            // Forzamos el transform exacto que GSAP escribe en la imagen real
-            // Nota: scaleX(-1) debe ir separado o multiplicado si usas scale()
-            pImg.style.transform = `scaleX(-1) scale(${currentScale}) translateY(${currentYPercent}%)`;
-        }
     }
 
     // ── 4. ScrollTrigger ──────────────────────────────────────────────────────
@@ -324,14 +304,9 @@
             scrub:      true,
 
             onEnter() {
-                // Forzamos el estado inicial antes de mostrar
                 placeProxy2(0);
-                
-                // IMPORTANTE: Asegúrate de que el src sea el correcto (la del detail)
-                pImg.src = detailImg.src; 
-                
-                proxy.style.opacity = '1';
-                detailImg.style.opacity = '0';
+                proxy.style.opacity       = '1';
+                detailImg.style.opacity   = '0';
                 landscapeImg.style.opacity = '0';
             },
 
