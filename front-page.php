@@ -77,6 +77,7 @@ $uri = get_template_directory_uri();
             </div>
 
             <div class="hp-intro__content-col">
+                <span class="hp-intro__label">(WHAT WE BELIEVE)</span>
                 <blockquote class="hp-intro__quote" data-js="intro-quote">
                     Design is not styling. Identity is structure, meaning, and time.
                 </blockquote>
