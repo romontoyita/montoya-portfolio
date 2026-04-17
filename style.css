@@ -1429,12 +1429,13 @@ p {
     gap:             clamp(2rem, 16.9vw, 236px);
 }
 
-/* Content column */
+/* Content column — mirrors .hp-intro__content-col */
 .cs-section__content {
     display:        flex;
     flex-direction: column;
     gap:            clamp(2rem, 4.4vw, 64px);
-    flex:           0 0 clamp(280px, 33.9%, 472px);
+    width:          57.5%;
+    max-width:      800px;
 }
 
 /* Section heading — 44px IvyPresto (between project title and body)        */
@@ -1456,11 +1457,11 @@ p {
     letter-spacing: 0.02em;
 }
 
-/* Square image column — 684px max                                           */
+/* Image column — mirrors .hp-intro__image-col + .hp-intro__figure          */
 .cs-section__image {
-    flex:         0 0 clamp(280px, 49.1%, 684px);
-    aspect-ratio: 1 / 1;
-    overflow:     hidden;
+    flex:     1;
+    height:   clamp(400px, 56.1vw, 808px);
+    overflow: hidden;
 }
 
 .cs-section__image img {
@@ -1530,9 +1531,11 @@ p {
     .cs-section__image {
         flex:   none;
         width:  100%;
+        max-width: 100%;
     }
 
     .cs-section__image {
-        aspect-ratio: 4 / 3;
+        height:     70vw;
+        min-height: 280px;
     }
 }
