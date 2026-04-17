@@ -18,8 +18,6 @@ $body_raw = ( $has_acf && get_field( 'ab_intro_body' ) )     ? get_field( 'ab_in
     : "Founded and directed by Rocío Montoya, Montoya Studio is an independent creative practice working across identity, digital design, and development.\n\nWe partner with brands seeking thoughtful execution, aesthetic precision, and systems built to endure.";
 $image    = $has_acf ? get_field( 'ab_intro_image' ) : null;
 
-// Split body into paragraphs on double newlines
-$body_parts = array_filter( array_map( 'trim', explode( "\n\n", $body_raw ) ) );
 
 ?>
 
@@ -61,9 +59,7 @@ $body_parts = array_filter( array_map( 'trim', explode( "\n\n", $body_raw ) ) );
                     <?php echo esc_html( $headline ); ?>
                 </h1>
                 <div class="ab-intro__body" data-js="ab-intro-body">
-                    <?php foreach ( $body_parts as $para ) : ?>
-                        <p><?php echo esc_html( $para ); ?></p>
-                    <?php endforeach; ?>
+                    <?php echo wp_kses_post( wpautop( $body_raw ) ); ?>
                 </div>
             </div>
 
