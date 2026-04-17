@@ -1590,8 +1590,9 @@ p {
    ========================================================================== */
 
 .ab-intro {
-    padding-block: clamp(6rem, 17.8vw, 256px);
-    overflow:      hidden;
+    padding-block-start: clamp(3rem, 8.3vw, 120px);
+    padding-block-end:   clamp(6rem, 17.8vw, 256px);
+    overflow:            hidden;
 }
 
 .ab-intro__inner {
