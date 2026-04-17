@@ -1327,11 +1327,12 @@ p {
 }
 
 .cs-hero__meta-list li {
-    font-family:    var(--font-body);
-    font-size:      1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
     letter-spacing: 0.02em;
-    color:          var(--color-primary);
-    line-height:    1.8;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: 1.8;
 }
 
 /* Full-bleed hero image — 802/1392 ≈ 57.6% aspect                          */
