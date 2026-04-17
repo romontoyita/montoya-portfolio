@@ -11,12 +11,17 @@ get_header();
 $uri     = get_template_directory_uri();
 $has_acf = function_exists( 'get_field' );
 
-// ── ACF fields with fallback defaults ────────────────────────────────────────
+// ── § 1  INTRO — ACF fields with fallback defaults ───────────────────────────
 $label    = ( $has_acf && get_field( 'ab_intro_label' ) )    ? get_field( 'ab_intro_label' )    : 'ABOUT';
 $headline = ( $has_acf && get_field( 'ab_intro_headline' ) ) ? get_field( 'ab_intro_headline' ) : 'Design shaped through clarity, restraint, and long-term thinking.';
 $body_raw = ( $has_acf && get_field( 'ab_intro_body' ) )     ? get_field( 'ab_intro_body' )
     : "Founded and directed by Rocío Montoya, Montoya Studio is an independent creative practice working across identity, digital design, and development.\n\nWe partner with brands seeking thoughtful execution, aesthetic precision, and systems built to endure.";
 $image    = $has_acf ? get_field( 'ab_intro_image' ) : null;
+
+// ── § 2  PHILOSOPHY — ACF fields with fallback defaults ──────────────────────
+$phrase_1 = ( $has_acf && get_field( 'ab_philosophy_phrase_1' ) ) ? get_field( 'ab_philosophy_phrase_1' ) : 'Design is not a surface. It is the structure underneath everything visible.';
+$phrase_2 = ( $has_acf && get_field( 'ab_philosophy_phrase_2' ) ) ? get_field( 'ab_philosophy_phrase_2' ) : 'We build systems that endure — precise, restrained, and made to last.';
+
 
 
 ?>
@@ -66,5 +71,19 @@ $image    = $has_acf ? get_field( 'ab_intro_image' ) : null;
         </div>
 
     </section><!-- .ab-intro -->
+
+
+    <!-- =============================================
+         ABOUT — § 2  PHILOSOPHY
+         pinned 100vh section — phrases revealed on scroll
+    ============================================= -->
+    <section class="ab-philosophy" aria-label="<?php esc_attr_e( 'Studio philosophy', 'montoya-portfolio' ); ?>">
+
+        <div class="ab-philosophy__inner container">
+            <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_1 ); ?></p>
+            <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_2 ); ?></p>
+        </div>
+
+    </section><!-- .ab-philosophy -->
 
 <?php get_footer(); ?>

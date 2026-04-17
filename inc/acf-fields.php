@@ -64,4 +64,40 @@ function montoya_register_about_fields(): void {
         'style'           => 'default',
         'label_placement' => 'top',
     ] );
+
+    acf_add_local_field_group( [
+        'key'    => 'group_about_philosophy',
+        'title'  => 'About — Philosophy Section',
+        'fields' => [
+            [
+                'key'           => 'field_ab_philosophy_phrase_1',
+                'label'         => 'Phrase 1',
+                'name'          => 'ab_philosophy_phrase_1',
+                'type'          => 'text',
+                'instructions'  => 'First statement revealed on scroll. Keep it short and impactful.',
+                'default_value' => 'Design is not a surface. It is the structure underneath everything visible.',
+            ],
+            [
+                'key'           => 'field_ab_philosophy_phrase_2',
+                'label'         => 'Phrase 2',
+                'name'          => 'ab_philosophy_phrase_2',
+                'type'          => 'text',
+                'instructions'  => 'Second statement, revealed after the first.',
+                'default_value' => 'We build systems that endure — precise, restrained, and made to last.',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param'    => 'page_slug',
+                    'operator' => '==',
+                    'value'    => 'about',
+                ],
+            ],
+        ],
+        'menu_order'      => 1,
+        'position'        => 'normal',
+        'style'           => 'default',
+        'label_placement' => 'top',
+    ] );
 }

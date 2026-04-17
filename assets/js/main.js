@@ -472,6 +472,58 @@
 }());
 
 
+// =============================================================================
+// ABOUT — PHILOSOPHY SECTION
+// Pins the section for 200 % of vh while two phrases are revealed sequentially.
+// Snap locks to three positions: section entry → phrase 1 → phrase 2.
+// Uses GSAP pin (not CSS sticky) so ScrollTrigger owns the scroll offset and
+// Lenis's ticker feeds position updates correctly.
+// =============================================================================
+(function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = document.querySelector('.ab-philosophy');
+    if (!section) return;
+
+    const phrases = section.querySelectorAll('.ab-philosophy__phrase');
+    if (!phrases.length) return;
+
+    // Touch devices: CSS already forces phrases visible; nothing to animate.
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
+    // Start hidden — CSS will-change is already set
+    gsap.set(phrases, { opacity: 0, y: 30 });
+
+    // ── Timeline ──────────────────────────────────────────────────────────────
+    // Each phrase reveal takes 1 unit; a 0.5-unit pause sits between them.
+    // Total = 2.5 → labels at progress 0, 0.4, 1.0 over the 200 % pin travel.
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger:       section,
+            start:         'top top',
+            end:           '+=200%',      // pin for 200 vh of scroll
+            pin:           true,
+            anticipatePin: 1,
+            scrub:         true,
+            snap: {
+                snapTo:   'labels',
+                duration: { min: 0.25, max: 0.55 },
+                ease:     'power2.inOut',
+            },
+        },
+    });
+
+    tl.addLabel('enter')
+      .to(phrases[0], { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
+      .addLabel('phrase-1')
+      .to({}, { duration: 0.5 })                                            // pause
+      .to(phrases[1], { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
+      .addLabel('phrase-2');
+}());
+
+
 // Header — add .is-scrolled once the user scrolls past the initial position
 (function () {
     const header = document.querySelector('.site-header');
