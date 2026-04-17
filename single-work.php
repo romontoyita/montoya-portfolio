@@ -171,12 +171,14 @@ $outcome         = $has_acf ? get_field( 'outcome' )            : '';
 
             <div class="cs-section__content">
                 <span class="cs-label">(The Problem / Challenge)</span>
-                <?php if ( $has_acf && get_field( 'problem_title' ) ) : ?>
-                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'problem_title' ) ); ?></h2>
-                <?php endif; ?>
-                <?php if ( $has_acf && get_field( 'problem_body' ) ) : ?>
-                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'problem_body' ) ) ); ?></p>
-                <?php endif; ?>
+                <div class="cs-section__text">
+                    <?php if ( $has_acf && get_field( 'problem_title' ) ) : ?>
+                        <h2 class="cs-section__title"><?php echo esc_html( get_field( 'problem_title' ) ); ?></h2>
+                    <?php endif; ?>
+                    <?php if ( $has_acf && get_field( 'problem_body' ) ) : ?>
+                        <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'problem_body' ) ) ); ?></p>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <figure class="cs-section__image">
@@ -217,12 +219,14 @@ $outcome         = $has_acf ? get_field( 'outcome' )            : '';
 
             <div class="cs-section__content">
                 <span class="cs-label">(The Approach)</span>
-                <?php if ( $has_acf && get_field( 'approach_title' ) ) : ?>
-                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'approach_title' ) ); ?></h2>
-                <?php endif; ?>
-                <?php if ( $has_acf && get_field( 'approach_body' ) ) : ?>
-                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'approach_body' ) ) ); ?></p>
-                <?php endif; ?>
+                <div class="cs-section__text">
+                    <?php if ( $has_acf && get_field( 'approach_title' ) ) : ?>
+                        <h2 class="cs-section__title"><?php echo esc_html( get_field( 'approach_title' ) ); ?></h2>
+                    <?php endif; ?>
+                    <?php if ( $has_acf && get_field( 'approach_body' ) ) : ?>
+                        <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'approach_body' ) ) ); ?></p>
+                    <?php endif; ?>
+                </div>
             </div>
 
         </div>
