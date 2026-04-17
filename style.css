@@ -1720,16 +1720,17 @@ p {
 }
 
 .ab-philosophy__inner {
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(0.5rem, 1.1vw, 14px);  /* tight — one visual block */
-    max-width:      800px;
-    margin:         0 auto;
-    text-align:     center;
+    display:     grid;           /* stack phrases on same cell */
+    max-width:   800px;
+    margin:      0 auto;
+    text-align:  center;
+    width:       100%;
 }
 
-/* Phrases start hidden — GSAP reveals on scroll */
+/* Phrases start hidden — GSAP crossfades them one at a time */
 .ab-philosophy__phrase {
+    grid-row:       1;
+    grid-column:    1;
     font-family:    var(--font-display);
     font-size:      clamp(2.25rem, 4.5vw, 4rem);
     font-weight:    300;
