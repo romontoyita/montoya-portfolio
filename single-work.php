@@ -55,37 +55,54 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
 <main id="main" class="site-main">
 
     <!-- ══════════════════════════════════════════════════════════
-         § 1  HERO — title + meta + full-bleed image
+         § 1  HERO — scope + statement + metas + full-bleed image
          ══════════════════════════════════════════════════════════ -->
     <section class="cs-hero">
 
-        <div class="cs-hero__top">
+        <div class="cs-overview__inner">
 
-            <h1 class="cs-hero__title"><?php the_title(); ?></h1>
+            <div class="cs-overview__scope">
+                <span class="cs-label">(Scope)</span>
+                <?php if ( $scope ) : ?>
+                <ul class="cs-overview__scope-list">
+                    <?php foreach ( $scope as $item ) : ?>
+                        <li class="cs-overview__scope-item"><?php echo esc_html( $item ); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+            </div>
 
-            <div class="cs-hero__metas">
+            <div class="cs-hero__right">
 
-                <?php if ( $client ) : ?>
-                <div class="cs-hero__meta-group">
-                    <span class="hp-project__tax-label">Client</span>
-                    <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
-                </div>
+                <?php if ( $statement ) : ?>
+                <p class="cs-overview__statement"><?php echo esc_html( $statement ); ?></p>
                 <?php endif; ?>
 
-                <?php if ( $industry ) : ?>
-                <div class="cs-hero__meta-group">
-                    <span class="hp-project__tax-label">Industry</span>
-                    <ul class="cs-hero__meta-list">
-                        <?php foreach ( $industry as $tag ) : ?>
-                            <li><?php echo esc_html( $tag ); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <?php endif; ?>
+                <div class="cs-hero__metas">
 
-            </div><!-- .cs-hero__metas -->
+                    <?php if ( $client ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Client</span>
+                        <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
+                    </div>
+                    <?php endif; ?>
 
-        </div><!-- .cs-hero__top -->
+                    <?php if ( $industry ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Industry</span>
+                        <ul class="cs-hero__meta-list">
+                            <?php foreach ( $industry as $tag ) : ?>
+                                <li><?php echo esc_html( $tag ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
+                </div><!-- .cs-hero__metas -->
+
+            </div><!-- .cs-hero__right -->
+
+        </div><!-- .cs-overview__inner -->
 
         <figure class="cs-hero__image breakout">
             <?php if ( $hero_img ) : ?>
@@ -103,31 +120,6 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
         </figure>
 
     </section><!-- .cs-hero -->
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         § 2  OVERVIEW — scope list + statement paragraph
-         ══════════════════════════════════════════════════════════ -->
-    <section class="cs-overview">
-        <div class="cs-overview__inner">
-
-            <div class="cs-overview__scope">
-                <span class="cs-label">(Scope)</span>
-                <?php if ( $scope ) : ?>
-                <ul class="cs-overview__scope-list">
-                    <?php foreach ( $scope as $item ) : ?>
-                        <li class="cs-overview__scope-item"><?php echo esc_html( $item ); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <?php endif; ?>
-            </div>
-
-            <?php if ( $statement ) : ?>
-            <p class="cs-overview__statement"><?php echo esc_html( $statement ); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </section><!-- .cs-overview -->
 
 
     <!-- ══════════════════════════════════════════════════════════

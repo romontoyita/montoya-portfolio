@@ -1273,10 +1273,10 @@ p {
 /* ── § 1  HERO ─────────────────────────────────────────────────────────── */
 
 .cs-hero {
-    /*padding-top:    clamp(4rem, 8.9vw, 128px);*/
     display:        flex;
     flex-direction: column;
-    gap:            clamp(2rem, 4.4vw, 64px);
+    gap:            clamp(4rem, 8.9vw, 128px);
+    padding-bottom: clamp(4rem, 8.9vw, 128px);
 }
 
 /* Title | metas row */
@@ -1351,12 +1351,7 @@ p {
 
 /* ── § 2  OVERVIEW — scope + statement ─────────────────────────────────── */
 
-.cs-overview {
-    padding-top:    clamp(6rem, 17.8vw, 256px);
-    padding-bottom: clamp(4rem, 8.9vw, 128px);
-}
-
-/* Left: scope | Right: statement */
+/* Left: scope | Right: statement + metas */
 .cs-overview__inner {
     display:         flex;
     justify-content: space-between;
@@ -1389,7 +1384,15 @@ p {
     color:          var(--color-primary);
 }
 
-/* Statement — right column, ~57% width (mirrors .hp-hero__heading)         */
+/* Right column — statement + metas stacked (mirrors .hp-hero__heading width) */
+.cs-hero__right {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+    width:          57.5%;
+}
+
+/* Statement — full width of its parent .cs-hero__right                      */
 .cs-overview__statement {
     font-family:    var(--font-display);
     font-size:      clamp(2.5rem, 5vw, 4.5rem);
@@ -1397,7 +1400,6 @@ p {
     line-height:    1.2;
     letter-spacing: 0.02em;
     color:          var(--color-primary);
-    width:          57.5%;
 }
 
 
@@ -1562,7 +1564,7 @@ p {
 
     .cs-overview__scope { justify-content: flex-start; gap: 0; }
 
-    .cs-overview__statement { width: 100%; }
+    .cs-hero__right { width: 100%; }
 
     /* Problem / Approach — stack vertically */
     .cs-section__inner {
