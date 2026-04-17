@@ -1313,11 +1313,12 @@ p {
 
 /* Single-line meta value                                                     */
 .cs-hero__meta-value {
-    font-family:    var(--font-body);
-    font-size:      1rem;
-    font-weight:    400;
+    font-family: var(--font-body);
+    font-size: 1rem;
     letter-spacing: 0.02em;
-    color:          var(--color-primary);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: 1.8;
 }
 
 /* Multi-line meta list (Industry tags)                                       */
