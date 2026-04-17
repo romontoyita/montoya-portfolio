@@ -1256,9 +1256,9 @@ p {
    16px Söhne, black, not uppercase                                          */
 .cs-label {
     font-family:    var(--font-body);
-    font-size:      1rem;
-    font-weight:    400;
+    font-size:      clamp(1rem, 1.39vw, 1.25rem); /* 20px at 1440px */
     letter-spacing: 0.02em;
+    text-transform: uppercase;
     color:          var(--color-primary);
 }
 
