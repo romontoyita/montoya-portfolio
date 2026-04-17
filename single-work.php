@@ -47,6 +47,9 @@ $overview_img_b  = $has_acf ? get_field( 'overview_image_b' )   : null;
 $problem_img     = $has_acf ? get_field( 'problem_image' )      : null;
 $approach_img    = $has_acf ? get_field( 'approach_image' )     : null;
 $outcome         = $has_acf ? get_field( 'outcome' )            : '';
+$gallery_full    = $has_acf ? get_field( 'gallery_image_full' ) : null;
+$gallery_left    = $has_acf ? get_field( 'gallery_image_left' ) : null;
+$gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
 ?>
 
 <main id="main" class="site-main">
@@ -242,6 +245,59 @@ $outcome         = $has_acf ? get_field( 'outcome' )            : '';
             <p class="cs-outcome__text"><?php echo esc_html( $outcome ); ?></p>
         <?php endif; ?>
     </section><!-- .cs-outcome -->
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         § 6  GALLERY — full-width + two-up pair
+         ══════════════════════════════════════════════════════════ -->
+    <?php if ( $gallery_full || $gallery_left || $gallery_right ) : ?>
+    <section class="cs-gallery">
+
+        <?php if ( $gallery_full ) : ?>
+        <figure class="cs-gallery__full">
+            <img
+                src="<?php echo esc_url( $gallery_full['url'] ); ?>"
+                alt="<?php echo esc_attr( $gallery_full['alt'] ); ?>"
+                loading="lazy"
+                decoding="async"
+            >
+        </figure>
+        <?php else : ?>
+        <div class="cs-gallery__full cs-placeholder" aria-hidden="true"></div>
+        <?php endif; ?>
+
+        <div class="cs-gallery__pair">
+
+            <figure class="cs-gallery__item">
+                <?php if ( $gallery_left ) : ?>
+                    <img
+                        src="<?php echo esc_url( $gallery_left['url'] ); ?>"
+                        alt="<?php echo esc_attr( $gallery_left['alt'] ); ?>"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                <?php else : ?>
+                    <div class="cs-placeholder" aria-hidden="true"></div>
+                <?php endif; ?>
+            </figure>
+
+            <figure class="cs-gallery__item">
+                <?php if ( $gallery_right ) : ?>
+                    <img
+                        src="<?php echo esc_url( $gallery_right['url'] ); ?>"
+                        alt="<?php echo esc_attr( $gallery_right['alt'] ); ?>"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                <?php else : ?>
+                    <div class="cs-placeholder" aria-hidden="true"></div>
+                <?php endif; ?>
+            </figure>
+
+        </div><!-- .cs-gallery__pair -->
+
+    </section><!-- .cs-gallery -->
+    <?php endif; ?>
 
 
 </main><!-- #main -->

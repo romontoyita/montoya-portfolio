@@ -1336,17 +1336,15 @@ p {
     line-height: 1.8;
 }
 
-/* Full-bleed hero image — 802/1392 ≈ 57.6% aspect                          */
+/* Full-bleed hero image — full height, no crop                              */
 .cs-hero__image {
     margin-inline: calc(var(--fluid-pad) * -1); /* reuses .breakout logic */
-    height:        clamp(300px, 55.7vw, 802px);
-    overflow:      hidden;
 }
 
 .cs-hero__image img {
     width:      100%;
-    height:     100%;
-    object-fit: cover;
+    height:     auto;
+    object-fit: unset;
     display:    block;
 }
 
@@ -1501,6 +1499,48 @@ p {
 }
 
 
+/* ── § 6  GALLERY ───────────────────────────────────────────────────────── */
+
+.cs-gallery {
+    display:        flex;
+    flex-direction: column;
+    gap:            28px;
+    padding-inline: 24px;
+    padding-bottom: clamp(4rem, 8.9vw, 128px);
+}
+
+/* Full-width image — 830px tall */
+.cs-gallery__full {
+    width:    100%;
+    height:   clamp(300px, 57.8vw, 830px);
+    overflow: hidden;
+}
+
+.cs-gallery__full img {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+}
+
+/* Two-up pair — equal columns, 684px tall */
+.cs-gallery__pair {
+    display: flex;
+    gap:     28px;
+}
+
+.cs-gallery__item {
+    flex:     1 1 0;
+    height:   clamp(260px, 47.5vw, 684px);
+    overflow: hidden;
+}
+
+.cs-gallery__item img {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+}
+
+
 /* ── Case Study responsive ─────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
@@ -1513,10 +1553,6 @@ p {
 
     .cs-hero__title { flex: none; max-width: 100%; }
 
-    .cs-hero__image {
-        height:     60vw;
-        min-height: 220px;
-    }
 
     /* Overview */
     .cs-overview__inner {
@@ -1545,5 +1581,18 @@ p {
     .cs-section__image {
         height:     70vw;
         min-height: 280px;
+    }
+
+    /* Gallery */
+    .cs-gallery {
+        padding-inline: 0;
+    }
+
+    .cs-gallery__pair {
+        flex-direction: column;
+    }
+
+    .cs-gallery__item {
+        height: 70vw;
     }
 }
