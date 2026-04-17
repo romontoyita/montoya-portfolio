@@ -1502,17 +1502,16 @@ p {
     padding-bottom: clamp(4rem, 8.9vw, 128px);
 }
 
-/* Full-width image — 830px tall */
+/* Full-width image — no height crop */
 .cs-gallery__full {
     width:    100%;
-    height:   clamp(300px, 57.8vw, 830px);
     overflow: hidden;
 }
 
 .cs-gallery__full img {
-    width:      100%;
-    height:     100%;
-    object-fit: cover;
+    width:   100%;
+    height:  auto;
+    display: block;
 }
 
 /* Two-up pair — equal columns, 684px tall */
