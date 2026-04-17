@@ -1443,7 +1443,7 @@ p {
 .cs-section__text {
     display:        flex;
     flex-direction: column;
-    gap:            clamp(1rem, 2.2vw, 32px);
+    gap:            clamp(2rem, 4.4vw, 64px);
 }
 
 /* Section heading — 44px IvyPresto (between project title and body)        */
@@ -1458,10 +1458,10 @@ p {
 
 /* Body text — same values as .hp-intro__body (24px / 70% / lh 1.5)        */
 .cs-section__body {
-    font-size:      clamp(1rem, 1.67vw, 1.5rem);
-    font-weight:    400;
-    color:          var(--color-primary-70);
-    line-height:    1.5;
+    font-size: clamp(1rem, 1.67vw, 1.5rem);
+    font-weight: 400;
+    color: var(--color-primary-70);
+    line-height: 1.5;
     letter-spacing: 0.02em;
 }
 
