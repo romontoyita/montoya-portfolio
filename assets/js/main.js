@@ -474,39 +474,52 @@
 
 // =============================================================================
 // ABOUT — PHILOSOPHY SECTION
-// Pins the section for 200 % of vh while two phrases are revealed sequentially.
-// Snap locks to three positions: section entry → phrase 1 → phrase 2.
-// Uses GSAP pin (not CSS sticky) so ScrollTrigger owns the scroll offset and
-// Lenis's ticker feeds position updates correctly.
+// CSS sticky keeps the section in view while a 300vh track scrolls beneath it.
+// ScrollTrigger drives phrase reveals via scrub; snap routes through Lenis so
+// the smooth-scroll inertia is preserved (GSAP's default window.scrollTo
+// bypasses Lenis — we patch it once to fix that).
 // =============================================================================
 (function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const section = document.querySelector('.ab-philosophy');
-    if (!section) return;
+    const track = document.querySelector('.ab-philosophy-track');
+    if (!track) return;
 
-    const phrases = section.querySelectorAll('.ab-philosophy__phrase');
+    const phrases = track.querySelectorAll('.ab-philosophy__phrase');
     if (!phrases.length) return;
 
-    // Touch devices: CSS already forces phrases visible; nothing to animate.
+    // Touch: CSS forces phrases visible; skip all JS.
     if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
-    // Start hidden — CSS will-change is already set
-    gsap.set(phrases, { opacity: 0, y: 30 });
+    // ── Patch window.scrollTo once so GSAP snap routes through Lenis ─────────
+    // GSAP snap calls window.scrollTo(x, y) to jump to a snap target. Lenis
+    // does not intercept native scrollTo in v1, so we override it once here.
+    if (!window.__scrollToPatched && window.__lenis) {
+        window.__scrollToPatched = true;
+        window.scrollTo = function (optOrX, y) {
+            const target = (optOrX !== null && typeof optOrX === 'object')
+                ? (optOrX.top !== undefined ? optOrX.top : (optOrX.y !== undefined ? optOrX.y : 0))
+                : (y !== undefined ? y : 0);
+            window.__lenis.scrollTo(Number(target), {
+                duration: 0.65,
+                easing:   function (t) { return 1 - Math.pow(1 - t, 3); },
+            });
+        };
+    }
 
-    // ── Timeline ──────────────────────────────────────────────────────────────
-    // Each phrase reveal takes 1 unit; a 0.5-unit pause sits between them.
-    // Total = 2.5 → labels at progress 0, 0.4, 1.0 over the 200 % pin travel.
+    // ── Phrases start hidden ──────────────────────────────────────────────────
+    gsap.set(phrases, { opacity: 0, y: 28 });
+
+    // ── Timeline — scrubbed over the 200vh of scroll travel in the track ─────
+    // Total duration = 2.5 units  →  labels at progress 0 / 0.4 / 1.0
     const tl = gsap.timeline({
         scrollTrigger: {
-            trigger:       section,
-            start:         'top top',
-            end:           '+=200%',      // pin for 200 vh of scroll
-            pin:           true,
-            anticipatePin: 1,
-            scrub:         true,
+            trigger: track,
+            start:   'top top',       // track top hits viewport top
+            end:     'bottom bottom', // track bottom hits viewport bottom (= +200vh)
+            scrub:   true,
             snap: {
                 snapTo:   'labels',
                 duration: { min: 0.25, max: 0.55 },
@@ -518,7 +531,7 @@
     tl.addLabel('enter')
       .to(phrases[0], { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
       .addLabel('phrase-1')
-      .to({}, { duration: 0.5 })                                            // pause
+      .to({}, { duration: 0.5 })
       .to(phrases[1], { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
       .addLabel('phrase-2');
 }());

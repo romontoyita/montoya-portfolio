@@ -1702,23 +1702,33 @@ p {
 
 /* ==========================================================================
    § 2  PHILOSOPHY
-   100vh pinned section — phrases revealed sequentially on scroll
+   300vh track — sticky 100vh section — phrases revealed sequentially on scroll
    ========================================================================== */
 
+/* Track: tall enough to hold 200vh of scroll travel while section is sticky */
+.ab-philosophy-track {
+    height: 300vh;
+}
+
 .ab-philosophy {
-    height:          100vh;
-    display:         flex;
-    align-items:     center;
-    overflow:        hidden;
+    position:    sticky;
+    top:         0;
+    height:      100vh;
+    display:     flex;
+    align-items: center;
+    overflow:    hidden;
 }
 
 .ab-philosophy__inner {
     display:        flex;
     flex-direction: column;
-    gap:            clamp(2.5rem, 5.5vw, 80px);
+    gap:            clamp(0.5rem, 1.1vw, 14px);  /* tight — one visual block */
+    max-width:      800px;
+    margin:         0 auto;
+    text-align:     center;
 }
 
-/* Phrases start hidden — GSAP sets opacity/transform before revealing */
+/* Phrases start hidden — GSAP reveals on scroll */
 .ab-philosophy__phrase {
     font-family:    var(--font-display);
     font-size:      clamp(2.25rem, 4.5vw, 4rem);
@@ -1730,12 +1740,21 @@ p {
     will-change:    opacity, transform;
 }
 
-/* Touch / mobile — phrases always visible, section height auto */
+/* Touch / mobile — no animation, track collapses to natural height */
 @media (hover: none) and (pointer: coarse) {
+    .ab-philosophy-track {
+        height: auto;
+    }
+
     .ab-philosophy {
-        height:         auto;
-        padding-block:  var(--space-2xl);
-        align-items:    flex-start;
+        position:      static;
+        height:        auto;
+        padding-block: var(--space-2xl);
+        align-items:   flex-start;
+    }
+
+    .ab-philosophy__inner {
+        text-align: left;
     }
 
     .ab-philosophy__phrase {

@@ -75,15 +75,20 @@ $phrase_2 = ( $has_acf && get_field( 'ab_philosophy_phrase_2' ) ) ? get_field( '
 
     <!-- =============================================
          ABOUT — § 2  PHILOSOPHY
-         pinned 100vh section — phrases revealed on scroll
+         Sticky 100vh section inside a 300vh track.
+         CSS sticky pins the section; ScrollTrigger reveals phrases on scroll.
     ============================================= -->
-    <section class="ab-philosophy" aria-label="<?php esc_attr_e( 'Studio philosophy', 'montoya-portfolio' ); ?>">
+    <div class="ab-philosophy-track">
 
-        <div class="ab-philosophy__inner container">
-            <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_1 ); ?></p>
-            <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_2 ); ?></p>
-        </div>
+        <section class="ab-philosophy" aria-label="<?php esc_attr_e( 'Studio philosophy', 'montoya-portfolio' ); ?>">
 
-    </section><!-- .ab-philosophy -->
+            <div class="ab-philosophy__inner container">
+                <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_1 ); ?></p>
+                <p class="ab-philosophy__phrase"><?php echo esc_html( $phrase_2 ); ?></p>
+            </div>
+
+        </section><!-- .ab-philosophy -->
+
+    </div><!-- .ab-philosophy-track -->
 
 <?php get_footer(); ?>
