@@ -368,6 +368,11 @@
         '.hp-profile__detail img',
         '.hp-profile__portrait img',
         '.hp-cta__image img',
+        // Case study
+        '.cs-hero__image img',
+        '.cs-section__image img',
+        '.cs-gallery__full img',
+        '.cs-gallery__item img',
     ];
 
     const images = document.querySelectorAll(SELECTORS.join(', '));
