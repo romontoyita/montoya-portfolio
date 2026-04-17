@@ -1286,14 +1286,22 @@ p {
     align-items:     flex-start;
 }
 
-/* Large project title — same weight/size as .hp-project__title             */
+/* Left col — label pinned top, metas pinned bottom (mirrors .hp-hero__left) */
+.cs-hero__left {
+    display:         flex;
+    flex-direction:  column;
+    justify-content: space-between;
+    flex:            1;
+}
+
+/* Large project title — right column, ~57% width (mirrors .hp-hero__heading) */
 .cs-hero__title {
     font-family:    var(--font-display);
     font-size:      clamp(2.5rem, 5vw, 4.5rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
-    flex:           0 1 40%;          /* ~566px on 1392px canvas */
+    width:          57.5%;
 }
 
 /* Two meta groups (Client + Industry) — floated right                       */
@@ -1501,7 +1509,9 @@ p {
         gap:            var(--space-xl);
     }
 
-    .cs-hero__title { flex: none; max-width: 100%; }
+    .cs-hero__left { gap: 0; }
+
+    .cs-hero__title { width: 100%; }
 
     .cs-hero__image {
         height:     60vw;

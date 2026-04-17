@@ -54,29 +54,35 @@ $outcome      = $has_acf ? get_field( 'outcome' )         : '';
 
         <div class="cs-hero__top">
 
+            <div class="cs-hero__left">
+
+                <span class="cs-label">(Case Study)</span>
+
+                <div class="cs-hero__metas">
+
+                    <?php if ( $client ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Client</span>
+                        <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ( $industry ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Industry</span>
+                        <ul class="cs-hero__meta-list">
+                            <?php foreach ( $industry as $tag ) : ?>
+                                <li><?php echo esc_html( $tag ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
+                </div><!-- .cs-hero__metas -->
+
+            </div><!-- .cs-hero__left -->
+
             <h1 class="cs-hero__title"><?php the_title(); ?></h1>
-
-            <div class="cs-hero__metas">
-
-                <?php if ( $client ) : ?>
-                <div class="cs-hero__meta-group">
-                    <span class="hp-project__tax-label">Client</span>
-                    <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
-                </div>
-                <?php endif; ?>
-
-                <?php if ( $industry ) : ?>
-                <div class="cs-hero__meta-group">
-                    <span class="hp-project__tax-label">Industry</span>
-                    <ul class="cs-hero__meta-list">
-                        <?php foreach ( $industry as $tag ) : ?>
-                            <li><?php echo esc_html( $tag ); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <?php endif; ?>
-
-            </div><!-- .cs-hero__metas -->
 
         </div><!-- .cs-hero__top -->
 
