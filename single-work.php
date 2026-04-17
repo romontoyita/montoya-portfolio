@@ -9,8 +9,6 @@
  *  industry        — textarea (one value per line)
  *  scope           — textarea (one value per line)
  *  statement       — textarea
- *  overview_image_a — image
- *  overview_image_b — image
  *  problem_title   — text
  *  problem_body    — textarea
  *  problem_image   — image
@@ -42,8 +40,6 @@ $client          = $has_acf ? get_field( 'client' )             : '';
 $industry        = cs_lines( 'industry' );
 $scope           = cs_lines( 'scope' );
 $statement       = $has_acf ? get_field( 'statement' )          : '';
-$overview_img_a  = $has_acf ? get_field( 'overview_image_a' )   : null;
-$overview_img_b  = $has_acf ? get_field( 'overview_image_b' )   : null;
 $problem_img     = $has_acf ? get_field( 'problem_image' )      : null;
 $approach_img    = $has_acf ? get_field( 'approach_image' )     : null;
 $outcome         = $has_acf ? get_field( 'outcome' )            : '';
@@ -120,42 +116,6 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
         </figure>
 
     </section><!-- .cs-hero -->
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         § 3  OVERVIEW IMAGES — small left + large right
-         ══════════════════════════════════════════════════════════ -->
-    <?php if ( $overview_img_a || $overview_img_b ) : ?>
-    <div class="hp-project__images hp-project__images--standard">
-
-        <figure class="hp-project__image hp-project__image--a">
-            <?php if ( $overview_img_a ) : ?>
-                <img
-                    src="<?php echo esc_url( $overview_img_a['url'] ); ?>"
-                    alt="<?php echo esc_attr( $overview_img_a['alt'] ); ?>"
-                    loading="lazy"
-                    decoding="async"
-                >
-            <?php else : ?>
-                <div class="cs-placeholder" aria-hidden="true"></div>
-            <?php endif; ?>
-        </figure>
-
-        <figure class="hp-project__image hp-project__image--b">
-            <?php if ( $overview_img_b ) : ?>
-                <img
-                    src="<?php echo esc_url( $overview_img_b['url'] ); ?>"
-                    alt="<?php echo esc_attr( $overview_img_b['alt'] ); ?>"
-                    loading="lazy"
-                    decoding="async"
-                >
-            <?php else : ?>
-                <div class="cs-placeholder" aria-hidden="true"></div>
-            <?php endif; ?>
-        </figure>
-
-    </div>
-    <?php endif; ?>
 
 
     <!-- ══════════════════════════════════════════════════════════
