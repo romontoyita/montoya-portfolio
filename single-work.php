@@ -9,6 +9,8 @@
  *  industry        — textarea (one value per line)
  *  scope           — textarea (one value per line)
  *  statement       — textarea
+ *  overview_image_a — image
+ *  overview_image_b — image
  *  problem_title   — text
  *  problem_body    — textarea
  *  problem_image   — image
