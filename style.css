@@ -1449,12 +1449,12 @@ p {
 
 /* Section heading — 44px IvyPresto (between project title and body)        */
 .cs-section__title {
-    font-family:    var(--font-display);
-    font-size:      clamp(1.75rem, 3.06vw, 2.75rem);
-    font-weight:    300;
-    line-height:    1.25;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.2;
     letter-spacing: 0.02em;
-    color:          var(--color-primary);
+    color: var(--color-primary);
 }
 
 /* Body text — same values as .hp-intro__body (24px / 70% / lh 1.5)        */
