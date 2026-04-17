@@ -1459,10 +1459,9 @@ p {
     letter-spacing: 0.02em;
 }
 
-/* Full-width image — same behaviour as cs-hero__image                       */
+/* Full-width image — respects body padding-inline                            */
 .cs-section__image {
-    margin-inline: calc(var(--fluid-pad) * -1);
-    overflow:      hidden;
+    overflow: hidden;
 }
 
 .cs-section__image img {

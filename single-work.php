@@ -175,7 +175,7 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
             </div>
         </div>
 
-        <figure class="cs-section__image breakout">
+        <figure class="cs-section__image">
             <?php if ( $problem_img ) : ?>
                 <img
                     src="<?php echo esc_url( $problem_img['url'] ); ?>"
@@ -208,7 +208,7 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
             </div>
         </div>
 
-        <figure class="cs-section__image breakout">
+        <figure class="cs-section__image">
             <?php if ( $approach_img ) : ?>
                 <img
                     src="<?php echo esc_url( $approach_img['url'] ); ?>"
