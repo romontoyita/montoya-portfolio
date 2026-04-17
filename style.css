@@ -1372,6 +1372,7 @@ p {
     flex-direction:  column;
     justify-content: space-between;
     flex:            1;
+    align-self: stretch;
 }
 
 .cs-overview__scope-list {
