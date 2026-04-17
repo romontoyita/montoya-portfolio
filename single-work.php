@@ -162,69 +162,65 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
          § 4  THE PROBLEM — content left, image right
          ══════════════════════════════════════════════════════════ -->
     <section class="cs-section cs-section--problem">
+
         <div class="cs-section__inner">
-
-            <div class="cs-section__content">
-                <span class="cs-label">(The Problem / Challenge)</span>
-                <div class="cs-section__text">
-                    <?php if ( $has_acf && get_field( 'problem_title' ) ) : ?>
-                        <h2 class="cs-section__title"><?php echo esc_html( get_field( 'problem_title' ) ); ?></h2>
-                    <?php endif; ?>
-                    <?php if ( $has_acf && get_field( 'problem_body' ) ) : ?>
-                        <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'problem_body' ) ) ); ?></p>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <figure class="cs-section__image">
-                <?php if ( $problem_img ) : ?>
-                    <img
-                        src="<?php echo esc_url( $problem_img['url'] ); ?>"
-                        alt="<?php echo esc_attr( $problem_img['alt'] ); ?>"
-                        loading="lazy"
-                        decoding="async"
-                    >
-                <?php else : ?>
-                    <div class="cs-placeholder" aria-hidden="true"></div>
+            <span class="cs-label">(The Problem / Challenge)</span>
+            <div class="cs-section__text">
+                <?php if ( $has_acf && get_field( 'problem_title' ) ) : ?>
+                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'problem_title' ) ); ?></h2>
                 <?php endif; ?>
-            </figure>
-
+                <?php if ( $has_acf && get_field( 'problem_body' ) ) : ?>
+                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'problem_body' ) ) ); ?></p>
+                <?php endif; ?>
+            </div>
         </div>
+
+        <figure class="cs-section__image breakout">
+            <?php if ( $problem_img ) : ?>
+                <img
+                    src="<?php echo esc_url( $problem_img['url'] ); ?>"
+                    alt="<?php echo esc_attr( $problem_img['alt'] ); ?>"
+                    loading="lazy"
+                    decoding="async"
+                >
+            <?php else : ?>
+                <div class="cs-placeholder" aria-hidden="true"></div>
+            <?php endif; ?>
+        </figure>
+
     </section><!-- .cs-section--problem -->
 
 
     <!-- ══════════════════════════════════════════════════════════
-         § 4  THE APPROACH — image left, content right
+         § 4  THE APPROACH
          ══════════════════════════════════════════════════════════ -->
     <section class="cs-section cs-section--approach">
+
         <div class="cs-section__inner">
-
-            <figure class="cs-section__image">
-                <?php if ( $approach_img ) : ?>
-                    <img
-                        src="<?php echo esc_url( $approach_img['url'] ); ?>"
-                        alt="<?php echo esc_attr( $approach_img['alt'] ); ?>"
-                        loading="lazy"
-                        decoding="async"
-                    >
-                <?php else : ?>
-                    <div class="cs-placeholder" aria-hidden="true"></div>
+            <span class="cs-label">(The Approach)</span>
+            <div class="cs-section__text">
+                <?php if ( $has_acf && get_field( 'approach_title' ) ) : ?>
+                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'approach_title' ) ); ?></h2>
                 <?php endif; ?>
-            </figure>
-
-            <div class="cs-section__content">
-                <span class="cs-label">(The Approach)</span>
-                <div class="cs-section__text">
-                    <?php if ( $has_acf && get_field( 'approach_title' ) ) : ?>
-                        <h2 class="cs-section__title"><?php echo esc_html( get_field( 'approach_title' ) ); ?></h2>
-                    <?php endif; ?>
-                    <?php if ( $has_acf && get_field( 'approach_body' ) ) : ?>
-                        <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'approach_body' ) ) ); ?></p>
-                    <?php endif; ?>
-                </div>
+                <?php if ( $has_acf && get_field( 'approach_body' ) ) : ?>
+                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'approach_body' ) ) ); ?></p>
+                <?php endif; ?>
             </div>
-
         </div>
+
+        <figure class="cs-section__image breakout">
+            <?php if ( $approach_img ) : ?>
+                <img
+                    src="<?php echo esc_url( $approach_img['url'] ); ?>"
+                    alt="<?php echo esc_attr( $approach_img['alt'] ); ?>"
+                    loading="lazy"
+                    decoding="async"
+                >
+            <?php else : ?>
+                <div class="cs-placeholder" aria-hidden="true"></div>
+            <?php endif; ?>
+        </figure>
+
     </section><!-- .cs-section--approach -->
 
 
