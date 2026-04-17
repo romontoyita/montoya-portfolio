@@ -1286,22 +1286,14 @@ p {
     align-items:     flex-start;
 }
 
-/* Left col — label pinned top, metas pinned bottom (mirrors .hp-hero__left) */
-.cs-hero__left {
-    display:         flex;
-    flex-direction:  column;
-    justify-content: space-between;
-    flex:            1;
-}
-
-/* Large project title — right column, ~57% width (mirrors .hp-hero__heading) */
+/* Large project title — same weight/size as .hp-project__title             */
 .cs-hero__title {
     font-family:    var(--font-display);
     font-size:      clamp(2.5rem, 5vw, 4.5rem);
     font-weight:    300;
     line-height:    1.2;
     letter-spacing: 0.02em;
-    width:          57.5%;
+    flex:           0 1 40%;          /* ~566px on 1392px canvas */
 }
 
 /* Two meta groups (Client + Industry) — floated right                       */
@@ -1374,12 +1366,12 @@ p {
     gap:             clamp(2rem, 5.5vw, 80px);
 }
 
-/* Scope column — label + list stacked */
+/* Scope column — label pinned top, list pinned bottom (mirrors .hp-hero__left) */
 .cs-overview__scope {
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(2rem, 4.4vw, 64px);
-    flex:           1;
+    display:         flex;
+    flex-direction:  column;
+    justify-content: space-between;
+    flex:            1;
 }
 
 .cs-overview__scope-list {
@@ -1398,7 +1390,7 @@ p {
     color:          var(--color-primary);
 }
 
-/* Statement — 72px IvyPresto, same weight/size as .hp-profile__heading     */
+/* Statement — right column, ~57% width (mirrors .hp-hero__heading)         */
 .cs-overview__statement {
     font-family:    var(--font-display);
     font-size:      clamp(2.5rem, 5vw, 4.5rem);
@@ -1406,7 +1398,7 @@ p {
     line-height:    1.2;
     letter-spacing: 0.02em;
     color:          var(--color-primary);
-    max-width:      800px;
+    width:          57.5%;
 }
 
 
@@ -1509,9 +1501,7 @@ p {
         gap:            var(--space-xl);
     }
 
-    .cs-hero__left { gap: 0; }
-
-    .cs-hero__title { width: 100%; }
+    .cs-hero__title { flex: none; max-width: 100%; }
 
     .cs-hero__image {
         height:     60vw;
@@ -1523,6 +1513,10 @@ p {
         flex-direction: column;
         gap:            var(--space-xl);
     }
+
+    .cs-overview__scope { justify-content: flex-start; gap: 0; }
+
+    .cs-overview__statement { width: 100%; }
 
     /* Problem / Approach — stack vertically */
     .cs-section__inner {
