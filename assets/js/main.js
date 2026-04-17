@@ -477,8 +477,6 @@
 // CSS sticky keeps the section in view while a 300vh track scrolls beneath it.
 // Timeline: phrase 1 fades in → crossfades out while phrase 2 fades in.
 // Snap routes through Lenis (window.scrollTo is patched once).
-// Auto-snap from § 1 intro: when its bottom hits the viewport bottom, Lenis
-// scrolls directly to the philosophy track (no manual gap-scrolling needed).
 // =============================================================================
 (function () {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
