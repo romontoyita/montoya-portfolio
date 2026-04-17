@@ -53,13 +53,6 @@ function montoya_register_about_fields(): void {
         'location' => [
             [
                 [
-                    'param'    => 'page_template',
-                    'operator' => '==',
-                    'value'    => 'page-about.php',
-                ],
-            ],
-            [
-                [
                     'param'    => 'page_slug',
                     'operator' => '==',
                     'value'    => 'about',
