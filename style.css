@@ -1577,3 +1577,123 @@ p {
         height: 70vw;
     }
 }
+
+
+/* ==========================================================================
+   ABOUT PAGE  (page-about.php)
+   ========================================================================== */
+
+/* ==========================================================================
+   § 1  INTRO
+   asymmetric two-column: image left | label + headline + body right
+   Mirrors .hp-intro layout and motion patterns.
+   ========================================================================== */
+
+.ab-intro {
+    padding-block: clamp(6rem, 17.8vw, 256px);
+    overflow:      hidden;
+}
+
+.ab-intro__inner {
+    position:        relative;
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+    gap:             clamp(2rem, 9.9vw, 142px);
+}
+
+/* Image column */
+.ab-intro__image-col {
+    flex:     1;
+    overflow: hidden;
+}
+
+.ab-intro__figure {
+    height:   clamp(400px, 56.1vw, 808px);
+    overflow: hidden;
+}
+
+.ab-intro__image {
+    width:            100%;
+    height:           100%;
+    object-fit:       cover;
+    object-position:  center center;
+}
+
+/* Content column */
+.ab-intro__content-col {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+    width:          57.5%;
+    max-width:      800px;
+}
+
+.ab-intro__label {
+    font-family:    var(--font-body);
+    font-size:      clamp(1rem, 1.39vw, 1.25rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color:          var(--color-primary);
+}
+
+/* Headline — same scale as .hp-intro__quote (IvyPresto Light) */
+.ab-intro__headline {
+    font-family:    var(--font-display);
+    font-size:      clamp(2.5rem, 5vw, 4.5rem);
+    font-weight:    300;
+    font-style:     normal;
+    line-height:    1.2;
+    letter-spacing: 0.02em;
+    color:          var(--color-primary);
+    margin:         0;
+}
+
+/* Body paragraphs */
+.ab-intro__body {
+    display:        flex;
+    flex-direction: column;
+    gap:            1em;
+}
+
+.ab-intro__body p {
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
+    font-weight:    400;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
+    letter-spacing: 0.02em;
+    margin:         0;
+}
+
+@media (max-width: 768px) {
+    .ab-intro {
+        padding-block: var(--space-2xl);
+    }
+
+    .ab-intro__inner {
+        flex-direction: column;
+        gap:            var(--space-xl);
+    }
+
+    .ab-intro__image-col {
+        flex:  none;
+        width: 100%;
+    }
+
+    .ab-intro__figure {
+        height:     70vw;
+        min-height: 280px;
+    }
+
+    .ab-intro__content-col {
+        width:     100%;
+        max-width: 100%;
+        gap:       var(--space-xl);
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .ab-intro__image-col {
+        display: none;
+    }
+}

@@ -9,6 +9,7 @@ $includes = [
     'inc/theme-setup.php',
     'inc/enqueue.php',
     'inc/cpt.php',
+    'inc/acf-fields.php',
 ];
 
 foreach ( $includes as $file ) {

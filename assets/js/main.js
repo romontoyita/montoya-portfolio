@@ -364,6 +364,7 @@
 
     const SELECTORS = [
         '.hp-intro__image',
+        '.ab-intro__image',
         '.hp-project__image img',
         '.hp-profile__detail img',
         '.hp-profile__portrait img',
