@@ -1410,8 +1410,8 @@ p {
 .cs-narrative {
     display:        flex;
     flex-direction: column;
-    gap:            clamp(2rem, 4.4vw, 64px);
-    padding-block:  clamp(6rem, 17.8vw, 256px);
+    gap:            clamp(4rem, 8.9vw, 128px);
+    padding-block:  clamp(4rem, 8.9vw, 128px);
 }
 
 /* Two-col: label left (flex:1) | content right (57.5%) — mirrors old layout */
