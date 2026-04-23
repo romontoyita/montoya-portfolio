@@ -4,18 +4,20 @@
  * Template Post Type: work
  *
  * ACF fields expected:
- *  hero_image      — image
- *  client          — text
- *  industry        — textarea (one value per line)
- *  scope           — textarea (one value per line)
- *  statement       — textarea
- *  problem_title   — text
- *  problem_body    — textarea
- *  problem_image   — image
- *  approach_title  — text
- *  approach_body   — textarea
- *  approach_image  — image
- *  outcome         — textarea
+ *
+ *  TOP BLOCK (do not modify):
+ *  hero_image   — image
+ *  client       — text
+ *  industry     — textarea (one value per line)
+ *  scope        — textarea (one value per line)
+ *  statement    — textarea
+ *
+ *  NARRATIVE SECTIONS (up to 5, flat fields — ACF Free compatible):
+ *  section_1_label    — text      e.g. "The Situation"   → rendered as (The Situation)
+ *  section_1_headline — text      large IvyPresto heading
+ *  section_1_body     — wysiwyg   rich-text paragraphs
+ *  section_1_image    — image     optional, full-bleed after body
+ *  …repeat for section_2_ through section_5_
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -35,17 +37,23 @@ function cs_lines( string $field ): array {
     return array_filter( array_map( 'trim', explode( "\n", $raw ) ) );
 }
 
-$hero_img        = $has_acf ? get_field( 'hero_image' )        : null;
-$client          = $has_acf ? get_field( 'client' )             : '';
-$industry        = cs_lines( 'industry' );
-$scope           = cs_lines( 'scope' );
-$statement       = $has_acf ? get_field( 'statement' )          : '';
-$problem_img     = $has_acf ? get_field( 'problem_image' )      : null;
-$approach_img    = $has_acf ? get_field( 'approach_image' )     : null;
-$outcome         = $has_acf ? get_field( 'outcome' )            : '';
-$gallery_full    = $has_acf ? get_field( 'gallery_image_full' ) : null;
-$gallery_left    = $has_acf ? get_field( 'gallery_image_left' ) : null;
-$gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
+$hero_img  = $has_acf ? get_field( 'hero_image' ) : null;
+$client    = $has_acf ? get_field( 'client' )     : '';
+$industry  = cs_lines( 'industry' );
+$scope     = cs_lines( 'scope' );
+$statement = $has_acf ? get_field( 'statement' )  : '';
+// Build flat narrative sections array — works with ACF Free (no Repeater needed)
+$sections = [];
+if ( $has_acf ) {
+    for ( $i = 1; $i <= 5; $i++ ) {
+        $sections[] = [
+            'label'    => get_field( "section_{$i}_label" ),
+            'headline' => get_field( "section_{$i}_headline" ),
+            'body'     => get_field( "section_{$i}_body" ),
+            'image'    => get_field( "section_{$i}_image" ),
+        ];
+    }
+}
 ?>
 
 <main id="main" class="site-main">
@@ -119,133 +127,58 @@ $gallery_right   = $has_acf ? get_field( 'gallery_image_right' ): null;
 
 
     <!-- ══════════════════════════════════════════════════════════
-         § 4  THE PROBLEM — content left, image right
+         NARRATIVE SECTIONS — flat ACF fields, up to 5
+         Fields: section_N_label, section_N_headline, section_N_body, section_N_image
+         Empty rows are skipped; first rendered row gets cs-narrative--first
          ══════════════════════════════════════════════════════════ -->
-    <section class="cs-section cs-section--problem">
+    <?php if ( $sections ) :
+        $first_rendered = true;
+        foreach ( $sections as $row ) :
 
-        <div class="cs-section__inner">
-            <span class="cs-label">(The Problem / Challenge)</span>
-            <div class="cs-section__text">
-                <?php if ( $has_acf && get_field( 'problem_title' ) ) : ?>
-                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'problem_title' ) ); ?></h2>
-                <?php endif; ?>
-                <?php if ( $has_acf && get_field( 'problem_body' ) ) : ?>
-                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'problem_body' ) ) ); ?></p>
-                <?php endif; ?>
+        $label    = trim( $row['label']    ?? '' );
+        $headline = trim( $row['headline'] ?? '' );
+        $body     =       $row['body']     ?? '';
+        $img      =       $row['image']    ?? null;
+
+        // Skip entirely empty rows
+        if ( ! $label && ! $headline && ! $body && ! $img ) continue;
+
+        $extra_class = $first_rendered ? ' cs-narrative--first' : '';
+        $first_rendered = false;
+
+    ?>
+    <section class="cs-narrative<?php echo $extra_class; ?>">
+
+        <?php if ( $label ) : ?>
+            <span class="cs-label">(<?php echo esc_html( $label ); ?>)</span>
+        <?php endif; ?>
+
+        <?php if ( $headline ) : ?>
+            <h2 class="cs-narrative__headline"><?php echo esc_html( $headline ); ?></h2>
+        <?php endif; ?>
+
+        <?php if ( $body ) : ?>
+            <div class="cs-narrative__body">
+                <?php echo wp_kses_post( $body ); ?>
             </div>
-        </div>
+        <?php endif; ?>
 
-        <figure class="cs-section__image">
-            <?php if ( $problem_img ) : ?>
+        <?php if ( $img ) : ?>
+            <figure class="cs-narrative__image breakout">
                 <img
-                    src="<?php echo esc_url( $problem_img['url'] ); ?>"
-                    alt="<?php echo esc_attr( $problem_img['alt'] ); ?>"
+                    src="<?php echo esc_url( $img['url'] ); ?>"
+                    alt="<?php echo esc_attr( $img['alt'] ); ?>"
+                    width="<?php echo esc_attr( $img['width'] ); ?>"
+                    height="<?php echo esc_attr( $img['height'] ); ?>"
                     loading="lazy"
                     decoding="async"
                 >
-            <?php else : ?>
-                <div class="cs-placeholder" aria-hidden="true"></div>
-            <?php endif; ?>
-        </figure>
-
-    </section><!-- .cs-section--problem -->
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         § 4  THE APPROACH
-         ══════════════════════════════════════════════════════════ -->
-    <section class="cs-section cs-section--approach">
-
-        <div class="cs-section__inner">
-            <span class="cs-label">(The Approach)</span>
-            <div class="cs-section__text">
-                <?php if ( $has_acf && get_field( 'approach_title' ) ) : ?>
-                    <h2 class="cs-section__title"><?php echo esc_html( get_field( 'approach_title' ) ); ?></h2>
-                <?php endif; ?>
-                <?php if ( $has_acf && get_field( 'approach_body' ) ) : ?>
-                    <p class="cs-section__body"><?php echo nl2br( esc_html( get_field( 'approach_body' ) ) ); ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <figure class="cs-section__image">
-            <?php if ( $approach_img ) : ?>
-                <img
-                    src="<?php echo esc_url( $approach_img['url'] ); ?>"
-                    alt="<?php echo esc_attr( $approach_img['alt'] ); ?>"
-                    loading="lazy"
-                    decoding="async"
-                >
-            <?php else : ?>
-                <div class="cs-placeholder" aria-hidden="true"></div>
-            <?php endif; ?>
-        </figure>
-
-    </section><!-- .cs-section--approach -->
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         § 5  THE OUTCOME — large display text
-         ══════════════════════════════════════════════════════════ -->
-    <section class="cs-outcome">
-        <span class="cs-label">(The Outcome)</span>
-        <?php if ( $outcome ) : ?>
-            <p class="cs-outcome__text"><?php echo esc_html( $outcome ); ?></p>
-        <?php endif; ?>
-    </section><!-- .cs-outcome -->
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         § 6  GALLERY — full-width + two-up pair
-         ══════════════════════════════════════════════════════════ -->
-    <?php if ( $gallery_full || $gallery_left || $gallery_right ) : ?>
-    <section class="cs-gallery">
-
-        <?php if ( $gallery_full ) : ?>
-        <figure class="cs-gallery__full">
-            <img
-                src="<?php echo esc_url( $gallery_full['url'] ); ?>"
-                alt="<?php echo esc_attr( $gallery_full['alt'] ); ?>"
-                loading="lazy"
-                decoding="async"
-            >
-        </figure>
-        <?php else : ?>
-        <div class="cs-gallery__full cs-placeholder" aria-hidden="true"></div>
+            </figure>
         <?php endif; ?>
 
-        <div class="cs-gallery__pair">
+    </section><!-- .cs-narrative -->
 
-            <figure class="cs-gallery__item">
-                <?php if ( $gallery_left ) : ?>
-                    <img
-                        src="<?php echo esc_url( $gallery_left['url'] ); ?>"
-                        alt="<?php echo esc_attr( $gallery_left['alt'] ); ?>"
-                        loading="lazy"
-                        decoding="async"
-                    >
-                <?php else : ?>
-                    <div class="cs-placeholder" aria-hidden="true"></div>
-                <?php endif; ?>
-            </figure>
-
-            <figure class="cs-gallery__item">
-                <?php if ( $gallery_right ) : ?>
-                    <img
-                        src="<?php echo esc_url( $gallery_right['url'] ); ?>"
-                        alt="<?php echo esc_attr( $gallery_right['alt'] ); ?>"
-                        loading="lazy"
-                        decoding="async"
-                    >
-                <?php else : ?>
-                    <div class="cs-placeholder" aria-hidden="true"></div>
-                <?php endif; ?>
-            </figure>
-
-        </div><!-- .cs-gallery__pair -->
-
-    </section><!-- .cs-gallery -->
-    <?php endif; ?>
+    <?php endforeach; endif; ?>
 
 
 </main><!-- #main -->

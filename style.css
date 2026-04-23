@@ -1404,132 +1404,62 @@ p {
 }
 
 
-/* ── § 3 & 4  CONTENT SECTIONS — problem / approach ────────────────────── */
+/* ── NARRATIVE SECTIONS — repeater ─────────────────────────────────────── */
 
-.cs-section {
+/* Base section — vertical stack: label → headline → body → image           */
+.cs-narrative {
     display:        flex;
     flex-direction: column;
-    gap:            clamp(4rem, 8.9vw, 128px);
-}
-
-/* Problem: top padding */
-.cs-section--problem {
-    padding-top:    clamp(6rem, 17.8vw, 256px);
-    padding-bottom: clamp(4rem, 8.9vw, 128px);
-}
-
-/* Approach: bottom padding */
-.cs-section--approach {
+    gap:            clamp(2rem, 4.4vw, 64px);
     padding-top:    clamp(4rem, 8.9vw, 128px);
-    padding-bottom: clamp(6rem, 17.8vw, 256px);
-}
-
-/* Two-col: label left (flex:1) | content right (57.5%) */
-.cs-section__inner {
-    display:         flex;
-    justify-content: space-between;
-    align-items:     flex-start;
-    gap:             clamp(2rem, 5.5vw, 80px);
-}
-
-/* Right column — title + body */
-.cs-section__text {
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(2rem, 4.4vw, 64px);
-    width:          57.5%;
-}
-
-/* Section heading — 44px IvyPresto (between project title and body)        */
-.cs-section__title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 300;
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    color: var(--color-primary);
-}
-
-/* Body text — same values as .hp-intro__body (24px / 70% / lh 1.5)        */
-.cs-section__body {
-    font-size: clamp(1rem, 1.67vw, 1.5rem);
-    font-weight: 400;
-    color: var(--color-primary-70);
-    line-height: 1.5;
-    letter-spacing: 0.02em;
-}
-
-/* Full-width image — respects body padding-inline                            */
-.cs-section__image {
-    overflow: hidden;
-}
-
-.cs-section__image img {
-    width:   100%;
-    height:  auto;
-    display: block;
-}
-
-
-/* ── § 5  OUTCOME ──────────────────────────────────────────────────────── */
-
-.cs-outcome {
     padding-bottom: clamp(4rem, 8.9vw, 128px);
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(2rem, 4.4vw, 64px);
+    border-top:     1px solid var(--color-primary-30);
 }
 
-/* Large outcome text — same as .cs-overview__statement, capped at 800px   */
-.cs-outcome__text {
+/* First narrative section gets extra top breathing room after the hero     */
+.cs-narrative--first {
+    padding-top: clamp(6rem, 17.8vw, 256px);
+}
+
+/* Headline — 44px IvyPresto, editorial h2                                  */
+.cs-narrative__headline {
     font-family:    var(--font-display);
-    font-size:      clamp(2.5rem, 5vw, 4.5rem);
+    font-size:      clamp(1.75rem, 3.06vw, 2.75rem); /* 44px at 1440px */
     font-weight:    300;
-    line-height:    1.2;
+    line-height:    1.25;
     letter-spacing: 0.02em;
     color:          var(--color-primary);
-    max-width:      57.5%;
+    max-width:      800px;
 }
 
-
-/* ── § 6  GALLERY ───────────────────────────────────────────────────────── */
-
-.cs-gallery {
-    display:        flex;
-    flex-direction: column;
-    gap:            28px;
-    padding-inline: 24px;
-    padding-bottom: clamp(4rem, 8.9vw, 128px);
+/* Body — rich-text container, comfortable reading measure                  */
+.cs-narrative__body {
+    max-width: 800px;
 }
 
-/* Full-width image — no height crop */
-.cs-gallery__full {
-    width:    100%;
+/* Paragraphs inside wysiwyg output — 24px / 70% / lh 1.5                  */
+.cs-narrative__body p {
+    font-size:      clamp(1rem, 1.67vw, 1.5rem);
+    font-weight:    400;
+    color:          var(--color-primary-70);
+    line-height:    1.5;
+    letter-spacing: 0.02em;
+    margin:         0;
+}
+
+.cs-narrative__body p + p {
+    margin-top: 1em;
+}
+
+/* Optional section image — full-bleed (uses .breakout margin trick)        */
+.cs-narrative__image {
     overflow: hidden;
 }
 
-.cs-gallery__full img {
+.cs-narrative__image img {
     width:   100%;
     height:  auto;
     display: block;
-}
-
-/* Two-up pair — equal columns, 684px tall */
-.cs-gallery__pair {
-    display: flex;
-    gap:     28px;
-}
-
-.cs-gallery__item {
-    flex:     1 1 0;
-    height:   clamp(260px, 47.5vw, 684px);
-    overflow: hidden;
-}
-
-.cs-gallery__item img {
-    width:      100%;
-    height:     100%;
-    object-fit: cover;
 }
 
 
@@ -1545,7 +1475,6 @@ p {
 
     .cs-hero__title { flex: none; max-width: 100%; }
 
-
     /* Overview */
     .cs-overview__inner {
         flex-direction: column;
@@ -1556,25 +1485,9 @@ p {
 
     .cs-hero__right { width: 100%; }
 
-    /* Problem / Approach — stack vertically */
-    .cs-section__inner {
-        flex-direction: column;
-        gap:            var(--space-xl);
-    }
-
-    .cs-section__text { width: 100%; }
-
-    /* Gallery */
-    .cs-gallery {
-        padding-inline: 0;
-    }
-
-    .cs-gallery__pair {
-        flex-direction: column;
-    }
-
-    .cs-gallery__item {
-        height: 70vw;
+    /* Narrative sections */
+    .cs-narrative--first {
+        padding-top: clamp(4rem, 8.9vw, 128px); /* same as base on mobile */
     }
 }
 
