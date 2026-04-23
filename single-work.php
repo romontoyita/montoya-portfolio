@@ -149,22 +149,28 @@ if ( $has_acf ) {
     ?>
     <section class="cs-narrative<?php echo $extra_class; ?>">
 
-        <?php if ( $label ) : ?>
-            <span class="cs-label">(<?php echo esc_html( $label ); ?>)</span>
-        <?php endif; ?>
+        <div class="cs-narrative__inner">
 
-        <?php if ( $headline ) : ?>
-            <h2 class="cs-narrative__headline"><?php echo esc_html( $headline ); ?></h2>
-        <?php endif; ?>
+            <span class="cs-label"><?php echo $label ? '(' . esc_html( $label ) . ')' : ''; ?></span>
 
-        <?php if ( $body ) : ?>
-            <div class="cs-narrative__body">
-                <?php echo wp_kses_post( $body ); ?>
-            </div>
-        <?php endif; ?>
+            <div class="cs-narrative__content">
+
+                <?php if ( $headline ) : ?>
+                    <h2 class="cs-narrative__headline"><?php echo esc_html( $headline ); ?></h2>
+                <?php endif; ?>
+
+                <?php if ( $body ) : ?>
+                    <div class="cs-narrative__body">
+                        <?php echo wp_kses_post( $body ); ?>
+                    </div>
+                <?php endif; ?>
+
+            </div><!-- .cs-narrative__content -->
+
+        </div><!-- .cs-narrative__inner -->
 
         <?php if ( $img ) : ?>
-            <figure class="cs-narrative__image breakout">
+            <figure class="cs-narrative__image">
                 <img
                     src="<?php echo esc_url( $img['url'] ); ?>"
                     alt="<?php echo esc_attr( $img['alt'] ); ?>"

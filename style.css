@@ -1406,19 +1406,34 @@ p {
 
 /* ── NARRATIVE SECTIONS — repeater ─────────────────────────────────────── */
 
-/* Base section — vertical stack: label → headline → body → image           */
+/* Base section — two-col row (label | content) + optional image below      */
 .cs-narrative {
     display:        flex;
     flex-direction: column;
     gap:            clamp(2rem, 4.4vw, 64px);
     padding-top:    clamp(4rem, 8.9vw, 128px);
     padding-bottom: clamp(4rem, 8.9vw, 128px);
-    border-top:     1px solid var(--color-primary-30);
 }
 
 /* First narrative section gets extra top breathing room after the hero     */
 .cs-narrative--first {
     padding-top: clamp(6rem, 17.8vw, 256px);
+}
+
+/* Two-col: label left (flex:1) | content right (57.5%) — mirrors old layout */
+.cs-narrative__inner {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+    gap:             clamp(2rem, 5.5vw, 80px);
+}
+
+/* Right column — headline + body stacked                                   */
+.cs-narrative__content {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 4.4vw, 64px);
+    width:          57.5%;
 }
 
 /* Headline — 44px IvyPresto, editorial h2                                  */
@@ -1429,12 +1444,6 @@ p {
     line-height:    1.25;
     letter-spacing: 0.02em;
     color:          var(--color-primary);
-    max-width:      800px;
-}
-
-/* Body — rich-text container, comfortable reading measure                  */
-.cs-narrative__body {
-    max-width: 800px;
 }
 
 /* Paragraphs inside wysiwyg output — 24px / 70% / lh 1.5                  */
@@ -1451,7 +1460,7 @@ p {
     margin-top: 1em;
 }
 
-/* Optional section image — full-bleed (uses .breakout margin trick)        */
+/* Optional image — full-width within site padding (no breakout)            */
 .cs-narrative__image {
     overflow: hidden;
 }
@@ -1485,9 +1494,18 @@ p {
 
     .cs-hero__right { width: 100%; }
 
-    /* Narrative sections */
+    /* Narrative — stack on mobile */
     .cs-narrative--first {
-        padding-top: clamp(4rem, 8.9vw, 128px); /* same as base on mobile */
+        padding-top: clamp(4rem, 8.9vw, 128px);
+    }
+
+    .cs-narrative__inner {
+        flex-direction: column;
+        gap:            var(--space-xl);
+    }
+
+    .cs-narrative__content {
+        width: 100%;
     }
 }
 
