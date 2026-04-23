@@ -131,9 +131,7 @@ if ( $has_acf ) {
          Fields: section_N_label, section_N_headline, section_N_body, section_N_image
          Empty rows are skipped; first rendered row gets cs-narrative--first
          ══════════════════════════════════════════════════════════ -->
-    <?php if ( $sections ) :
-        $first_rendered = true;
-        foreach ( $sections as $row ) :
+    <?php if ( $sections ) : foreach ( $sections as $row ) :
 
         $label    = trim( $row['label']    ?? '' );
         $headline = trim( $row['headline'] ?? '' );
@@ -143,11 +141,8 @@ if ( $has_acf ) {
         // Skip entirely empty rows
         if ( ! $label && ! $headline && ! $body && ! $img ) continue;
 
-        $extra_class = $first_rendered ? ' cs-narrative--first' : '';
-        $first_rendered = false;
-
     ?>
-    <section class="cs-narrative<?php echo $extra_class; ?>">
+    <section class="cs-narrative">
 
         <div class="cs-narrative__inner">
 
