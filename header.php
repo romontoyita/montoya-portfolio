@@ -39,6 +39,7 @@
                         <?php esc_html_e( 'Work', 'montoya-portfolio' ); ?>
                     </a>
                 </li>
+                <!-- The "About" page is currently a placeholder. Uncomment when ready. 
                 <li class="main-navigation__item">
                     <a href="<?php echo esc_url( home_url( '/about' ) ); ?>"
                        class="main-navigation__link">
@@ -51,6 +52,7 @@
                         <?php esc_html_e( 'Services', 'montoya-portfolio' ); ?>
                     </a>
                 </li>
+                -->
                 <li class="main-navigation__item main-navigation__item--cta">
                     <a href="<?php echo esc_url( home_url( '/inquiries' ) ); ?>"
                        class="main-navigation__link main-navigation__link--cta">
