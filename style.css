@@ -1297,12 +1297,6 @@ p {
 }
 
 /* Two meta groups (Client + Industry) — floated right                       */
-.cs-hero__metas-row {
-    display:     flex;
-    align-items: flex-start;
-    gap:         clamp(2rem, 5.5vw, 80px);
-}
-
 .cs-hero__metas {
     display: flex;
     gap:     clamp(2rem, 5.5vw, 80px);
@@ -1517,11 +1511,6 @@ p {
     .cs-overview__scope { justify-content: flex-start; gap: 0; }
 
     .cs-hero__right { width: 100%; }
-
-    .cs-hero__metas-row {
-        flex-direction: column;
-        align-items:    flex-start;
-    }
 
     .cs-narrative__inner {
         flex-direction: column;

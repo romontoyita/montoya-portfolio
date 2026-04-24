@@ -91,6 +91,14 @@ if ( is_array( $meta_rows ) ) {
                     <?php endforeach; ?>
                 </ul>
                 <?php endif; ?>
+                <?php if ( $website_url ) : ?>
+                <a href="<?php echo esc_url( $website_url ); ?>" class="hp-work__all-link" target="_blank" rel="noopener noreferrer">
+                    <span class="hp-work__all-link-arrow" aria-hidden="true">
+                        <img src="<?php echo esc_url( MONTOYA_URI . '/assets/images/arrow.svg' ); ?>" alt="" width="15" height="16">
+                    </span>
+                    <?php esc_html_e( 'Visit Website', 'montoya-portfolio' ); ?>
+                </a>
+                <?php endif; ?>
             </div>
 
             <div class="cs-hero__right">
@@ -99,40 +107,27 @@ if ( is_array( $meta_rows ) ) {
                 <p class="cs-overview__statement"><?php echo esc_html( $statement ); ?></p>
                 <?php endif; ?>
 
-                <div class="cs-hero__metas-row">
+                <div class="cs-hero__metas">
 
-                    <div class="cs-hero__metas">
-
-                        <?php if ( $client ) : ?>
-                        <div class="cs-hero__meta-group">
-                            <span class="hp-project__tax-label">Client</span>
-                            <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
-                        </div>
-                        <?php endif; ?>
-
-                        <?php if ( $industry ) : ?>
-                        <div class="cs-hero__meta-group">
-                            <span class="hp-project__tax-label">Industry</span>
-                            <ul class="cs-hero__meta-list">
-                                <?php foreach ( $industry as $tag ) : ?>
-                                    <li><?php echo esc_html( $tag ); ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                        <?php endif; ?>
-
-                    </div><!-- .cs-hero__metas -->
-
-                    <?php if ( $website_url ) : ?>
-                    <a href="<?php echo esc_url( $website_url ); ?>" class="hp-work__all-link" target="_blank" rel="noopener noreferrer">
-                        <span class="hp-work__all-link-arrow" aria-hidden="true">
-                            <img src="<?php echo esc_url( MONTOYA_URI . '/assets/images/arrow.svg' ); ?>" alt="" width="15" height="16">
-                        </span>
-                        <?php esc_html_e( 'Visit Website', 'montoya-portfolio' ); ?>
-                    </a>
+                    <?php if ( $client ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Client</span>
+                        <span class="cs-hero__meta-value"><?php echo esc_html( $client ); ?></span>
+                    </div>
                     <?php endif; ?>
 
-                </div><!-- .cs-hero__metas-row -->
+                    <?php if ( $industry ) : ?>
+                    <div class="cs-hero__meta-group">
+                        <span class="hp-project__tax-label">Industry</span>
+                        <ul class="cs-hero__meta-list">
+                            <?php foreach ( $industry as $tag ) : ?>
+                                <li><?php echo esc_html( $tag ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
+                </div><!-- .cs-hero__metas -->
 
             </div><!-- .cs-hero__right -->
 
