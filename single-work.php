@@ -13,13 +13,7 @@
  *  statement    — textarea
  *  website_url  — url (optional)
  *
- *  SECTION 1 (ACF Free flat fields):
- *  section_1_label    — text
- *  section_1_headline — text
- *  section_1_body     — wysiwyg
- *  section_1_images   — gallery   1 image → full-width · 2+ → paired rows of 2
- *
- *  SECTIONS 2+ (custom repeater meta box — inc/meta-boxes.php):
+ *  NARRATIVE SECTIONS (custom repeater meta box — inc/meta-boxes.php):
  *  _cs_narrative_sections  — post meta, array of { label, headline, body, image_ids[] }
  */
 
@@ -46,23 +40,13 @@ $industry    = cs_lines( 'industry' );
 $scope       = cs_lines( 'scope' );
 $statement   = $has_acf ? get_field( 'statement' )    : '';
 $website_url = $has_acf ? get_field( 'website_url' )  : '';
-// ── Section 1 — ACF flat fields ─────────────────────────────────────────────
-$sections = [];
-if ( $has_acf ) {
-    $sections[] = [
-        'label'    => get_field( 'section_1_label' ),
-        'headline' => get_field( 'section_1_headline' ),
-        'body'     => get_field( 'section_1_body' ),    // WYSIWYG — already HTML
-        'images'   => get_field( 'section_1_images' ) ?: [],
-        'acf'      => true,
-    ];
-}
-
-// ── Sections 2+ — custom repeater (inc/meta-boxes.php) ──────────────────────
+// ── All narrative sections — custom repeater (inc/meta-boxes.php) ───────────
+$sections  = [];
 $meta_rows = get_post_meta( get_the_ID(), '_cs_narrative_sections', true );
+
 if ( is_array( $meta_rows ) ) {
     foreach ( $meta_rows as $meta_row ) {
-        // Resolve attachment IDs → image arrays matching the ACF image format
+        // Resolve attachment IDs → image arrays
         $images = [];
         foreach ( array_filter( array_map( 'absint', (array) ( $meta_row['image_ids'] ?? [] ) ) ) as $att_id ) {
             $src = wp_get_attachment_image_src( $att_id, 'full' );
@@ -77,9 +61,8 @@ if ( is_array( $meta_rows ) ) {
         $sections[] = [
             'label'    => $meta_row['label']    ?? '',
             'headline' => $meta_row['headline'] ?? '',
-            'body'     => $meta_row['body']     ?? '',  // plain textarea — needs wpautop
+            'body'     => $meta_row['body']     ?? '',
             'images'   => $images,
-            'acf'      => false,
         ];
     }
 }
@@ -175,12 +158,7 @@ if ( is_array( $meta_rows ) ) {
         $headline = trim( $row['headline'] ?? '' );
         $raw_body =       $row['body']     ?? '';
         $images   =       $row['images']   ?? [];
-        $is_acf   =       $row['acf']      ?? false;
-
-        // ACF WYSIWYG returns formatted HTML; textarea output needs wpautop
-        $body_html = $is_acf
-            ? wp_kses_post( $raw_body )
-            : wp_kses_post( wpautop( wp_unslash( $raw_body ) ) );
+        $body_html = wp_kses_post( wpautop( wp_unslash( $raw_body ) ) );
 
         // Skip entirely empty rows
         if ( ! $label && ! $headline && ! $raw_body && ! $images ) continue;

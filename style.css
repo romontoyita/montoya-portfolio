@@ -1472,9 +1472,9 @@ p {
     display: block;
 }
 
-/* Paired row — fixed height so both images align regardless of source ratio */
+/* Paired row — portrait aspect ratio */
 .cs-narrative__img-row--pair figure {
-    height: clamp(200px, 30vw, 440px);
+    aspect-ratio: 3 / 4;
 }
 
 .cs-narrative__img-row--pair figure img {
@@ -1514,13 +1514,9 @@ p {
         width: 100%;
     }
 
-    /* Pairs stack vertically on mobile */
+    /* Pairs stack vertically on mobile — aspect-ratio keeps portrait shape */
     .cs-narrative__img-row--pair {
         flex-direction: column;
-    }
-
-    .cs-narrative__img-row--pair figure {
-        height: 70vw;
     }
 }
 
