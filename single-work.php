@@ -46,23 +46,28 @@ $meta_rows = get_post_meta( get_the_ID(), '_cs_narrative_sections', true );
 
 if ( is_array( $meta_rows ) ) {
     foreach ( $meta_rows as $meta_row ) {
-        // Resolve attachment IDs → image arrays
-        $images = [];
-        foreach ( array_filter( array_map( 'absint', (array) ( $meta_row['image_ids'] ?? [] ) ) ) as $att_id ) {
-            $src = wp_get_attachment_image_src( $att_id, 'full' );
-            if ( ! $src ) continue;
-            $images[] = [
-                'url'    => $src[0],
-                'width'  => $src[1],
-                'height' => $src[2],
-                'alt'    => (string) get_post_meta( $att_id, '_wp_attachment_image_alt', true ),
-            ];
+        // Resolve each gallery row's attachment IDs → image arrays
+        $gallery = [];
+        foreach ( (array) ( $meta_row['gallery'] ?? [] ) as $g_row ) {
+            $type = ( ( $g_row['type'] ?? 'single' ) === 'pair' ) ? 'pair' : 'single';
+            $imgs = [];
+            foreach ( array_filter( array_map( 'absint', (array) ( $g_row['ids'] ?? [] ) ) ) as $att_id ) {
+                $src = wp_get_attachment_image_src( $att_id, 'full' );
+                if ( ! $src ) continue;
+                $imgs[] = [
+                    'url'    => $src[0],
+                    'width'  => $src[1],
+                    'height' => $src[2],
+                    'alt'    => (string) get_post_meta( $att_id, '_wp_attachment_image_alt', true ),
+                ];
+            }
+            if ( $imgs ) $gallery[] = [ 'type' => $type, 'images' => $imgs ];
         }
         $sections[] = [
             'label'    => $meta_row['label']    ?? '',
             'headline' => $meta_row['headline'] ?? '',
             'body'     => $meta_row['body']     ?? '',
-            'images'   => $images,
+            'gallery'  => $gallery,
         ];
     }
 }
@@ -157,11 +162,11 @@ if ( is_array( $meta_rows ) ) {
         $label    = trim( $row['label']    ?? '' );
         $headline = trim( $row['headline'] ?? '' );
         $raw_body =       $row['body']     ?? '';
-        $images   =       $row['images']   ?? [];
+        $gallery  =       $row['gallery']  ?? [];
         $body_html = wp_kses_post( wpautop( wp_unslash( $raw_body ) ) );
 
         // Skip entirely empty rows
-        if ( ! $label && ! $headline && ! $raw_body && ! $images ) continue;
+        if ( ! $label && ! $headline && ! $raw_body && ! $gallery ) continue;
 
     ?>
     <section class="cs-narrative">
@@ -186,13 +191,13 @@ if ( is_array( $meta_rows ) ) {
 
         </div><!-- .cs-narrative__inner -->
 
-        <?php if ( $images ) : ?>
+        <?php if ( $gallery ) : ?>
         <div class="cs-narrative__gallery">
-            <?php foreach ( array_chunk( $images, 2 ) as $row_imgs ) :
-                $is_pair = count( $row_imgs ) === 2;
+            <?php foreach ( $gallery as $g_row ) :
+                $is_pair = $g_row['type'] === 'pair';
             ?>
             <div class="cs-narrative__img-row<?php echo $is_pair ? ' cs-narrative__img-row--pair' : ''; ?>">
-                <?php foreach ( $row_imgs as $img ) : ?>
+                <?php foreach ( $g_row['images'] as $img ) : ?>
                 <figure>
                     <img
                         src="<?php echo esc_url( $img['url'] ); ?>"
