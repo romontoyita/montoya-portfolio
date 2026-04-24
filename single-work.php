@@ -11,6 +11,7 @@
  *  industry     — textarea (one value per line)
  *  scope        — textarea (one value per line)
  *  statement    — textarea
+ *  website_url  — url (optional)
  *
  *  NARRATIVE SECTIONS (up to 5, flat fields — ACF Free compatible):
  *  section_1_label    — text      e.g. "The Situation"   → rendered as (The Situation)
@@ -37,11 +38,12 @@ function cs_lines( string $field ): array {
     return array_filter( array_map( 'trim', explode( "\n", $raw ) ) );
 }
 
-$hero_img  = $has_acf ? get_field( 'hero_image' ) : null;
-$client    = $has_acf ? get_field( 'client' )     : '';
-$industry  = cs_lines( 'industry' );
-$scope     = cs_lines( 'scope' );
-$statement = $has_acf ? get_field( 'statement' )  : '';
+$hero_img    = $has_acf ? get_field( 'hero_image' )   : null;
+$client      = $has_acf ? get_field( 'client' )       : '';
+$industry    = cs_lines( 'industry' );
+$scope       = cs_lines( 'scope' );
+$statement   = $has_acf ? get_field( 'statement' )    : '';
+$website_url = $has_acf ? get_field( 'website_url' )  : '';
 // Build flat narrative sections array — works with ACF Free (no Repeater needed)
 $sections = [];
 if ( $has_acf ) {
@@ -103,6 +105,15 @@ if ( $has_acf ) {
                     <?php endif; ?>
 
                 </div><!-- .cs-hero__metas -->
+
+                <?php if ( $website_url ) : ?>
+                <a href="<?php echo esc_url( $website_url ); ?>" class="hp-work__all-link" target="_blank" rel="noopener noreferrer">
+                    <span class="hp-work__all-link-arrow" aria-hidden="true">
+                        <img src="<?php echo esc_url( MONTOYA_URI . '/assets/images/arrow.svg' ); ?>" alt="" width="15" height="16">
+                    </span>
+                    <?php esc_html_e( 'Visit Website', 'montoya-portfolio' ); ?>
+                </a>
+                <?php endif; ?>
 
             </div><!-- .cs-hero__right -->
 
