@@ -22,7 +22,7 @@
             <div class="site-footer__content">
                 <p>Our work involves cultural research and ongoing commissions with ateliers, independent brands, and exploratory ventures.</p>
                 <div class="site-footer__contact">
-                    <p>For new projects, collaborations or private commissions:</p>
+                    <p>For new commissions, collaborations, or exploratory conversations:</p>
                     <a href="mailto:hello@montoyastudio.com" class="site-footer__email">hello@montoyastudio.com</a>
                 </div>
             </div>

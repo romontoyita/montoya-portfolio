@@ -82,8 +82,8 @@ $uri = get_template_directory_uri();
                     Design is not styling. Identity is structure, meaning, and time.
                 </blockquote>
                 <p class="hp-intro__body" data-js="intro-body">
-                    We think of brands as cultural systems — composed through image, language, material and sound. Built not for impact, but for permanence.<br><br>
-                    Our work sits at the intersection of direction, design and technology, shaping experiences that feel intelligent, sensorial and coherent.
+                    We think of brands as cultural systems — composed through image, language, material and sound. Built not for visibility, but for permanence.<br><br>
+                    Our work sits at the intersection of direction, design and technology. Each commission is treated as a complete problem: who you are, what you say, how it looks, and how it functions.
                 </p>
             </div>
 
@@ -169,9 +169,8 @@ $uri = get_template_directory_uri();
                     >
                 </figure>
                 <div class="hp-profile__bio" data-js="profile-bio">
-                    <p>Founded and directed by Rocío Montoya, our practice treats design as a cultural artifact—meant to be precise, quiet, and enduring.</p>
-                    <p>We collaborate with architects, perfumers, chefs, artists, and independent luxury brands to build identities and environments that are coherent across product and digital touchpoints.</p>
-                    <p>Our work prioritizes clarity of thought, material restraint, and a contemporary sense of elegance.</p>
+                    <p>Founded and directed by Rocío Montoya, the practice treats each commission as a complete creative problem — not a production task. We direct, design, write, and build. One studio, one vision, no handoffs.</p>
+                    <p>We work with founders, independent brands, and emerging platforms who need more than execution — they need someone who can see the whole.</p>
                 </div>
             </div>
 
