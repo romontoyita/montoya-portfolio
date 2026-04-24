@@ -13,12 +13,14 @@
  *  statement    — textarea
  *  website_url  — url (optional)
  *
- *  NARRATIVE SECTIONS (up to 5, flat fields — ACF Free compatible):
- *  section_1_label    — text      e.g. "The Situation"   → rendered as (The Situation)
- *  section_1_headline — text      large IvyPresto heading
- *  section_1_body     — wysiwyg   rich-text paragraphs
- *  section_1_image    — image     optional, full-bleed after body
- *  …repeat for section_2_ through section_5_
+ *  SECTION 1 (ACF Free flat fields):
+ *  section_1_label    — text
+ *  section_1_headline — text
+ *  section_1_body     — wysiwyg
+ *  section_1_images   — gallery   1 image → full-width · 2+ → paired rows of 2
+ *
+ *  SECTIONS 2+ (custom repeater meta box — inc/meta-boxes.php):
+ *  _cs_narrative_sections  — post meta, array of { label, headline, body, image_ids[] }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -44,15 +46,40 @@ $industry    = cs_lines( 'industry' );
 $scope       = cs_lines( 'scope' );
 $statement   = $has_acf ? get_field( 'statement' )    : '';
 $website_url = $has_acf ? get_field( 'website_url' )  : '';
-// Build flat narrative sections array — works with ACF Free (no Repeater needed)
+// ── Section 1 — ACF flat fields ─────────────────────────────────────────────
 $sections = [];
 if ( $has_acf ) {
-    for ( $i = 1; $i <= 5; $i++ ) {
+    $sections[] = [
+        'label'    => get_field( 'section_1_label' ),
+        'headline' => get_field( 'section_1_headline' ),
+        'body'     => get_field( 'section_1_body' ),    // WYSIWYG — already HTML
+        'images'   => get_field( 'section_1_images' ) ?: [],
+        'acf'      => true,
+    ];
+}
+
+// ── Sections 2+ — custom repeater (inc/meta-boxes.php) ──────────────────────
+$meta_rows = get_post_meta( get_the_ID(), '_cs_narrative_sections', true );
+if ( is_array( $meta_rows ) ) {
+    foreach ( $meta_rows as $meta_row ) {
+        // Resolve attachment IDs → image arrays matching the ACF image format
+        $images = [];
+        foreach ( array_filter( array_map( 'absint', (array) ( $meta_row['image_ids'] ?? [] ) ) ) as $att_id ) {
+            $src = wp_get_attachment_image_src( $att_id, 'full' );
+            if ( ! $src ) continue;
+            $images[] = [
+                'url'    => $src[0],
+                'width'  => $src[1],
+                'height' => $src[2],
+                'alt'    => (string) get_post_meta( $att_id, '_wp_attachment_image_alt', true ),
+            ];
+        }
         $sections[] = [
-            'label'    => get_field( "section_{$i}_label" ),
-            'headline' => get_field( "section_{$i}_headline" ),
-            'body'     => get_field( "section_{$i}_body" ),
-            'image'    => get_field( "section_{$i}_image" ),
+            'label'    => $meta_row['label']    ?? '',
+            'headline' => $meta_row['headline'] ?? '',
+            'body'     => $meta_row['body']     ?? '',  // plain textarea — needs wpautop
+            'images'   => $images,
+            'acf'      => false,
         ];
     }
 }
@@ -139,18 +166,24 @@ if ( $has_acf ) {
 
     <!-- ══════════════════════════════════════════════════════════
          NARRATIVE SECTIONS — flat ACF fields, up to 5
-         Fields: section_N_label, section_N_headline, section_N_body, section_N_image
-         Empty rows are skipped; first rendered row gets cs-narrative--first
+         Fields: section_N_label, section_N_headline, section_N_body, section_N_images
+         Empty rows are skipped automatically
          ══════════════════════════════════════════════════════════ -->
     <?php if ( $sections ) : foreach ( $sections as $row ) :
 
         $label    = trim( $row['label']    ?? '' );
         $headline = trim( $row['headline'] ?? '' );
-        $body     =       $row['body']     ?? '';
-        $img      =       $row['image']    ?? null;
+        $raw_body =       $row['body']     ?? '';
+        $images   =       $row['images']   ?? [];
+        $is_acf   =       $row['acf']      ?? false;
+
+        // ACF WYSIWYG returns formatted HTML; textarea output needs wpautop
+        $body_html = $is_acf
+            ? wp_kses_post( $raw_body )
+            : wp_kses_post( wpautop( wp_unslash( $raw_body ) ) );
 
         // Skip entirely empty rows
-        if ( ! $label && ! $headline && ! $body && ! $img ) continue;
+        if ( ! $label && ! $headline && ! $raw_body && ! $images ) continue;
 
     ?>
     <section class="cs-narrative">
@@ -165,9 +198,9 @@ if ( $has_acf ) {
                     <h2 class="cs-narrative__headline"><?php echo esc_html( $headline ); ?></h2>
                 <?php endif; ?>
 
-                <?php if ( $body ) : ?>
+                <?php if ( $body_html ) : ?>
                     <div class="cs-narrative__body">
-                        <?php echo wp_kses_post( $body ); ?>
+                        <?php echo $body_html; ?>
                     </div>
                 <?php endif; ?>
 
@@ -175,8 +208,14 @@ if ( $has_acf ) {
 
         </div><!-- .cs-narrative__inner -->
 
-        <?php if ( $img ) : ?>
-            <figure class="cs-narrative__image">
+        <?php if ( $images ) :
+            // Group into rows of 2; a lone image renders full-width
+            foreach ( array_chunk( $images, 2 ) as $row_imgs ) :
+                $is_pair = count( $row_imgs ) === 2;
+        ?>
+        <div class="cs-narrative__img-row<?php echo $is_pair ? ' cs-narrative__img-row--pair' : ''; ?>">
+            <?php foreach ( $row_imgs as $img ) : ?>
+            <figure>
                 <img
                     src="<?php echo esc_url( $img['url'] ); ?>"
                     alt="<?php echo esc_attr( $img['alt'] ); ?>"
@@ -186,7 +225,9 @@ if ( $has_acf ) {
                     decoding="async"
                 >
             </figure>
-        <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+        <?php endforeach; endif; ?>
 
     </section><!-- .cs-narrative -->
 

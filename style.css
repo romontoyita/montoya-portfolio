@@ -1454,15 +1454,32 @@ p {
     margin-top: 1em;
 }
 
-/* Optional image — full-width within site padding (no breakout)            */
-.cs-narrative__image {
+/* Image rows — stacked below the text content                              */
+.cs-narrative__img-row {
+    display: flex;
+    gap:     24px;
+}
+
+/* Single image (default) — full width, natural height                      */
+.cs-narrative__img-row figure {
+    flex:     1 1 0;
     overflow: hidden;
 }
 
-.cs-narrative__image img {
+.cs-narrative__img-row figure img {
     width:   100%;
     height:  auto;
     display: block;
+}
+
+/* Paired row — fixed height so both images align regardless of source ratio */
+.cs-narrative__img-row--pair figure {
+    height: clamp(200px, 30vw, 440px);
+}
+
+.cs-narrative__img-row--pair figure img {
+    height:     100%;
+    object-fit: cover;
 }
 
 
@@ -1495,6 +1512,15 @@ p {
 
     .cs-narrative__content {
         width: 100%;
+    }
+
+    /* Pairs stack vertically on mobile */
+    .cs-narrative__img-row--pair {
+        flex-direction: column;
+    }
+
+    .cs-narrative__img-row--pair figure {
+        height: 70vw;
     }
 }
 

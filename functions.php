@@ -10,6 +10,7 @@ $includes = [
     'inc/enqueue.php',
     'inc/cpt.php',
     'inc/acf-fields.php',
+    'inc/meta-boxes.php',
 ];
 
 foreach ( $includes as $file ) {
