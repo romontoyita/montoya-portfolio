@@ -474,14 +474,16 @@
 
 // =============================================================================
 // ABOUT — PHILOSOPHY SECTION
-// CSS sticky keeps the section in view while a 300vh track scrolls beneath it.
-// Timeline: phrase 1 fades in → crossfades out while phrase 2 fades in.
-// Snap routes through Lenis (window.scrollTo is patched once).
+// Scroll-hijack approach: any scroll inside the 300vh track fires a discrete
+// Lenis.scrollTo() to one of two snap positions. Visual crossfade is a plain
+// GSAP tween — fully decoupled from scroll position so it always completes.
+//
+// Snap positions (recalculated on resize):
+//   A = trackTop          → phrase 1 visible
+//   B = trackTop + 200vh  → phrase 2 visible (end of sticky pin travel)
 // =============================================================================
 (function () {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    gsap.registerPlugin(ScrollTrigger);
+    if (typeof gsap === 'undefined') return;
 
     const track = document.querySelector('.ab-philosophy-track');
     if (!track) return;
@@ -489,69 +491,72 @@
     const phrases = track.querySelectorAll('.ab-philosophy__phrase');
     if (!phrases.length) return;
 
-    // Touch: CSS forces phrases visible; skip all JS.
     if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
-    // ── Auto-snap from intro section ──────────────────────────────────────────
-    // When the intro's bottom hits the viewport bottom the user has finished
-    // reading it; jump directly to the philosophy track so there is no dead
-    // scroll zone between the two sections.
-    const intro = document.querySelector('.ab-intro');
-    if (intro) {
-        ScrollTrigger.create({
-            trigger: intro,
-            start:   'bottom bottom',
-            onEnter() {
-                const trackTop = track.getBoundingClientRect().top + window.scrollY;
-                if (window.__lenis) {
-                    window.__lenis.scrollTo(trackTop, {
-                        duration: 0.9,
-                        easing:   function (t) { return 1 - Math.pow(1 - t, 3); },
-                    });
-                }
-            },
-        });
-    }
-
-    // ── Patch window.scrollTo once so GSAP snap routes through Lenis ─────────
-    if (!window.__scrollToPatched && window.__lenis) {
-        window.__scrollToPatched = true;
-        window.scrollTo = function (optOrX, y) {
-            const target = (optOrX !== null && typeof optOrX === 'object')
-                ? (optOrX.top !== undefined ? optOrX.top : (optOrX.y !== undefined ? optOrX.y : 0))
-                : (y !== undefined ? y : 0);
-            window.__lenis.scrollTo(Number(target), {
-                duration: 0.65,
-                easing:   function (t) { return 1 - Math.pow(1 - t, 3); },
-            });
-        };
-    }
-
-    // Phrase 1 visible immediately; phrase 2 starts hidden below
+    // ── Initial state ─────────────────────────────────────────────────────────
     gsap.set(phrases[0], { opacity: 1, y: 0  });
     gsap.set(phrases[1], { opacity: 0, y: 28 });
 
-    // ── Timeline ──────────────────────────────────────────────────────────────
-    // Phrase 1 is already visible at progress 0 ('enter').
-    // One scroll snaps to 'phrase-2': phrase 1 exits up while phrase 2 enters.
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: track,
-            start:   'top top',
-            end:     'bottom bottom',
-            scrub:   true,
-            snap: {
-                snapTo:   'labels',
-                duration: { min: 0.25, max: 0.55 },
-                ease:     'power2.inOut',
-            },
-        },
-    });
+    var currentPhrase = 0;
+    var snapLocked    = false;
 
-    tl.addLabel('enter')
-      .to(phrases[0], { opacity: 0, y: -20, duration: 1, ease: 'power2.in'  })
-      .to(phrases[1], { opacity: 1, y: 0,   duration: 1, ease: 'power2.out' }, '<')
-      .addLabel('phrase-2');
+    // ── Snap positions ────────────────────────────────────────────────────────
+    function getSnaps() {
+        var top = track.getBoundingClientRect().top + window.scrollY;
+        var vh  = window.innerHeight;
+        return { a: top, b: top + vh * 2 };
+    }
+
+    // ── Phrase crossfade (time-based, not scroll-linked) ──────────────────────
+    function showPhrase(index) {
+        if (index === currentPhrase) return;
+        currentPhrase = index;
+        if (index === 1) {
+            gsap.to(phrases[0], { opacity: 0, y: -24, duration: 0.65, ease: 'power2.in',  overwrite: true });
+            gsap.to(phrases[1], { opacity: 1, y: 0,   duration: 0.65, ease: 'power2.out', overwrite: true });
+        } else {
+            gsap.to(phrases[1], { opacity: 0, y: 24,  duration: 0.65, ease: 'power2.in',  overwrite: true });
+            gsap.to(phrases[0], { opacity: 1, y: 0,   duration: 0.65, ease: 'power2.out', overwrite: true });
+        }
+    }
+
+    // ── Snap via Lenis ────────────────────────────────────────────────────────
+    function doSnap(scrollTarget, phraseIndex) {
+        snapLocked = true;
+        showPhrase(phraseIndex);
+        if (window.__lenis) {
+            window.__lenis.scrollTo(scrollTarget, {
+                duration: 0.85,
+                easing: function (t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; },
+            });
+        }
+        // Release lock after animation completes so next scroll intent registers
+        setTimeout(function () { snapLocked = false; }, 1000);
+    }
+
+    // ── Scroll intent detection via Lenis ─────────────────────────────────────
+    // Fires on every Lenis tick. When scroll moves away from a snap point while
+    // inside the track, immediately redirect to the snap in the scroll direction.
+    if (window.__lenis) {
+        window.__lenis.on('scroll', function (e) {
+            if (snapLocked) return;
+
+            var scroll    = e.scroll;
+            var direction = e.direction;
+            var snaps     = getSnaps();
+
+            // Out of track bounds — let Lenis scroll naturally
+            if (scroll < snaps.a - 5 || scroll > snaps.b + 5) return;
+
+            // Already settled at a snap point — nothing to do
+            if (Math.abs(scroll - snaps.a) < 5) return;
+            if (Math.abs(scroll - snaps.b) < 5) return;
+
+            // Any movement between snap points → snap in direction of travel
+            var target = direction > 0 ? snaps.b : snaps.a;
+            doSnap(target, direction > 0 ? 1 : 0);
+        });
+    }
 }());
 
 
