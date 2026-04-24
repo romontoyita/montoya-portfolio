@@ -527,19 +527,18 @@
         };
     }
 
-    // ── Phrases start hidden ──────────────────────────────────────────────────
-    gsap.set(phrases, { opacity: 0, y: 28 });
+    // Phrase 1 visible immediately; phrase 2 starts hidden below
+    gsap.set(phrases[0], { opacity: 1, y: 0  });
+    gsap.set(phrases[1], { opacity: 0, y: 28 });
 
     // ── Timeline ──────────────────────────────────────────────────────────────
-    // Duration breakdown (total = 2.3 units over 200 vh of scroll):
-    //   0   → 1.0  phrase 1 enters          → label 'phrase-1'  (progress 0.43)
-    //   1.0 → 1.3  brief hold
-    //   1.3 → 2.3  phrase 1 exits up  ←→  phrase 2 enters  → label 'phrase-2' (progress 1.0)
+    // Phrase 1 is already visible at progress 0 ('enter').
+    // One scroll snaps to 'phrase-2': phrase 1 exits up while phrase 2 enters.
     const tl = gsap.timeline({
         scrollTrigger: {
             trigger: track,
-            start:   'top top',       // track top hits viewport top
-            end:     'bottom bottom', // = +200 vh of scroll
+            start:   'top top',
+            end:     'bottom bottom',
             scrub:   true,
             snap: {
                 snapTo:   'labels',
@@ -550,11 +549,8 @@
     });
 
     tl.addLabel('enter')
-      .to(phrases[0], { opacity: 1, y: 0,   duration: 1, ease: 'power2.out' })
-      .addLabel('phrase-1')
-      .to({}, { duration: 0.3 })                                       // hold at phrase-1
-      .to(phrases[0], { opacity: 0, y: -20,  duration: 1, ease: 'power2.in'  })
-      .to(phrases[1], { opacity: 1, y: 0,    duration: 1, ease: 'power2.out' }, '<')  // same time
+      .to(phrases[0], { opacity: 0, y: -20, duration: 1, ease: 'power2.in'  })
+      .to(phrases[1], { opacity: 1, y: 0,   duration: 1, ease: 'power2.out' }, '<')
       .addLabel('phrase-2');
 }());
 
