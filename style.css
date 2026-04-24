@@ -1454,6 +1454,13 @@ p {
     margin-top: 1em;
 }
 
+/* Gallery wrapper — row gap matches the column gap within each row         */
+.cs-narrative__gallery {
+    display:        flex;
+    flex-direction: column;
+    gap:            24px;
+}
+
 /* Image rows — stacked below the text content                              */
 .cs-narrative__img-row {
     display: flex;

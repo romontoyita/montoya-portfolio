@@ -186,26 +186,28 @@ if ( is_array( $meta_rows ) ) {
 
         </div><!-- .cs-narrative__inner -->
 
-        <?php if ( $images ) :
-            // Group into rows of 2; a lone image renders full-width
-            foreach ( array_chunk( $images, 2 ) as $row_imgs ) :
+        <?php if ( $images ) : ?>
+        <div class="cs-narrative__gallery">
+            <?php foreach ( array_chunk( $images, 2 ) as $row_imgs ) :
                 $is_pair = count( $row_imgs ) === 2;
-        ?>
-        <div class="cs-narrative__img-row<?php echo $is_pair ? ' cs-narrative__img-row--pair' : ''; ?>">
-            <?php foreach ( $row_imgs as $img ) : ?>
-            <figure>
-                <img
-                    src="<?php echo esc_url( $img['url'] ); ?>"
-                    alt="<?php echo esc_attr( $img['alt'] ); ?>"
-                    width="<?php echo esc_attr( $img['width'] ); ?>"
-                    height="<?php echo esc_attr( $img['height'] ); ?>"
-                    loading="lazy"
-                    decoding="async"
-                >
-            </figure>
+            ?>
+            <div class="cs-narrative__img-row<?php echo $is_pair ? ' cs-narrative__img-row--pair' : ''; ?>">
+                <?php foreach ( $row_imgs as $img ) : ?>
+                <figure>
+                    <img
+                        src="<?php echo esc_url( $img['url'] ); ?>"
+                        alt="<?php echo esc_attr( $img['alt'] ); ?>"
+                        width="<?php echo esc_attr( $img['width'] ); ?>"
+                        height="<?php echo esc_attr( $img['height'] ); ?>"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+                <?php endforeach; ?>
+            </div>
             <?php endforeach; ?>
         </div>
-        <?php endforeach; endif; ?>
+        <?php endif; ?>
 
     </section><!-- .cs-narrative -->
 
